@@ -30,6 +30,7 @@ type (
 		Contributions  Contributions
 		Periods        int64
 		PeriodsPerYear int64
+		CurrentPeriod  int64
 	}
 
 	Period struct {

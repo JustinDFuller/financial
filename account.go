@@ -1,5 +1,5 @@
 package financialcalc
 
-func (account *Account) Copy(account2 *Account) {
+func (account *Account) CopyFrom(account2 *Account) {
 	*account = *account2
 }

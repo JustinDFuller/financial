@@ -16,8 +16,9 @@ func (balance *Balance) Add(contribution float64) {
 	balance.FromFloat(balance.ToFloat() + contribution)
 }
 
-func (balance *Balance) Compound(interestRate, numberTimesCompounded, timeInvested float64) {
-	exponent := math.Pow(1+(interestRate/numberTimesCompounded), numberTimesCompounded*timeInvested)
+func (balance *Balance) Compound(interestRate float64, periodsInvested int64) {
+	const numberTimesCompounded = 12
+	exponent := math.Pow(1+(interestRate/numberTimesCompounded), numberTimesCompounded*float64(periodsInvested))
 	balance.FromFloat(math.Floor(balance.ToFloat() * exponent))
 }
 
