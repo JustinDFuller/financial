@@ -1,6 +1,8 @@
 package financialcalc
 
-import "math"
+import (
+	"math"
+)
 
 func (balance *Balance) ToFloat() float64 {
 	return float64(*balance)
@@ -8,7 +10,7 @@ func (balance *Balance) ToFloat() float64 {
 
 func (balance *Balance) FromFloat(f float64) *Balance {
 	b := Balance(f)
-	balance = &b
+	*balance = b
 	return balance
 }
 

@@ -1,0 +1,91 @@
+swagger: "2.0"
+info:
+  description: "Shows the trajectory of accounts in relation to goals."
+  version: "0.0.0"
+  title: "Financial Planning Calculator"
+host: "localhost:3000"
+basePath: "/svc/v1"
+schemes:
+- "https"
+- "http"
+paths:
+  /user:
+    get:
+      description: Return the current user.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+    put:
+      description: Update the current user.
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+  /user/account:
+    post:
+      description: Create an account belonging to the current user.
+      parameters:
+        - in: path
+          name: accountId
+          type: integer
+          required: true
+          description: ID of the entity to save. -1 to create a new entity.
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Account"
+  /user/account/{accountId}:
+    put:
+      description: Update an account belonging to the current user.
+      parameters:
+        - in: path
+          name: accountId
+          type: integer
+          required: true
+          description: ID of the entity to save. -1 to create a new entity.
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Account"
+  /user/accounts:
+    get:
+      description: Get the accounts belonging to the current user.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  Account:
+    type: object
+    properties:
+      id:
+        type: integer
+      balance:
+        type: number
+        format: float

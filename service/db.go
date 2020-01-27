@@ -3,8 +3,8 @@ package service
 import "context"
 
 type db interface {
-	PutUser(context.Context, *User) error
-	GetUser(context.Context, int64) (*User, error)
-	PutUserAccount(context.Context, *Account) error
-	GetUserAccounts(context.Context, *User) ([]*Account, error)
+	PutUser(context.Context, *types.User) error
+	GetUser(context.Context, int64) (*types.User, error)
+	PutUserAccount(context.Context, *types.Account) error
+	GetUserAccounts(context.Context, *types.User) ([]*types.Account, error)
 }

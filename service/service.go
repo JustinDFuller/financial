@@ -14,7 +14,7 @@ type service struct{}
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 	return map[string]map[string]kit.HTTPEndpoint{
-		"/svc/user.{format}": {
+		"/svc/v1/user/{id}": {
 			"GET": {
 				Endpoint: s.getUser,
 				Decoder:  decodeUser,
@@ -24,13 +24,13 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 				Decoder:  decodeUser,
 			},
 		},
-		"svc/user/account.{format}": {
+		"/svc/v1/user/account": {
 			"PUT": {
 				Endpoint: s.putUserAccount,
 				Decoder:  decodeUserAccount,
 			},
 		},
-		"/svc/user/accounts.{format}": {
+		"/svc/v1/user/accounts": {
 			"GET": {
 				Endpoint: s.getUserAccounts,
 				Decoder:  decodeUserAccounts,
