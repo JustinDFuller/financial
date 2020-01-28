@@ -1,8 +1,6 @@
 package financialcalc
 
 type (
-	Mode string // debt, investment, savings, checking
-
 	Balance float64
 
 	Account struct {

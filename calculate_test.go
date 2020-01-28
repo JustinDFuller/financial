@@ -6,10 +6,11 @@ import (
 
 func TestInvestmentAccount(t *testing.T) {
 	var balance Balance
+	var mode ModeInvestment
 
 	investmentAccount := &Account{
 		Name:         "Investments",
-		Mode:         ModeInvestment,
+		Mode:         mode,
 		Balance:      balance.FromFloat(30000),
 		InterestRate: .055,
 	}
@@ -32,10 +33,11 @@ func TestInvestmentAccount(t *testing.T) {
 
 func TestDebtAccount(t *testing.T) {
 	var balance Balance
+	var mode ModeDebt
 
 	debtAccount := &Account{
 		Name:         "Auto Loan",
-		Mode:         ModeDebt,
+		Mode:         mode,
 		Balance:      balance.FromFloat(4400),
 		InterestRate: .0264,
 	}
@@ -51,6 +53,10 @@ func TestDebtAccount(t *testing.T) {
 		PeriodsPerYear: 26,
 	})
 
+	// Something needs to keep the balance from going below 0.
+	// Who does it? Should the contribution have a periods field?
+	// Should balance.Add() disallow negative balances?
+	// Should account use Mode to see if it can go negative?
 	if res == nil || len(res) != 26 || !res[25].Accounts.Find(debtAccount).Balance.Equal(0) {
 		t.Fatal("Invalid result.", res[25].Accounts.Find(debtAccount).Balance.ToFloat())
 	}
