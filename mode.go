@@ -4,9 +4,9 @@ type Mode interface {
 	GetContribution(float64) float64
 }
 
-type ModeDebt string
+type ModeDebt struct{}
 
-type ModeInvestment string
+type ModeInvestment struct{}
 
 func (m ModeDebt) GetContribution(contribution float64) float64 {
 	return -contribution

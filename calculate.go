@@ -9,7 +9,7 @@ func Calculate(req *CalculateRequest) []Period {
 		for _, contribution := range req.Contributions {
 			var account Account
 			account.CopyFrom(contribution.Account)
-			account.Contribute(contribution.Amount)
+			account.Contribute(contribution.Amount, float64(req.CurrentPeriod))
 
 			if req.IsCompoundingPeriod() {
 				account.Balance.Compound(account.InterestRate, req.PeriodsInvested())

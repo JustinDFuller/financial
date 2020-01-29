@@ -3,13 +3,6 @@ package financialcalc
 type (
 	Balance float64
 
-	Account struct {
-		Name         string
-		Balance      *Balance
-		Mode         Mode
-		InterestRate float64
-	}
-
 	Accounts []Account
 
 	Goal struct {
@@ -25,10 +18,10 @@ type (
 	Contributions []*Contribution
 
 	CalculateRequest struct {
-		Contributions  Contributions
-		Periods        int64
-		PeriodsPerYear int64
-		CurrentPeriod  int64
+		Contributions         Contributions
+		Periods               int64
+		CompoundEveryNPeriods int64
+		CurrentPeriod         int64
 	}
 
 	Period struct {

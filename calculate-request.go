@@ -1,7 +1,7 @@
 package financialcalc
 
 func (r *CalculateRequest) IsCompoundingPeriod() bool {
-	return (r.CurrentPeriod)%r.PeriodsPerYear == 0
+	return (r.CurrentPeriod)%r.CompoundEveryNPeriods == 0
 }
 
 func (r *CalculateRequest) NextPeriod() bool {
@@ -11,5 +11,5 @@ func (r *CalculateRequest) NextPeriod() bool {
 }
 
 func (r *CalculateRequest) PeriodsInvested() int64 {
-	return r.CurrentPeriod / r.PeriodsPerYear
+	return r.CurrentPeriod / r.CompoundEveryNPeriods
 }
