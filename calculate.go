@@ -1,6 +1,6 @@
 package financialcalc
 
-func Calculate(req *CalculateRequest) []Period {
+func Calculate(req *CalculateRequest) Periods {
 	var periods Periods
 
 	for req.NextPeriod() {
@@ -9,10 +9,10 @@ func Calculate(req *CalculateRequest) []Period {
 		for _, contribution := range req.Contributions {
 			var account Account
 			account.CopyFrom(contribution.Account)
-			account.Contribute(contribution.Amount, float64(req.CurrentPeriod))
+			account.Contribute(contribution.Amount, req.CurrentPeriod)
 
-			if req.IsCompoundingPeriod() {
-				account.Balance.Compound(account.InterestRate, req.PeriodsInvested())
+			if account.IsCompoundingPeriod(req.CurrentPeriod) {
+				account.Balance.Compound(account.InterestRate, req.CurrentPeriod, req.PeriodsPerYear)
 			}
 
 			period.Accounts = append(period.Accounts, account)

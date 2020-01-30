@@ -24,9 +24,11 @@ func (balance *Balance) Add(contribution float64) {
 	balance.FromFloat(amount)
 }
 
-func (balance *Balance) Compound(interestRate float64, periodsInvested int64) {
+// numberTimesCompounded * periodsInvest is WRONG
+// numberTimesCompounded * (periodsPerYear / periodsInvest) is CORRECT
+func (balance *Balance) Compound(interestRate, periodsInvested, periodsPerYear float64) {
 	const numberTimesCompounded = 12
-	exponent := math.Pow(1+(interestRate/numberTimesCompounded), numberTimesCompounded*float64(periodsInvested))
+	exponent := math.Pow(1+(interestRate/numberTimesCompounded), numberTimesCompounded*(periodsPerYear/periodsInvested))
 	balance.FromFloat(math.Floor(balance.ToFloat() * exponent))
 }
 

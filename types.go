@@ -18,10 +18,10 @@ type (
 	Contributions []*Contribution
 
 	CalculateRequest struct {
-		Contributions         Contributions
-		Periods               int64
-		CompoundEveryNPeriods int64
-		CurrentPeriod         int64
+		Contributions  Contributions
+		Periods        float64
+		CurrentPeriod  float64
+		PeriodsPerYear float64
 	}
 
 	Period struct {
