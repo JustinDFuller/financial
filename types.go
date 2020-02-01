@@ -6,12 +6,12 @@ type (
 	Accounts []Account
 
 	Goal struct {
-		Accounts []*Account
+		Accounts []Account
 		Balance  float64
 	}
 
 	Contribution struct {
-		Account *Account
+		Account Account
 		Amount  float64
 	}
 
