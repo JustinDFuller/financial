@@ -46,4 +46,18 @@
       Balance, $148,750; Contribution: $525; Interest: 4.375%.
   * Auto Loan:
       Balance, $4,400; Contribution: $200; Interest: 2.64%.
-*/
+* Goals:
+  * Retirement:
+      X amount in Roth IRA and 401k
+  * College, kid 1
+      X amount in 529 (1)
+  * College, kid 2
+      X amount in 529 (2)
+  * Buy a house
+      X amount in Investments
+  * Emergency fund
+      X amount in Emergency Savings
+  * Debt Free
+      Mortgage and Auto Loan to $0 balance
+  * Some kind of house project
+      X amount in Acorns
