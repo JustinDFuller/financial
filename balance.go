@@ -2,7 +2,6 @@ package financialcalc
 
 import (
 	"fmt"
-	"math"
 )
 
 func (balance *Balance) ToFloat() float64 {
@@ -22,14 +21,6 @@ func (balance *Balance) Add(contribution float64) {
 	}
 
 	balance.FromFloat(amount)
-}
-
-// numberTimesCompounded * periodsInvest is WRONG
-// numberTimesCompounded * (periodsPerYear / periodsInvest) is CORRECT
-func (balance *Balance) Compound(interestRate, periodsInvested, periodsPerYear float64) {
-	const numberTimesCompounded = 12
-	exponent := math.Pow(1+(interestRate/numberTimesCompounded), numberTimesCompounded*(periodsPerYear/periodsInvested))
-	balance.FromFloat(math.Floor(balance.ToFloat() * exponent))
 }
 
 func (balance *Balance) Equal(f float64) bool {
