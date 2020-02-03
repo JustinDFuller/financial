@@ -63,7 +63,3 @@ func TestDebtAccount(t *testing.T) {
 		t.Fatal("Invalid result.", res[21].Accounts.Find(debtAccount).GetBalance().ToFloat())
 	}
 }
-
-func TestGoal(t *testing.T) {
-
-}
