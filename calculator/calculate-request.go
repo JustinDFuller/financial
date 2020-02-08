@@ -1,4 +1,4 @@
-package financialcalc
+package service
 
 func (r *CalculateRequest) NextPeriod() bool {
 	r.CurrentPeriod += 1

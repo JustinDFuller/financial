@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  description: "Shows the trajectory of accounts in relation to goals."
+  version: "0.0.0"
+  title: "Financial Planning Calculator"
+host: "localhost:3000"
+basePath: "/svc/v1"
+schemes:
+- "https"
+- "http"
+paths:
+  /user/calculate:
+    get:
+      description: Calculate for the current user.
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/CalculateResponse"
+definitions:
+  CalculateResponse:
+    type: object
+    properties:
+      Periods:
+        $ref: '#/definitions/Periods'
+  Periods:
+    type: array
+    items:
+      $ref: '#/definitions/Period' 
+  Period:
+    type: object
+    properties:
+      Accounts:
+        $ref: '#/definitions/Accounts'
+  Accounts:
+    type: array
+    items:
+        $ref: '#/definitions/Account'
+  Account:
+    type: object
+    properties:
+      Name:
+        type: string
+      Balance:
+        type: number
+        format: float
+      Mode:
+        type: string
+      InterestRate:
+        type: number
+        format: float
+      AddInterestEveryNPeriods:
+        type: number
+        format: int64

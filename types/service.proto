@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package financialplanningcalculator;
+
+import "google/protobuf/empty.proto";
+
+message Account {
+    int64 AddInterestEveryNPeriods = 1;
+    float Balance = 2;
+    float InterestRate = 3;
+    string Mode = 4;
+    string Name = 5;
+}
+
+message CalculateResponse {
+    Period Periods = 1;
+}
+
+message Period {
+    Account Accounts = 1;
+}
+
+service FinancialPlanningCalculatorService {
+    // Calculate for the current user.
+    rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}
+}

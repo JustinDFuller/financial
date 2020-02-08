@@ -1,4 +1,4 @@
-package financialcalc
+package service
 
 import (
 	"testing"
@@ -8,15 +8,13 @@ func TestInvestmentAccount(t *testing.T) {
 	var balance Balance
 	var mode ModeInvestment
 
-	investmentAccount := &InvestmentAccount{
-		BaseAccount{
-			Name:                     "Investments",
-			Mode:                     mode,
-			Balance:                  balance.FromFloat(30000),
-			InterestRate:             .055,
-			AddInterestEveryNPeriods: 26,
-		},
-	}
+	investmentAccount := AsInvestmentAccount(&Account{
+		Name:                     "Investments",
+		Mode:                     mode,
+		Balance:                  balance.FromFloat(30000),
+		InterestRate:             .055,
+		AddInterestEveryNPeriods: 26,
+	})
 
 	investmentContrubition := &Contribution{
 		Account: investmentAccount,
@@ -38,15 +36,13 @@ func TestDebtAccount(t *testing.T) {
 	var balance Balance
 	var mode ModeDebt
 
-	debtAccount := &DebtAccount{
-		BaseAccount{
-			Name:                     "Auto Loan",
-			Mode:                     mode,
-			Balance:                  balance.FromFloat(4400),
-			InterestRate:             .0264,
-			AddInterestEveryNPeriods: 2,
-		},
-	}
+	debtAccount := AsDebtAccount(&Account{
+		Name:                     "Auto Loan",
+		Mode:                     mode,
+		Balance:                  balance.FromFloat(4400),
+		InterestRate:             .0264,
+		AddInterestEveryNPeriods: 2,
+	})
 
 	debtContribution := &Contribution{
 		Account: debtAccount,

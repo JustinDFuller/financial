@@ -1,4 +1,4 @@
-package financialcalc
+package service
 
 type Mode interface {
 	GetContribution(float64) float64

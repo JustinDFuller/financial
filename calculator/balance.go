@@ -1,4 +1,4 @@
-package financialcalc
+package service
 
 import (
 	"fmt"
