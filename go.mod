@@ -1,4 +1,4 @@
-module github.com/justindfuller/financialcalc
+module github.com/justindfuller/financial
 
 go 1.13
 

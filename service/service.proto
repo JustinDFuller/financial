@@ -4,6 +4,8 @@ package financialplanningcalculator;
 
 import "google/protobuf/empty.proto";
 
+option go_package = "service";
+
 message Account {
     int64 AddInterestEveryNPeriods = 1;
     float Balance = 2;

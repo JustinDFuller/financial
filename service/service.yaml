@@ -1,4 +1,6 @@
 swagger: "2.0"
+x-global-options:
+  go_package: service
 info:
   description: "Shows the trajectory of accounts in relation to goals."
   version: "0.0.0"

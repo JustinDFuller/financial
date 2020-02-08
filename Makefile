@@ -1,9 +1,9 @@
 .PHONY: test datastore-start install
 
 proto:
-	@openapi2proto -spec types/service.yaml -out types/service.proto;
-	@protoc --go_out=plugins=grpc:. types/service.proto;
-	@protoc --include_imports --include_source_info types/service.proto --descriptor_set_out types/service.pb;
+	@openapi2proto -spec service/service.yaml -out service/service.proto;
+	@protoc --go_out=plugins=grpc:. service/service.proto;
+	@protoc --include_imports --include_source_info service/service.proto --descriptor_set_out service/service.pb;
 
 test: datastore-start
 	@goimports -w ./**/*.go;
