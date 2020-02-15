@@ -11,6 +11,7 @@ require (
 	github.com/go-kit/kit v0.9.0
 	github.com/golang/protobuf v1.3.2
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/shopspring/decimal v0.0.0-20200105231215-408a2507e114
 	google.golang.org/grpc v1.22.0
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

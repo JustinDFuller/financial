@@ -7,10 +7,22 @@ import "google/protobuf/empty.proto";
 option go_package = "service";
 
 message Account {
+    enum AccountMode {
+        ACCOUNT_MODE_DEBT = 0;
+        ACCOUNT_MODE_INVESTMENT = 1;
+    }
+
+    // Not all accounts accrue interest at the same rate. Some may accrue interest once per year, once per month, etc. Since we use periods we need to know how many periods before interest is calculated. So, on a bi-weekly paycheck you might choose to view interest every 2 periods.
     int64 AddInterestEveryNPeriods = 1;
-    float Balance = 2;
-    float InterestRate = 3;
-    string Mode = 4;
+
+    // The Balance of the account. 45.05
+    double Balance = 2;
+
+    // The interest rate of hte account. %5.5 is 0.055.
+    double InterestRate = 3;
+
+    // The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated.
+    AccountMode Mode = 4;
     string Name = 5;
 }
 

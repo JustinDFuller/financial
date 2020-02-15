@@ -1,4 +1,6 @@
-package service
+package calculator
+
+import "github.com/shopspring/decimal"
 
 type (
 	User struct {
@@ -6,27 +8,25 @@ type (
 		Accounts Accounts
 	}
 
-	Balance float64
-
 	Accounts []*Account
 
 	Goal struct {
 		Accounts []*Account
-		Balance  float64
+		Balance  decimal.Decimal
 	}
 
 	Contribution struct {
 		Account *Account
-		Amount  float64
+		Amount  decimal.Decimal
 	}
 
 	Contributions []*Contribution
 
 	CalculateRequest struct {
 		Contributions  Contributions
-		Periods        float64
-		CurrentPeriod  float64
-		PeriodsPerYear float64
+		Periods        int64
+		PeriodsPerYear int64
+		CurrentPeriod  int64
 	}
 
 	Period struct {

@@ -1,4 +1,4 @@
-package service
+package calculator
 
 func Calculate(req *CalculateRequest) Periods {
 	var periods Periods

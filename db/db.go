@@ -1,13 +1,6 @@
 package service
 
-import (
-	"context"
-	"fmt"
-
-	"cloud.google.com/go/datastore"
-)
-
-type db interface {
+/* type db interface {
 	PutUser(context.Context, *User) error
 	GetUser(context.Context, int64) (*User, error)
 	PutUserAccount(context.Context, *Account) error
@@ -42,3 +35,4 @@ func (db *ds) PutUserAccount(ctx context.Context, account *Account) error {
 func (db *ds) GetUserAccounts(ctx context.Context, user *User) (Accounts, error) {
 	return nil, nil
 }
+*/

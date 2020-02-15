@@ -10,6 +10,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+func New() kit.Service {
+	return &service{}
+}
+
 type service struct{}
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {

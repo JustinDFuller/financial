@@ -1,4 +1,4 @@
-package service
+package calculator
 
 func (r *CalculateRequest) NextPeriod() bool {
 	r.CurrentPeriod += 1
