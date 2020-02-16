@@ -21,7 +21,7 @@ var (
 
 	debtAccount = AsDebtAccount(&Account{
 		Name:                     "Auto Loan",
-		Balance:                  decimal.NewFromInt(4400),
+		Balance:                  decimal.NewFromInt(4000),
 		InterestRate:             decimal.NewFromFloat(.0244),
 		AddInterestEveryNPeriods: 2,
 	})
@@ -45,6 +45,11 @@ func TestInvestmentAccount(t *testing.T) {
 		t.Fatal("Not enough periods in result.", periods)
 	}
 
+	firstPeriodBalance := decimal.NewFromFloat(30500)
+	if !periods.AccountBalanceAt(investmentAccount, 1).Equal(firstPeriodBalance) {
+		t.Fatalf("Incorrect first period balance. Got %v: Expected: %v", periods.AccountBalanceAt(investmentAccount, 1), firstPeriodBalance)
+	}
+
 	finalBalance := decimal.NewFromFloat(46514.36)
 	if !periods.AccountBalanceAt(investmentAccount, 24).Equal(finalBalance) {
 		t.Fatalf("Incorrect ending balance. Got: %v Expected: %v", periods.AccountBalanceAt(investmentAccount, 24), finalBalance)
@@ -65,11 +70,17 @@ func TestDebtAccount(t *testing.T) {
 		t.Fatal("Not enough periods in result.", periods)
 	}
 
-	if !periods.AccountBalanceAt(debtAccount, 22).Equal(zero) {
-		t.Fatalf("Incorrect ending balance. Got %v Expected %v", periods.At(22).Accounts.Find(debtAccount).Balance, zero)
+	firstPeriodBalance := decimal.NewFromFloat(3800)
+	if !periods.AccountBalanceAt(debtAccount, 1).Equal(firstPeriodBalance) {
+		t.Fatalf("Incorrect first period balance. Got %v Expected %v", periods.AccountBalanceAt(debtAccount, 1), firstPeriodBalance)
 	}
 
-	if periods.AccountBalanceAt(debtAccount, 24).LessThan(zero) {
+	finalPeriodBalance := decimal.NewFromFloat(115.1)
+	if !periods.AccountBalanceAt(debtAccount, 22).Equal(finalPeriodBalance) {
+		t.Fatalf("Incorrect ending balance. Got %v Expected %v", periods.At(22).Accounts.Find(debtAccount).Balance, finalPeriodBalance)
+	}
+
+	if !periods.AccountBalanceAt(debtAccount, 24).Equal(zero) {
 		t.Fatal("Debt account cannot go below 0.", periods.AccountBalanceAt(debtAccount, 24))
 	}
 }

@@ -11,11 +11,13 @@ func Calculate(req *CalculateRequest) Periods {
 
 			if lastPeriod := periods.Last(); lastPeriod != nil {
 				account = lastPeriod.Accounts.Find(contribution.Account)
-			} else {
+			}
+
+			if account == nil {
 				account = contribution.Account
 			}
 
-			account.MakeCopy()
+			account = account.MakeCopy()
 			account.Contribute(contribution.Amount, req.CurrentPeriod)
 
 			if account.IsInterestPeriod(req.CurrentPeriod) {
