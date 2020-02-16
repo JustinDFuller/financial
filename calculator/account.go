@@ -4,6 +4,12 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+var (
+	zero   = decimal.NewFromInt(0)
+	one    = decimal.NewFromInt(1)
+	twelve = decimal.NewFromInt(12)
+)
+
 type InterestCalculator func(a *Account, periodsInvested, periodsPerYear int64) decimal.Decimal
 type ContributeByMode func(contribution decimal.Decimal) decimal.Decimal
 
@@ -29,7 +35,13 @@ func AsDebtAccount(a *Account) *Account {
 }
 
 func (a *Account) Contribute(contribution decimal.Decimal, period int64) {
-	a.Balance = a.Balance.Add(a.contributeByMode(contribution.Mul(decimal.NewFromInt(period)))).RoundBank(2)
+	result := a.Balance.Add(a.contributeByMode(contribution)).RoundBank(2)
+
+	if result.LessThanOrEqual(zero) {
+		result = zero
+	}
+
+	a.Balance = result
 }
 
 func (a *Account) IsInterestPeriod(currentPeriod int64) bool {
@@ -63,11 +75,9 @@ func SimpleInterest(a *Account, periodsInvested, periodsPerYear int64) decimal.D
 func CompoundInterest(a *Account, periodsInvested, periodsPerYear int64) decimal.Decimal {
 	b := a.Balance
 	r := a.InterestRate
-	n := decimal.NewFromInt(12)
-	one := decimal.NewFromInt(1)
 
-	x := r.Div(n)
+	x := r.Div(twelve)
 	x = x.Add(one)
-	x = x.Pow(n)
+	x = x.Pow(twelve)
 	return b.Mul(x)
 }

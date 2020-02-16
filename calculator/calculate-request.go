@@ -5,3 +5,7 @@ func (r *CalculateRequest) NextPeriod() bool {
 
 	return r.CurrentPeriod <= r.Periods
 }
+
+func (r *CalculateRequest) Reset() {
+	r.CurrentPeriod = 0
+}

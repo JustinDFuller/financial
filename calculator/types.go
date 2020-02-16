@@ -33,5 +33,5 @@ type (
 		Accounts Accounts
 	}
 
-	Periods []Period
+	Periods []*Period
 )

@@ -6,51 +6,70 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func TestInvestmentAccount(t *testing.T) {
-
-	investmentAccount := AsInvestmentAccount(&Account{
+var (
+	investmentAccount = AsInvestmentAccount(&Account{
 		Name:                     "Investments",
 		Balance:                  decimal.NewFromInt(30000),
 		InterestRate:             decimal.NewFromFloat(.055),
-		AddInterestEveryNPeriods: 26,
+		AddInterestEveryNPeriods: 12,
 	})
 
-	investmentContrubition := &Contribution{
+	investmentContrubition = &Contribution{
 		Account: investmentAccount,
 		Amount:  decimal.NewFromInt(500),
 	}
 
-	periods := Calculate(&CalculateRequest{
-		Contributions:  Contributions{investmentContrubition},
-		Periods:        26,
-		PeriodsPerYear: 26,
-	})
-
-	if periods == nil || len(periods) != 26 || !periods[25].Accounts.AccountBalanceEqual(investmentAccount, decimal.NewFromFloat(45425.54)) {
-		t.Fatal("Invalid result.", periods[25].Accounts.Find(investmentAccount).Balance)
-	}
-}
-
-func TestDebtAccount(t *testing.T) {
-	debtAccount := AsDebtAccount(&Account{
+	debtAccount = AsDebtAccount(&Account{
 		Name:                     "Auto Loan",
 		Balance:                  decimal.NewFromInt(4400),
-		InterestRate:             decimal.NewFromFloat(.0264),
+		InterestRate:             decimal.NewFromFloat(.0244),
 		AddInterestEveryNPeriods: 2,
 	})
 
-	debtContribution := &Contribution{
+	debtContribution = &Contribution{
 		Account: debtAccount,
 		Amount:  decimal.NewFromInt(200),
 	}
 
-	periods := Calculate(&CalculateRequest{
-		Contributions:  Contributions{debtContribution},
-		Periods:        26,
-		PeriodsPerYear: 26,
-	})
+	calculateRequest = &CalculateRequest{
+		Contributions:  Contributions{debtContribution, investmentContrubition},
+		Periods:        24,
+		PeriodsPerYear: 24,
+	}
+)
 
-	if periods == nil || len(periods) != 26 || !periods[21].Accounts.Find(debtAccount).Balance.Equal(decimal.NewFromInt(0)) {
-		t.Fatal("Invalid result.", periods[21].Accounts.Find(debtAccount).Balance)
+func TestInvestmentAccount(t *testing.T) {
+	periods := Calculate(calculateRequest)
+
+	if periods == nil || len(periods) != 24 {
+		t.Fatal("Not enough periods in result.", periods)
+	}
+
+	finalBalance := decimal.NewFromFloat(46514.36)
+	if !periods.AccountBalanceAt(investmentAccount, 24).Equal(finalBalance) {
+		t.Fatalf("Incorrect ending balance. Got: %v Expected: %v", periods.AccountBalanceAt(investmentAccount, 24), finalBalance)
+	}
+
+	periodTwelve := periods.AccountBalanceAt(investmentAccount, 12)
+	periodThirteen := periods.AccountBalanceAt(investmentAccount, 13)
+
+	if periodThirteen.LessThan(periodTwelve) {
+		t.Fatal("Balance should not go down after interest is applied.", periodTwelve, periodThirteen)
+	}
+}
+
+func TestDebtAccount(t *testing.T) {
+	periods := Calculate(calculateRequest)
+
+	if periods == nil || len(periods) != 24 {
+		t.Fatal("Not enough periods in result.", periods)
+	}
+
+	if !periods.AccountBalanceAt(debtAccount, 22).Equal(zero) {
+		t.Fatalf("Incorrect ending balance. Got %v Expected %v", periods.At(22).Accounts.Find(debtAccount).Balance, zero)
+	}
+
+	if periods.AccountBalanceAt(debtAccount, 24).LessThan(zero) {
+		t.Fatal("Debt account cannot go below 0.", periods.AccountBalanceAt(debtAccount, 24))
 	}
 }

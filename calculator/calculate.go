@@ -7,7 +7,15 @@ func Calculate(req *CalculateRequest) Periods {
 		var period Period
 
 		for _, contribution := range req.Contributions {
-			account := contribution.Account.MakeCopy()
+			var account *Account
+
+			if lastPeriod := periods.Last(); lastPeriod != nil {
+				account = lastPeriod.Accounts.Find(contribution.Account)
+			} else {
+				account = contribution.Account
+			}
+
+			account.MakeCopy()
 			account.Contribute(contribution.Amount, req.CurrentPeriod)
 
 			if account.IsInterestPeriod(req.CurrentPeriod) {
@@ -17,8 +25,9 @@ func Calculate(req *CalculateRequest) Periods {
 			period.Accounts = append(period.Accounts, account)
 		}
 
-		periods = append(periods, period)
+		periods = append(periods, &period)
 	}
 
+	req.Reset()
 	return periods
 }

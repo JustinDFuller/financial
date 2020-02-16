@@ -24,6 +24,15 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 				}),
 				Amount: decimal.NewFromInt(500),
 			},
+			&calculator.Contribution{
+				Account: calculator.AsDebtAccount(&calculator.Account{
+					Name:                     "Car Loan",
+					Balance:                  decimal.NewFromInt(4000),
+					InterestRate:             decimal.NewFromFloat(0.375),
+					AddInterestEveryNPeriods: 2,
+				}),
+				Amount: decimal.NewFromInt(400),
+			},
 		},
 		Periods:        52,
 		PeriodsPerYear: 52,

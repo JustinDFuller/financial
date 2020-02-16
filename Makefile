@@ -1,4 +1,6 @@
-.PHONY: proto test datastore-start datastore-stop install
+.PHONY: proto test datastore-start datastore-stop install run
+
+export GIZMO_SKIP_OBSERVE=true;
 
 proto:
 	@rm -f service/service.proto service/service.pb service/service.pb.go;
@@ -6,11 +8,13 @@ proto:
 	@protoc --go_out=plugins=grpc:. service/service.proto;
 	@protoc --include_imports --include_source_info service/service.proto --descriptor_set_out service/service.pb;
 
-test: datastore-start
+test: 
 	@goimports -w ./**/*.go;
 	@gofmt -s -w ./**/*.go;
 	@go test -race ./...;
-	@$(MAKE) datastore-stop;
+
+run:
+	@go run -race ./cmd/server;
 
 datastore-start: datastore-stop
 	@gcloud beta emulators datastore start --no-store-on-disk --quiet > /dev/null 2>&1 &
