@@ -10,18 +10,10 @@ var (
 	twelve = decimal.NewFromInt(12)
 )
 
-type InterestCalculator func(a *Account, periodsInvested, periodsPerYear int64) decimal.Decimal
-type ContributeByMode func(contribution decimal.Decimal) decimal.Decimal
-
-type Account struct {
-	Name                     string
-	Type                     string
-	Balance                  decimal.Decimal
-	InterestRate             decimal.Decimal
-	AddInterestEveryNPeriods int64
-	getSign                  ContributeByMode
-	calculateInterest        InterestCalculator
-}
+type (
+	interestCalculator func(a *Account, periodsInvested, periodsPerYear int64) decimal.Decimal
+	signGetter         func(contribution decimal.Decimal) decimal.Decimal
+)
 
 func AsInvestmentAccount(a *Account) *Account {
 	a.calculateInterest = CompoundInterest

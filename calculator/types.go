@@ -8,6 +8,16 @@ type (
 		Accounts Accounts
 	}
 
+	Account struct {
+		Name                     string
+		Type                     string
+		Balance                  decimal.Decimal
+		InterestRate             decimal.Decimal
+		AddInterestEveryNPeriods int64
+		getSign                  signGetter
+		calculateInterest        interestCalculator
+	}
+
 	Accounts []*Account
 
 	Goal struct {
