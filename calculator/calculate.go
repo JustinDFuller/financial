@@ -31,6 +31,5 @@ func Calculate(req *CalculateRequest) Periods {
 		periods = periods.Append(&period)
 	}
 
-	req.Reset()
 	return periods
 }
