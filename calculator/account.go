@@ -15,6 +15,7 @@ type ContributeByMode func(contribution decimal.Decimal) decimal.Decimal
 
 type Account struct {
 	Name                     string
+	Type                     string
 	Balance                  decimal.Decimal
 	InterestRate             decimal.Decimal
 	AddInterestEveryNPeriods int64
@@ -25,12 +26,14 @@ type Account struct {
 func AsInvestmentAccount(a *Account) *Account {
 	a.calculateInterest = CompoundInterest
 	a.contributeByMode = investmentContributor
+	a.Type = "Investment"
 	return a
 }
 
 func AsDebtAccount(a *Account) *Account {
 	a.calculateInterest = SimpleInterest
 	a.contributeByMode = debtContributor
+	a.Type = "Debt"
 	return a
 }
 

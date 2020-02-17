@@ -19,7 +19,7 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 				Account: calculator.AsInvestmentAccount(&calculator.Account{
 					Name:                     "Investments",
 					Balance:                  decimal.NewFromInt(30000),
-					InterestRate:             decimal.NewFromFloat(0.55),
+					InterestRate:             decimal.NewFromFloat(0.055),
 					AddInterestEveryNPeriods: 26,
 				}),
 				Amount: decimal.NewFromInt(500),
@@ -28,14 +28,14 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 				Account: calculator.AsDebtAccount(&calculator.Account{
 					Name:                     "Car Loan",
 					Balance:                  decimal.NewFromInt(4000),
-					InterestRate:             decimal.NewFromFloat(0.375),
+					InterestRate:             decimal.NewFromFloat(0.0375),
 					AddInterestEveryNPeriods: 2,
 				}),
 				Amount: decimal.NewFromInt(400),
 			},
 		},
-		Periods:        52,
-		PeriodsPerYear: 52,
+		Periods:        598,
+		PeriodsPerYear: 26,
 	})
 
 	return periods, nil

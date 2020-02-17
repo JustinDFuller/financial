@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 
+	"github.com/NYTimes/gizmo/server"
 	"github.com/NYTimes/gizmo/server/kit"
 	"github.com/NYTimes/gziphandler"
 	"github.com/go-kit/kit/endpoint"
@@ -31,7 +32,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 // In this implementation, we're using a GzipHandler middleware to
 // compress our responses.
 func (s service) HTTPMiddleware(h http.Handler) http.Handler {
-	return gziphandler.GzipHandler(h)
+	return gziphandler.GzipHandler(server.CORSHandler(h, ""))
 }
 
 func (s service) HTTPRouterOptions() []kit.RouterOption {
