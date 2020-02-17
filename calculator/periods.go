@@ -16,3 +16,11 @@ func (p Periods) At(period int) *Period {
 func (p Periods) AccountBalanceAt(account *Account, period int) decimal.Decimal {
 	return p.At(period).Accounts.Find(account).Balance
 }
+
+func (p Periods) GoalAt(goal *Goal, period int) *Goal {
+	return p.At(period).Goals.Find(goal)
+}
+
+func (p Periods) Append(period *Period) Periods {
+	return append(p, period)
+}

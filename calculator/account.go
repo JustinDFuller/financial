@@ -19,26 +19,26 @@ type Account struct {
 	Balance                  decimal.Decimal
 	InterestRate             decimal.Decimal
 	AddInterestEveryNPeriods int64
-	contributeByMode         ContributeByMode
+	GetSign                  ContributeByMode
 	calculateInterest        InterestCalculator
 }
 
 func AsInvestmentAccount(a *Account) *Account {
 	a.calculateInterest = CompoundInterest
-	a.contributeByMode = investmentContributor
+	a.GetSign = positive
 	a.Type = "Investment"
 	return a
 }
 
 func AsDebtAccount(a *Account) *Account {
 	a.calculateInterest = SimpleInterest
-	a.contributeByMode = debtContributor
+	a.GetSign = negate
 	a.Type = "Debt"
 	return a
 }
 
 func (a *Account) Contribute(contribution decimal.Decimal, period int64) {
-	result := a.Balance.Add(a.contributeByMode(contribution)).RoundBank(2)
+	result := a.Balance.Add(a.GetSign(contribution)).RoundBank(2)
 
 	if result.LessThanOrEqual(zero) {
 		result = zero

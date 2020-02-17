@@ -11,7 +11,7 @@ proto:
 test: 
 	@goimports -w ./**/*.go;
 	@gofmt -s -w ./**/*.go;
-	@go test -race ./...;
+	@go test -race -cover ./...;
 
 run:
 	@go run -race ./cmd/server;

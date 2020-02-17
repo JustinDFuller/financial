@@ -24,10 +24,11 @@ func Calculate(req *CalculateRequest) Periods {
 				account.AddInterest(req.CurrentPeriod, req.PeriodsPerYear)
 			}
 
-			period.Accounts = append(period.Accounts, account)
+			period.Accounts = period.Accounts.Append(account)
 		}
 
-		periods = append(periods, &period)
+		period.CalculateGoals(req.Goals)
+		periods = periods.Append(&period)
 	}
 
 	req.Reset()

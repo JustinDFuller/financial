@@ -11,9 +11,12 @@ type (
 	Accounts []*Account
 
 	Goal struct {
-		Accounts []*Account
+		Name     string
+		Accounts Accounts
 		Balance  decimal.Decimal
 	}
+
+	Goals []*Goal
 
 	Contribution struct {
 		Account *Account
@@ -24,6 +27,7 @@ type (
 
 	CalculateRequest struct {
 		Contributions  Contributions
+		Goals          Goals
 		Periods        int64
 		PeriodsPerYear int64
 		CurrentPeriod  int64
@@ -31,6 +35,7 @@ type (
 
 	Period struct {
 		Accounts Accounts
+		Goals    Goals
 	}
 
 	Periods []*Period

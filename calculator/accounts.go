@@ -9,3 +9,7 @@ func (accounts Accounts) Find(account *Account) *Account {
 
 	return nil
 }
+
+func (accounts Accounts) Append(account *Account) Accounts {
+	return append(accounts, account)
+}

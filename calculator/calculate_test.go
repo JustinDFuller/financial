@@ -31,8 +31,17 @@ var (
 		Amount:  decimal.NewFromInt(200),
 	}
 
+	debtGoal = &Goal{
+		Name: "Debt Free",
+		Accounts: Accounts{
+			debtAccount,
+		},
+		Balance: zero,
+	}
+
 	calculateRequest = &CalculateRequest{
 		Contributions:  Contributions{debtContribution, investmentContrubition},
+		Goals:          Goals{debtGoal},
 		Periods:        24,
 		PeriodsPerYear: 24,
 	}
@@ -45,42 +54,42 @@ func TestInvestmentAccount(t *testing.T) {
 		t.Fatal("Not enough periods in result.", periods)
 	}
 
-	firstPeriodBalance := decimal.NewFromFloat(30500)
-	if !periods.AccountBalanceAt(investmentAccount, 1).Equal(firstPeriodBalance) {
-		t.Fatalf("Incorrect first period balance. Got %v: Expected: %v", periods.AccountBalanceAt(investmentAccount, 1), firstPeriodBalance)
+	expected := decimal.NewFromFloat(30500)
+	actual := periods.AccountBalanceAt(investmentAccount, 1)
+	if !actual.Equal(expected) {
+		t.Fatalf("Incorrect first period balance. Got %v: Expected: %v", actual, expected)
 	}
 
-	finalBalance := decimal.NewFromFloat(46514.36)
-	if !periods.AccountBalanceAt(investmentAccount, 24).Equal(finalBalance) {
-		t.Fatalf("Incorrect ending balance. Got: %v Expected: %v", periods.AccountBalanceAt(investmentAccount, 24), finalBalance)
+	expected = decimal.NewFromFloat(46514.36)
+	actual = periods.AccountBalanceAt(investmentAccount, 24)
+	if !actual.Equal(expected) {
+		t.Fatalf("Incorrect ending balance. Got: %v Expected: %v", actual, expected)
 	}
 
 	periodTwelve := periods.AccountBalanceAt(investmentAccount, 12)
 	periodThirteen := periods.AccountBalanceAt(investmentAccount, 13)
-
 	if periodThirteen.LessThan(periodTwelve) {
 		t.Fatal("Balance should not go down after interest is applied.", periodTwelve, periodThirteen)
 	}
-}
 
-func TestDebtAccount(t *testing.T) {
-	periods := Calculate(calculateRequest)
-
-	if periods == nil || len(periods) != 24 {
-		t.Fatal("Not enough periods in result.", periods)
+	expected = decimal.NewFromFloat(3800)
+	actual = periods.AccountBalanceAt(debtAccount, 1)
+	if !actual.Equal(expected) {
+		t.Fatalf("Incorrect first period balance. Got %v Expected %v", actual, expected)
 	}
 
-	firstPeriodBalance := decimal.NewFromFloat(3800)
-	if !periods.AccountBalanceAt(debtAccount, 1).Equal(firstPeriodBalance) {
-		t.Fatalf("Incorrect first period balance. Got %v Expected %v", periods.AccountBalanceAt(debtAccount, 1), firstPeriodBalance)
+	expected = decimal.NewFromFloat(115.1)
+	actual = periods.AccountBalanceAt(debtAccount, 22)
+	if !actual.Equal(expected) {
+		t.Fatalf("Incorrect ending balance. Got %v Expected %v", actual, expected)
 	}
 
-	finalPeriodBalance := decimal.NewFromFloat(115.1)
-	if !periods.AccountBalanceAt(debtAccount, 22).Equal(finalPeriodBalance) {
-		t.Fatalf("Incorrect ending balance. Got %v Expected %v", periods.At(22).Accounts.Find(debtAccount).Balance, finalPeriodBalance)
+	actual = periods.AccountBalanceAt(debtAccount, 24)
+	if !actual.Equal(zero) {
+		t.Fatal("Debt account cannot go below 0.", actual)
 	}
 
-	if !periods.AccountBalanceAt(debtAccount, 24).Equal(zero) {
-		t.Fatal("Debt account cannot go below 0.", periods.AccountBalanceAt(debtAccount, 24))
+	if goal := periods.GoalAt(debtGoal, 23); goal == nil {
+		t.Fatal("Expected Goal to be met in period 23. Got nil.")
 	}
 }
