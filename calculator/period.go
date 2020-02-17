@@ -4,6 +4,10 @@ import "github.com/shopspring/decimal"
 
 func (p *Period) CalculateGoals(goals Goals) {
 	for _, goal := range goals {
+		if goal.completed {
+			continue
+		}
+
 		var balance decimal.Decimal
 
 		for _, account := range goal.Accounts {
@@ -14,6 +18,7 @@ func (p *Period) CalculateGoals(goals Goals) {
 
 		if balance.Equal(goal.Balance) {
 			p.Goals = append(p.Goals, goal)
+			goal.completed = true
 		}
 	}
 }

@@ -92,4 +92,8 @@ func TestInvestmentAccount(t *testing.T) {
 	if goal := periods.GoalAt(debtGoal, 23); goal == nil {
 		t.Fatal("Expected Goal to be met in period 23. Got nil.")
 	}
+
+	if goal := periods.GoalAt(debtGoal, 24); goal != nil {
+		t.Fatal("Goal should not appear more than once. Found goal after period 23.")
+	}
 }

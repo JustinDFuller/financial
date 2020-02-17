@@ -11,9 +11,10 @@ type (
 	Accounts []*Account
 
 	Goal struct {
-		Name     string
-		Accounts Accounts
-		Balance  decimal.Decimal
+		Name      string
+		Accounts  Accounts
+		Balance   decimal.Decimal
+		completed bool
 	}
 
 	Goals []*Goal
