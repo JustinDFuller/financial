@@ -18,7 +18,7 @@ func Calculate(req *CalculateRequest) Periods {
 			}
 
 			account = account.MakeCopy()
-			account.Contribute(contribution.Amount, req.CurrentPeriod)
+			account.Contribute(contribution.Amount)
 
 			if account.IsInterestPeriod(req.CurrentPeriod) {
 				account.AddInterest(req.CurrentPeriod, req.PeriodsPerYear)

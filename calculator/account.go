@@ -29,7 +29,7 @@ func AsDebtAccount(a *Account) *Account {
 	return a
 }
 
-func (a *Account) Contribute(contribution decimal.Decimal, period int64) {
+func (a *Account) Contribute(contribution decimal.Decimal) {
 	result := a.Balance.Add(a.getSign(contribution)).RoundBank(2)
 
 	if result.LessThanOrEqual(zero) {
