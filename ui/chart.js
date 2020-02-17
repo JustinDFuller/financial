@@ -2,11 +2,16 @@
 
 const {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
 
+function shouldShowDot (dot) {
+  return dot.payload.Goals !== null
+}
+
 fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
 	.then(res => res.json())
 	.then(function (res) {
   	const data = res.map(function (period) {
       return {
+      	Goals: period.Goals,
         "Net Worth": period.Accounts.reduce(function (balance, account) {
           if (account.Type === "Debt") {
             balance -= account.Balance
@@ -20,8 +25,8 @@ fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
     /**
      * Limit to fifty, preserve start & end.
      */
-    .filter(function (val, index, arr) {
-      return index === 0 || (index % Math.round(arr.length / 50) === 0) || index === (arr.length - 1)
+    .filter(function (period, index, arr) {
+      return period.Goals || index === 0 || (index % Math.round(arr.length / 50) === 0) || index === (arr.length - 1)
     });
 
     const SimpleLineChart = React.createClass({
@@ -33,7 +38,7 @@ fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
            <YAxis />
            <Tooltip/>
            <Legend />
-           <Line type="monotone" dataKey="Net Worth" stroke="green" />
+           <Line type="step" dataKey="Net Worth" stroke="#82ca9d" dot={shouldShowDot} />
           </LineChart>
         );
       }
@@ -45,7 +50,3 @@ fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
     );
   })
   
-
-
-
-
