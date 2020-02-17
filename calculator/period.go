@@ -12,13 +12,13 @@ func (p *Period) CalculateGoals(goals Goals) {
 
 		for _, account := range goal.Accounts {
 			if found := p.Accounts.Find(account); found != nil {
-				balance = balance.Add(found.GetSign(found.Balance))
+				balance = balance.Add(found.getSign(found.Balance))
 			}
 		}
 
-		if balance.Equal(goal.Balance) {
-			p.Goals = append(p.Goals, goal)
+		if goal.IsMet(balance) {
 			goal.completed = true
+			p.Goals = append(p.Goals, goal)
 		}
 	}
 }

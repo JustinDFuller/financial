@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/shopspring/decimal"
@@ -39,10 +40,18 @@ var (
 		Balance: zero,
 	}
 
+	investmentGoal = &Goal{
+		Name: "House down-payment",
+		Accounts: Accounts{
+			investmentAccount,
+		},
+		Balance: decimal.NewFromInt(74000),
+	}
+
 	calculateRequest = &CalculateRequest{
 		Contributions:  Contributions{debtContribution, investmentContrubition},
-		Goals:          Goals{debtGoal},
-		Periods:        24,
+		Goals:          Goals{debtGoal, investmentGoal},
+		Periods:        72,
 		PeriodsPerYear: 24,
 	}
 )
@@ -50,8 +59,8 @@ var (
 func TestInvestmentAccount(t *testing.T) {
 	periods := Calculate(calculateRequest)
 
-	if periods == nil || len(periods) != 24 {
-		t.Fatal("Not enough periods in result.", periods)
+	if periods == nil || len(periods) != 72 {
+		t.Fatal("Not enough periods in result.", len(periods))
 	}
 
 	expected := decimal.NewFromFloat(30500)
@@ -95,5 +104,13 @@ func TestInvestmentAccount(t *testing.T) {
 
 	if goal := periods.GoalAt(debtGoal, 24); goal != nil {
 		t.Fatal("Goal should not appear more than once. Found goal after period 23.")
+	}
+
+	if goal := periods.GoalAt(investmentGoal, 60); goal == nil {
+		t.Fatal("Expected investment goal to be met in period 60. Got nil.")
+	}
+
+	if _, err := json.Marshal(periods); err != nil {
+		t.Fatal("Periods must be json serializable. Got err.", err)
 	}
 }
