@@ -1,9 +1,17 @@
-// https://jsfiddle.net/42c5hxvk/
+// https://jsfiddle.net/rqkvs0cw/2/
 
-const {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend} = Recharts;
+const {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Dot} = Recharts;
+
+function formatMoney (t) {
+	return `$${Math.round(t / 1000)}k`
+}
 
 function shouldShowDot (dot) {
-  return dot.payload.Goals !== null
+  if (dot.payload.Goals !== null) {
+  	return <Dot {...dot} r={dot.r * 2} />
+  }
+  
+  return null
 }
 
 fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
@@ -32,14 +40,19 @@ fetch('http://127.0.0.01:8080/svc/v1/user/calculate')
     const SimpleLineChart = React.createClass({
       render () {
         return (
-          <LineChart width={600} height={300} data={data}
+          <AreaChart width={600} height={300} data={data}
                 margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-           <XAxis dataKey="name" />
-           <YAxis />
-           <Tooltip/>
-           <Legend />
-           <Line type="step" dataKey="Net Worth" stroke="#82ca9d" dot={shouldShowDot} />
-          </LineChart>
+            <defs>
+              <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3}/>
+              </linearGradient>
+            </defs>
+           <YAxis axisLine={false} tickLine={false} tickFormatter={formatMoney} style={{ left: 10, top: 50, position: 'relative' }} />
+           <Tooltip formatter={formatMoney} />
+           <CartesianGrid vertical={false} />
+           <Area type="basis" dataKey="Net Worth" stroke="#82ca9d" fillOpacity={1} fill="url(#netWorthGradient)" dot={shouldShowDot} />
+          </AreaChart>
         );
       }
   })
