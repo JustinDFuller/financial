@@ -1,7 +1,10 @@
-body {
+body, html {
+  margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-html body div#container div.recharts-wrapper svg.recharts-surface g.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
+div.recharts-wrapper svg.recharts-surface g.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
   transform: translate(55px, 12px);
 }
+
