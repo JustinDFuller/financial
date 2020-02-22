@@ -10,6 +10,7 @@ import (
 )
 
 var id int64
+var users map[string]bool
 
 func decodeUser(ctx context.Context, req *http.Request) (interface{}, error) {
 	var user PostUserData
@@ -29,6 +30,16 @@ func decodeUser(ctx context.Context, req *http.Request) (interface{}, error) {
 
 func (s *service) postUser(ctx context.Context, request interface{}) (response interface{}, err error) {
 	req := request.(*PostUserRequest)
+
+	if users == nil {
+		users = map[string]bool{}
+	}
+
+	if _, ok := users[req.Data.Email]; ok {
+		return kit.NewProtoStatusResponse(&Error{Message: ""}, http.StatusBadRequest), nil
+	}
+
+	users[req.Data.Email] = true
 	id += 1
 	return kit.NewProtoStatusResponse(&PostUserResponse{
 		Id:    id,

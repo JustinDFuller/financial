@@ -73,4 +73,13 @@ func TestService(t *testing.T) {
 	if user.Id == user2.Id {
 		t.Fatal("Two users created with the same ID.", user.Id)
 	}
+
+	var responseErr Error
+	res, err = makeRequest(server, endpointUser, http.MethodPost, request, &responseErr)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.StatusCode != http.StatusBadRequest {
+		t.Fatalf("Expected Status %d Got %d", http.StatusBadRequest, res.StatusCode)
+	}
 }
