@@ -2,7 +2,7 @@ swagger: "2.0"
 x-global-options:
   go_package: service
 info:
-  description: "Shows the trajectory of accounts in relation to goals."
+  description: "Shows the trajectory of accounts in relation to goal."
   version: "0.0.0"
   title: "Financial Planning Calculator"
 host: "localhost:3000"
@@ -14,6 +14,20 @@ paths:
   /user:
     post:
       description: Create a new user.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/PostUserData'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/PostUserResponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
   /user/calculate:
     get:
       description: Calculate for the current user.
@@ -23,6 +37,19 @@ paths:
           schema:
             $ref: "#/definitions/CalculateResponse"
 definitions:
+  PostUserData:
+    type: object
+    properties:
+      Email:
+        type: string
+  PostUserResponse:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+      Email:
+        type: string
   CalculateResponse:
     type: object
     properties:
@@ -62,3 +89,8 @@ definitions:
         type: number
         format: int64
         description: "Not all accounts accrue interest at the same rate. Some may accrue interest once per year, once per month, etc. Since we use periods we need to know how many periods before interest is calculated. So, on a bi-weekly paycheck you might choose to view interest every 2 periods."
+  Error:
+    type: object
+    properties:
+      Message:
+        type: string 

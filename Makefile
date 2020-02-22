@@ -6,7 +6,6 @@ proto:
 	@rm -f service/service.proto service/service.pb service/service.pb.go;
 	@openapi2proto -spec service/service.yaml -out service/service.proto;
 	@protoc --go_out=plugins=grpc:. service/service.proto;
-	@protoc --include_imports --include_source_info service/service.proto --descriptor_set_out service/service.pb;
 
 test: 
 	@goimports -w ./**/*.go;

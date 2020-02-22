@@ -9,6 +9,7 @@ require (
 	github.com/NYTimes/openapi2proto v0.2.2 // indirect
 	github.com/dolmen-go/jsonptr v0.0.0-20190605225012-a9a7ae01cd7d // indirect
 	github.com/go-kit/kit v0.9.0
+	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.3.2
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shopspring/decimal v0.0.0-20200105231215-408a2507e114

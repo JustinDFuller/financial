@@ -30,11 +30,31 @@ message CalculateResponse {
     Period Periods = 1;
 }
 
+message Error {
+    string Message = 1;
+}
+
 message Period {
     Account Accounts = 1;
+}
+
+message PostUserData {
+    string Email = 1;
+}
+
+message PostUserRequest {
+    PostUserData data = 1;
+}
+
+message PostUserResponse {
+    string Email = 1;
+    int64 Id = 2;
 }
 
 service FinancialPlanningCalculatorService {
     // Calculate for the current user.
     rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}
+
+    // Create a new user.
+    rpc PostUser(PostUserRequest) returns (PostUserResponse) {}
 }

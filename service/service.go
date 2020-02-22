@@ -3,9 +3,7 @@ package service
 import (
 	"net/http"
 
-	"github.com/NYTimes/gizmo/server"
 	"github.com/NYTimes/gizmo/server/kit"
-	"github.com/NYTimes/gziphandler"
 	"github.com/go-kit/kit/endpoint"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"google.golang.org/grpc"
@@ -28,6 +26,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 			http.MethodPost: {
 				Decoder:  decodeUser,
 				Endpoint: s.postUser,
+				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
 		endpointCalculate: {
@@ -43,7 +42,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 // In this implementation, we're using a GzipHandler middleware to
 // compress our responses.
 func (s service) HTTPMiddleware(h http.Handler) http.Handler {
-	return gziphandler.GzipHandler(server.CORSHandler(h, ""))
+	return h
 }
 
 func (s service) HTTPRouterOptions() []kit.RouterOption {
