@@ -11,6 +11,11 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	endpointUser      = "/svc/v1/user"
+	endpointCalculate = "/svc/v1/user/calculate"
+)
+
 func New() kit.Service {
 	return &service{}
 }
@@ -19,8 +24,14 @@ type service struct{}
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 	return map[string]map[string]kit.HTTPEndpoint{
-		"/svc/v1/user/calculate": {
-			"GET": {
+		endpointUser: {
+			http.MethodPost: {
+				Decoder:  decodeUser,
+				Endpoint: s.postUser,
+			},
+		},
+		endpointCalculate: {
+			http.MethodGet: {
 				Decoder:  decodeUserCalculate,
 				Endpoint: s.getUserCalculate,
 			},

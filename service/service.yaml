@@ -11,6 +11,9 @@ schemes:
 - "https"
 - "http"
 paths:
+  /user:
+    post:
+      description: Create a new user.
   /user/calculate:
     get:
       description: Calculate for the current user.
