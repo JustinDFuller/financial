@@ -61,11 +61,12 @@ func TestService(t *testing.T) {
 	}
 
 	var user2 UserResponse
-	res, err = makeRequest(server, endpointUser, http.MethodPost, &PostUserRequest{
+	request2 := &PostUserRequest{
 		Data: &PostUserData{
 			Email: "service_test2@example.com",
 		},
-	}, &user2)
+	}
+	res, err = makeRequest(server, endpointUser, http.MethodPost, request2, &user2)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,11 +87,12 @@ func TestService(t *testing.T) {
 	}
 
 	var user3 UserResponse
-	res, err = makeRequest(server, endpointUser, http.MethodGet, &GetUserRequest{
+	getRequest := &GetUserRequest{
 		Data: &GetUserData{
 			Email: user.Email,
 		},
-	}, &user3)
+	}
+	res, err = makeRequest(server, endpointUser, http.MethodGet, getRequest, &user3)
 	if err != nil {
 		t.Fatal(err)
 	}
