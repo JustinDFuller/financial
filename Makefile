@@ -3,9 +3,9 @@
 export GIZMO_SKIP_OBSERVE=true;
 
 proto:
-	@rm -f service/service.proto service/service.pb service/service.pb.go;
-	@openapi2proto -spec service/service.yaml -out service/service.proto;
-	@protoc --go_out=plugins=grpc:. service/service.proto;
+	@rm -f ./service.proto ./service.pb ./service.pb.go;
+	@openapi2proto -spec service.yaml -out ./service.proto;
+	@protoc --go_out=plugins=grpc:. ./service.proto;
 
 test: 
 	@goimports -w ./**/*.go;

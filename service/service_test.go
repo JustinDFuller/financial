@@ -9,6 +9,7 @@ import (
 
 	"github.com/NYTimes/gizmo/server/kit"
 	"github.com/golang/protobuf/proto"
+	"github.com/justindfuller/financial"
 )
 
 func makeRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message) (*http.Response, error) {
@@ -40,9 +41,9 @@ func makeRequest(server *kit.Server, endpoint, httpMethod string, request, respo
 func TestService(t *testing.T) {
 	server := kit.NewServer(New())
 
-	var user UserResponse
-	request := &PostUserRequest{
-		Data: &PostUserData{
+	var user financial.UserResponse
+	request := &financial.PostUserRequest{
+		Data: &financial.PostUserData{
 			Email: "service_test@example.com",
 		},
 	}
@@ -60,9 +61,9 @@ func TestService(t *testing.T) {
 		t.Fatal("It should return the email that was given.", request.Data.Email, user.Email)
 	}
 
-	var user2 UserResponse
-	request2 := &PostUserRequest{
-		Data: &PostUserData{
+	var user2 financial.UserResponse
+	request2 := &financial.PostUserRequest{
+		Data: &financial.PostUserData{
 			Email: "service_test2@example.com",
 		},
 	}
@@ -77,7 +78,7 @@ func TestService(t *testing.T) {
 		t.Fatal("It should not create two users with the same Id.", user.Id)
 	}
 
-	var responseErr Error
+	var responseErr financial.Error
 	res, err = makeRequest(server, endpointUser, http.MethodPost, request, &responseErr)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
@@ -89,9 +90,9 @@ func TestService(t *testing.T) {
 		t.Fatal("It should return a missing email message.", messageMissingEmail)
 	}
 
-	var user3 UserResponse
-	getRequest := &GetUserRequest{
-		Data: &GetUserData{
+	var user3 financial.UserResponse
+	getRequest := &financial.GetUserRequest{
+		Data: &financial.GetUserData{
 			Email: user.Email,
 		},
 	}
@@ -103,8 +104,8 @@ func TestService(t *testing.T) {
 		t.Fatal("It should return the same user that was created.", user3, user)
 	}
 
-	getRequestNotFound := &GetUserRequest{
-		Data: &GetUserData{
+	getRequestNotFound := &financial.GetUserRequest{
+		Data: &financial.GetUserData{
 			Email: "not even a real email",
 		},
 	}

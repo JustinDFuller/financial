@@ -4,7 +4,7 @@ package financialplanningcalculator;
 
 import "google/protobuf/empty.proto";
 
-option go_package = "service";
+option go_package = "financial";
 
 message Account {
     enum AccountMode {

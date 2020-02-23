@@ -7,36 +7,37 @@ import (
 
 	"github.com/NYTimes/gizmo/server/kit"
 	"github.com/gogo/protobuf/proto"
+	"github.com/justindfuller/financial"
 )
 
 const messageNotFound = "Not found"
 
 func decodeGetUser(ctx context.Context, req *http.Request) (interface{}, error) {
-	var request GetUserRequest
+	var request financial.GetUserRequest
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
-		return nil, kit.NewProtoStatusResponse(&Error{Message: err.Error()}, http.StatusBadRequest)
+		return nil, kit.NewProtoStatusResponse(&financial.Error{Message: err.Error()}, http.StatusBadRequest)
 	}
 
 	err = proto.Unmarshal(body, &request)
 	if err != nil {
-		return nil, kit.NewProtoStatusResponse(&Error{Message: err.Error()}, http.StatusBadRequest)
+		return nil, kit.NewProtoStatusResponse(&financial.Error{Message: err.Error()}, http.StatusBadRequest)
 	}
 
 	return &request, nil
 }
 
 func (s *service) getUser(ctx context.Context, request interface{}) (response interface{}, err error) {
-	req := request.(*GetUserRequest)
+	req := request.(*financial.GetUserRequest)
 
 	if users == nil {
-		users = map[string]*UserResponse{}
+		users = map[string]*financial.UserResponse{}
 	}
 
 	if user, ok := users[req.Data.Email]; ok {
-		return kit.NewProtoStatusResponse(&UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
+		return kit.NewProtoStatusResponse(&financial.UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
 	}
 
-	return kit.NewProtoStatusResponse(&Error{Message: messageNotFound}, http.StatusNotFound), nil
+	return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 }
