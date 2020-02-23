@@ -9,6 +9,8 @@ import (
 	"github.com/gogo/protobuf/proto"
 )
 
+const messageNotFound = "Not found"
+
 func decodeGetUser(ctx context.Context, req *http.Request) (interface{}, error) {
 	var request GetUserRequest
 
@@ -36,5 +38,5 @@ func (s *service) getUser(ctx context.Context, request interface{}) (response in
 		return kit.NewProtoStatusResponse(&UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
 	}
 
-	return nil, nil
+	return kit.NewProtoStatusResponse(&Error{Message: messageNotFound}, http.StatusNotFound), nil
 }

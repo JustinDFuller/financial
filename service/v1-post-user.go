@@ -9,6 +9,8 @@ import (
 	"github.com/gogo/protobuf/proto"
 )
 
+const messageMissingEmail = "Missing Email"
+
 var id int64
 var users map[string]*UserResponse
 
@@ -36,7 +38,7 @@ func (s *service) postUser(ctx context.Context, request interface{}) (response i
 	}
 
 	if _, ok := users[req.Data.Email]; ok {
-		return kit.NewProtoStatusResponse(&Error{Message: ""}, http.StatusBadRequest), nil
+		return kit.NewProtoStatusResponse(&Error{Message: messageMissingEmail}, http.StatusBadRequest), nil
 	}
 
 	id += 1
