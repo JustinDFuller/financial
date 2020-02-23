@@ -48,16 +48,16 @@ func TestService(t *testing.T) {
 	}
 	res, err := makeRequest(server, endpointUser, http.MethodPost, request, &user)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("It should not return an error on POST /user.", err)
 	}
 	if res.StatusCode != http.StatusCreated {
-		t.Fatalf("Expected Status %d Got %d", http.StatusCreated, res.StatusCode)
+		t.Fatal("It should return Status 201.", res.StatusCode)
 	}
 	if user.Id == 0 {
-		t.Fatal("Expected a user ID but got zero.")
+		t.Fatal("It should return a non-zero Id.", user.Id)
 	}
 	if user.Email != request.Data.Email {
-		t.Fatal("Got unexpected email.", user.Email)
+		t.Fatal("It should return the email that was given.", request.Data.Email, user.Email)
 	}
 
 	var user2 UserResponse
@@ -70,10 +70,10 @@ func TestService(t *testing.T) {
 		t.Fatal(err)
 	}
 	if res.StatusCode != http.StatusCreated {
-		t.Fatalf("Expected Status %d Got %d", http.StatusCreated, res.StatusCode)
+		t.Fatal("It should return Status 201.", res.StatusCode)
 	}
 	if user.Id == user2.Id {
-		t.Fatal("Two users created with the same ID.", user.Id)
+		t.Fatal("It should not create two users with the same Id.", user.Id)
 	}
 
 	var responseErr Error
@@ -82,7 +82,7 @@ func TestService(t *testing.T) {
 		t.Fatal(err)
 	}
 	if res.StatusCode != http.StatusBadRequest {
-		t.Fatalf("Expected Status %d Got %d", http.StatusBadRequest, res.StatusCode)
+		t.Fatal("It should return status 400.", res.StatusCode)
 	}
 
 	var user3 UserResponse
@@ -95,6 +95,6 @@ func TestService(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !proto.Equal(&user3, &user) {
-		t.Fatal("Expected user3 and user to be the same.")
+		t.Fatal("It should return the same user that was created.", user3, user)
 	}
 }
