@@ -68,7 +68,7 @@ func TestService(t *testing.T) {
 	}
 	res, err = makeRequest(server, endpointUser, http.MethodPost, request2, &user2)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("It should not return an error on POST /user.", err)
 	}
 	if res.StatusCode != http.StatusCreated {
 		t.Fatal("It should return Status 201.", res.StatusCode)
@@ -80,7 +80,7 @@ func TestService(t *testing.T) {
 	var responseErr Error
 	res, err = makeRequest(server, endpointUser, http.MethodPost, request, &responseErr)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("It should not return an error on POST /user.", err)
 	}
 	if res.StatusCode != http.StatusBadRequest {
 		t.Fatal("It should return status 400.", res.StatusCode)
@@ -97,7 +97,7 @@ func TestService(t *testing.T) {
 	}
 	res, err = makeRequest(server, endpointUser, http.MethodGet, getRequest, &user3)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("It should not return an error on GET /user.", err)
 	}
 	if !proto.Equal(&user3, &user) {
 		t.Fatal("It should return the same user that was created.", user3, user)
@@ -110,7 +110,7 @@ func TestService(t *testing.T) {
 	}
 	res, err = makeRequest(server, endpointUser, http.MethodGet, getRequestNotFound, &responseErr)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatal("It should not return an error on GET /user.", err)
 	}
 	if res.StatusCode != http.StatusNotFound {
 		t.Fatal("It should return an http status 404.", res.StatusCode)
