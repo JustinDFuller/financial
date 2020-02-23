@@ -4,7 +4,7 @@ import (
 	context "context"
 	"net/http"
 
-	"github.com/justindfuller/financial/calculator"
+	"github.com/justindfuller/financial/internal/calculator"
 	"github.com/shopspring/decimal"
 )
 
