@@ -8,9 +8,10 @@ proto:
 	@protoc --go_out=plugins=grpc:. ./service.proto;
 
 test: 
-	@goimports -w ./internal/**/*.go ./cmd/**/*.go;
-	@gofmt -s -w ./internal/**/*.go ./cmd/**/*.go;
-	@go test -race -cover ./...;
+	@goimports -w ./**/**/*.go;
+	@gofmt -s -w ./**/**/*.go;
+	@go vet ./...;
+	@go test -race -cover -vet=off ./...;
 
 run:
 	@go run -race ./cmd/server;
