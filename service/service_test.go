@@ -40,9 +40,11 @@ func makeRequest(server *kit.Server, endpoint, httpMethod string, request, respo
 func TestService(t *testing.T) {
 	server := kit.NewServer(New())
 
-	var user PostUserResponse
-	request := &PostUserData{
-		Email: "service_test@example.com",
+	var user UserResponse
+	request := &PostUserRequest{
+		Data: &PostUserData{
+			Email: "service_test@example.com",
+		},
 	}
 	res, err := makeRequest(server, endpointUser, http.MethodPost, request, &user)
 	if err != nil {
@@ -54,11 +56,11 @@ func TestService(t *testing.T) {
 	if user.Id == 0 {
 		t.Fatal("Expected a user ID but got zero.")
 	}
-	if user.Email != request.Email {
+	if user.Email != request.Data.Email {
 		t.Fatal("Got unexpected email.", user.Email)
 	}
 
-	var user2 PostUserResponse
+	var user2 UserResponse
 	res, err = makeRequest(server, endpointUser, http.MethodPost, &PostUserRequest{
 		Data: &PostUserData{
 			Email: "service_test2@example.com",
@@ -81,5 +83,18 @@ func TestService(t *testing.T) {
 	}
 	if res.StatusCode != http.StatusBadRequest {
 		t.Fatalf("Expected Status %d Got %d", http.StatusBadRequest, res.StatusCode)
+	}
+
+	var user3 UserResponse
+	res, err = makeRequest(server, endpointUser, http.MethodGet, &GetUserRequest{
+		Data: &GetUserData{
+			Email: user.Email,
+		},
+	}, &user3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !proto.Equal(&user3, &user) {
+		t.Fatal("Expected user3 and user to be the same.")
 	}
 }

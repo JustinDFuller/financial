@@ -10,39 +10,39 @@ import (
 )
 
 var id int64
-var users map[string]bool
+var users map[string]*UserResponse
 
-func decodeUser(ctx context.Context, req *http.Request) (interface{}, error) {
-	var user PostUserData
+func decodePostUser(ctx context.Context, req *http.Request) (interface{}, error) {
+	var request PostUserRequest
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		return nil, kit.NewProtoStatusResponse(&Error{Message: err.Error()}, http.StatusBadRequest)
 	}
 
-	err = proto.Unmarshal(body, &user)
+	err = proto.Unmarshal(body, &request)
 	if err != nil {
 		return nil, kit.NewProtoStatusResponse(&Error{Message: err.Error()}, http.StatusBadRequest)
 	}
 
-	return &PostUserRequest{Data: &user}, nil
+	return &request, nil
 }
 
 func (s *service) postUser(ctx context.Context, request interface{}) (response interface{}, err error) {
 	req := request.(*PostUserRequest)
 
 	if users == nil {
-		users = map[string]bool{}
+		users = map[string]*UserResponse{}
 	}
 
 	if _, ok := users[req.Data.Email]; ok {
 		return kit.NewProtoStatusResponse(&Error{Message: ""}, http.StatusBadRequest), nil
 	}
 
-	users[req.Data.Email] = true
 	id += 1
-	return kit.NewProtoStatusResponse(&PostUserResponse{
+	users[req.Data.Email] = &UserResponse{
 		Id:    id,
 		Email: req.Data.Email,
-	}, http.StatusCreated), nil
+	}
+	return kit.NewProtoStatusResponse(users[req.Data.Email], http.StatusCreated), nil
 }

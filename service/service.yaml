@@ -23,9 +23,29 @@ paths:
         201:
           description: Created
           schema:
-            $ref: '#/definitions/PostUserResponse'
+            $ref: '#/definitions/UserResponse'
         400:
           description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      description: Get a new user.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/GetUserData'
+      responses:
+        200:
+          description: Found user
+          schema:
+            $ref: '#/definitions/UserResponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
           schema:
             $ref: '#/definitions/Error'
   /user/calculate:
@@ -42,7 +62,12 @@ definitions:
     properties:
       Email:
         type: string
-  PostUserResponse:
+  GetUserData:
+    type: object
+    properties:
+      Email:
+        type: string
+  UserResponse:
     type: object
     properties:
       Id:

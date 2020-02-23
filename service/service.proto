@@ -34,6 +34,14 @@ message Error {
     string Message = 1;
 }
 
+message GetUserData {
+    string Email = 1;
+}
+
+message GetUserRequest {
+    GetUserData data = 1;
+}
+
 message Period {
     Account Accounts = 1;
 }
@@ -46,15 +54,18 @@ message PostUserRequest {
     PostUserData data = 1;
 }
 
-message PostUserResponse {
+message UserResponse {
     string Email = 1;
     int64 Id = 2;
 }
 
 service FinancialPlanningCalculatorService {
+    // Get a new user.
+    rpc GetUser(GetUserRequest) returns (UserResponse) {}
+
     // Calculate for the current user.
     rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}
 
     // Create a new user.
-    rpc PostUser(PostUserRequest) returns (PostUserResponse) {}
+    rpc PostUser(PostUserRequest) returns (UserResponse) {}
 }

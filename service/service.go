@@ -24,8 +24,13 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 	return map[string]map[string]kit.HTTPEndpoint{
 		endpointUser: {
 			http.MethodPost: {
-				Decoder:  decodeUser,
+				Decoder:  decodePostUser,
 				Endpoint: s.postUser,
+				Encoder:  kit.EncodeProtoResponse,
+			},
+			http.MethodGet: {
+				Decoder:  decodeGetUser,
+				Endpoint: s.getUser,
 				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
