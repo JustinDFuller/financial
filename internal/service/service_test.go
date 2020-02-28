@@ -86,8 +86,34 @@ func TestService(t *testing.T) {
 	if res.StatusCode != http.StatusBadRequest {
 		t.Fatal("It should return status 400.", res.StatusCode)
 	}
+	if responseErr.Message == "" || responseErr.Message != messageAlreadyExists {
+		t.Fatal("It should return an already exists message.", responseErr.Message)
+	}
+
+	missingEmailRequest := &financial.PostUserRequest{}
+	res, err = makeRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
+	if err != nil {
+		t.Fatal("It should not return an error on POST /user.", err)
+	}
+	if res.StatusCode != http.StatusBadRequest {
+		t.Fatal("It should return status 400.", res.StatusCode)
+	}
 	if responseErr.Message == "" || responseErr.Message != messageMissingEmail {
-		t.Fatal("It should return a missing email message.", messageMissingEmail)
+		t.Fatal("It should return a missing email message.", responseErr.Message)
+	}
+
+	missingEmailRequest = &financial.PostUserRequest{
+		Data: &financial.PostUserData{},
+	}
+	res, err = makeRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
+	if err != nil {
+		t.Fatal("It should not return an error on POST /user.", err)
+	}
+	if res.StatusCode != http.StatusBadRequest {
+		t.Fatal("It should return status 400.", res.StatusCode)
+	}
+	if responseErr.Message == "" || responseErr.Message != messageMissingEmail {
+		t.Fatal("It should return a missing email message.", responseErr.Message)
 	}
 
 	var user3 financial.UserResponse

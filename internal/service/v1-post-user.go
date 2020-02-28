@@ -11,6 +11,7 @@ import (
 )
 
 const messageMissingEmail = "Missing Email"
+const messageAlreadyExists = "Already Exists"
 
 var id int64
 var users map[string]*financial.UserResponse
@@ -34,12 +35,16 @@ func decodePostUser(ctx context.Context, req *http.Request) (interface{}, error)
 func (s *service) postUser(ctx context.Context, request interface{}) (response interface{}, err error) {
 	req := request.(*financial.PostUserRequest)
 
+	if req.Data == nil || req.Data.Email == "" {
+		return kit.NewProtoStatusResponse(&financial.Error{Message: messageMissingEmail}, http.StatusBadRequest), nil
+	}
+
 	if users == nil {
 		users = map[string]*financial.UserResponse{}
 	}
 
 	if _, ok := users[req.Data.Email]; ok {
-		return kit.NewProtoStatusResponse(&financial.Error{Message: messageMissingEmail}, http.StatusBadRequest), nil
+		return kit.NewProtoStatusResponse(&financial.Error{Message: messageAlreadyExists}, http.StatusBadRequest), nil
 	}
 
 	id += 1
