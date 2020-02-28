@@ -30,22 +30,12 @@ func (s *service) getAccounts(ctx context.Context, req interface{}) (interface{}
 	r := req.(*financial.GetAccountsRequest)
 
 	if accounts, ok := accountsByUserId[r.Data.UserId]; ok {
-		res := &financial.GetAccountsResponse{
-			Accounts: []*financial.Account{},
-		}
-
-		for _, account := range accounts {
-			res.Accounts = append(res.Accounts, &financial.Account{
-				Balance: account.Balance,
-				Mode:    account.Mode,
-				Name:    account.Name,
-				UserId:  account.UserId,
-				Id:      account.Id,
-			})
-		}
-
-		return kit.NewProtoStatusResponse(res, http.StatusOK), nil
+		return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{
+			Accounts: accounts,
+		}, http.StatusOK), nil
 	}
 
+	// TODO.
+	// return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{}, http.StatusNotFound), nil
 	return nil, nil
 }

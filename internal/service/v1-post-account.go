@@ -31,7 +31,7 @@ var accountsByUserId = map[int64][]*financial.Account{}
 
 func (s *service) postAccount(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.PostAccountRequest)
-	accountId += 1
+	accountId++
 	r.Data.Id = accountId
 
 	if accounts, ok := accountsByUserId[r.Data.UserId]; !ok {
