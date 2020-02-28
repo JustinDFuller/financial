@@ -56,6 +56,32 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/CalculateResponse"
+  /account:
+    post:
+      description: Create an account.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/PostAccountData'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/PostAccountResponse'
+  /accounts:
+    get:
+      description: Get accounts
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/GetAccountsData'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/GetAccountsResponse'
 definitions:
   PostUserData:
     type: object
@@ -75,6 +101,58 @@ definitions:
         format: int64
       Email:
         type: string
+  PostAccountData:
+    type: object
+    properties:
+      Name:
+        type: string
+      UserId:
+        type: integer
+        format: int64
+      Balance:
+        type: number
+        format: double
+      Mode:
+        $ref: '#/definitions/Mode'
+  PostAccountResponse:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+  GetAccountsData:
+    type: object
+    properties:
+      UserId:
+        type: integer
+        format: int64
+  GetAccountsResponse:
+    type: object
+    properties:
+      Accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            Id:
+              type: integer
+              format: int64
+            Name:
+              type: string
+            UserId:
+              type: integer
+              format: int64
+            Balance:
+              type: number
+              format: double
+            Mode:
+              $ref: '#/definitions/Mode'
+  Mode:
+    type: string
+    description: "The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated."
+    enum:
+      - INVESTMENTS
+      - DEBT
   CalculateResponse:
     type: object
     properties:
@@ -99,9 +177,7 @@ definitions:
       Name:
         type: string
       Mode:
-        type: string
-        enum: ["debt", "investment"]
-        description: "The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated."
+        $ref: '#/definitions/Mode'
       Balance:
         type: number
         format: double

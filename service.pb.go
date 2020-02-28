@@ -25,29 +25,29 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Account_AccountMode int32
+type Mode int32
 
 const (
-	Account_ACCOUNT_MODE_DEBT       Account_AccountMode = 0
-	Account_ACCOUNT_MODE_INVESTMENT Account_AccountMode = 1
+	Mode_INVESTMENTS Mode = 0
+	Mode_DEBT        Mode = 1
 )
 
-var Account_AccountMode_name = map[int32]string{
-	0: "ACCOUNT_MODE_DEBT",
-	1: "ACCOUNT_MODE_INVESTMENT",
+var Mode_name = map[int32]string{
+	0: "INVESTMENTS",
+	1: "DEBT",
 }
 
-var Account_AccountMode_value = map[string]int32{
-	"ACCOUNT_MODE_DEBT":       0,
-	"ACCOUNT_MODE_INVESTMENT": 1,
+var Mode_value = map[string]int32{
+	"INVESTMENTS": 0,
+	"DEBT":        1,
 }
 
-func (x Account_AccountMode) String() string {
-	return proto.EnumName(Account_AccountMode_name, int32(x))
+func (x Mode) String() string {
+	return proto.EnumName(Mode_name, int32(x))
 }
 
-func (Account_AccountMode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{0, 0}
+func (Mode) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{0}
 }
 
 type Account struct {
@@ -56,13 +56,12 @@ type Account struct {
 	// The Balance of the account. 45.05
 	Balance float64 `protobuf:"fixed64,2,opt,name=Balance,proto3" json:"Balance,omitempty"`
 	// The interest rate of hte account. %5.5 is 0.055.
-	InterestRate float64 `protobuf:"fixed64,3,opt,name=InterestRate,proto3" json:"InterestRate,omitempty"`
-	// The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated.
-	Mode                 Account_AccountMode `protobuf:"varint,4,opt,name=Mode,proto3,enum=financialplanningcalculator.Account_AccountMode" json:"Mode,omitempty"`
-	Name                 string              `protobuf:"bytes,5,opt,name=Name,proto3" json:"Name,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
-	XXX_unrecognized     []byte              `json:"-"`
-	XXX_sizecache        int32               `json:"-"`
+	InterestRate         float64  `protobuf:"fixed64,3,opt,name=InterestRate,proto3" json:"InterestRate,omitempty"`
+	Mode                 Mode     `protobuf:"varint,4,opt,name=Mode,proto3,enum=financialplanningcalculator.Mode" json:"Mode,omitempty"`
+	Name                 string   `protobuf:"bytes,5,opt,name=Name,proto3" json:"Name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *Account) Reset()         { *m = Account{} }
@@ -111,11 +110,11 @@ func (m *Account) GetInterestRate() float64 {
 	return 0
 }
 
-func (m *Account) GetMode() Account_AccountMode {
+func (m *Account) GetMode() Mode {
 	if m != nil {
 		return m.Mode
 	}
-	return Account_ACCOUNT_MODE_DEBT
+	return Mode_INVESTMENTS
 }
 
 func (m *Account) GetName() string {
@@ -203,6 +202,194 @@ func (m *Error) GetMessage() string {
 	return ""
 }
 
+type GetAccountsData struct {
+	UserId               int64    `protobuf:"varint,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAccountsData) Reset()         { *m = GetAccountsData{} }
+func (m *GetAccountsData) String() string { return proto.CompactTextString(m) }
+func (*GetAccountsData) ProtoMessage()    {}
+func (*GetAccountsData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{3}
+}
+
+func (m *GetAccountsData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAccountsData.Unmarshal(m, b)
+}
+func (m *GetAccountsData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAccountsData.Marshal(b, m, deterministic)
+}
+func (m *GetAccountsData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAccountsData.Merge(m, src)
+}
+func (m *GetAccountsData) XXX_Size() int {
+	return xxx_messageInfo_GetAccountsData.Size(m)
+}
+func (m *GetAccountsData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAccountsData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAccountsData proto.InternalMessageInfo
+
+func (m *GetAccountsData) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+type GetAccountsRequest struct {
+	Data                 *GetAccountsData `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetAccountsRequest) Reset()         { *m = GetAccountsRequest{} }
+func (m *GetAccountsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetAccountsRequest) ProtoMessage()    {}
+func (*GetAccountsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{4}
+}
+
+func (m *GetAccountsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAccountsRequest.Unmarshal(m, b)
+}
+func (m *GetAccountsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAccountsRequest.Marshal(b, m, deterministic)
+}
+func (m *GetAccountsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAccountsRequest.Merge(m, src)
+}
+func (m *GetAccountsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetAccountsRequest.Size(m)
+}
+func (m *GetAccountsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAccountsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAccountsRequest proto.InternalMessageInfo
+
+func (m *GetAccountsRequest) GetData() *GetAccountsData {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type GetAccountsResponse struct {
+	Accounts             []*GetAccountsResponse_AccountsMessage `protobuf:"bytes,1,rep,name=Accounts,proto3" json:"Accounts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
+	XXX_unrecognized     []byte                                 `json:"-"`
+	XXX_sizecache        int32                                  `json:"-"`
+}
+
+func (m *GetAccountsResponse) Reset()         { *m = GetAccountsResponse{} }
+func (m *GetAccountsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetAccountsResponse) ProtoMessage()    {}
+func (*GetAccountsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{5}
+}
+
+func (m *GetAccountsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAccountsResponse.Unmarshal(m, b)
+}
+func (m *GetAccountsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAccountsResponse.Marshal(b, m, deterministic)
+}
+func (m *GetAccountsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAccountsResponse.Merge(m, src)
+}
+func (m *GetAccountsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetAccountsResponse.Size(m)
+}
+func (m *GetAccountsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAccountsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAccountsResponse proto.InternalMessageInfo
+
+func (m *GetAccountsResponse) GetAccounts() []*GetAccountsResponse_AccountsMessage {
+	if m != nil {
+		return m.Accounts
+	}
+	return nil
+}
+
+type GetAccountsResponse_AccountsMessage struct {
+	Balance              float64  `protobuf:"fixed64,1,opt,name=Balance,proto3" json:"Balance,omitempty"`
+	Id                   int64    `protobuf:"varint,2,opt,name=Id,proto3" json:"Id,omitempty"`
+	Mode                 Mode     `protobuf:"varint,3,opt,name=Mode,proto3,enum=financialplanningcalculator.Mode" json:"Mode,omitempty"`
+	Name                 string   `protobuf:"bytes,4,opt,name=Name,proto3" json:"Name,omitempty"`
+	UserId               int64    `protobuf:"varint,5,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAccountsResponse_AccountsMessage) Reset()         { *m = GetAccountsResponse_AccountsMessage{} }
+func (m *GetAccountsResponse_AccountsMessage) String() string { return proto.CompactTextString(m) }
+func (*GetAccountsResponse_AccountsMessage) ProtoMessage()    {}
+func (*GetAccountsResponse_AccountsMessage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{5, 0}
+}
+
+func (m *GetAccountsResponse_AccountsMessage) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAccountsResponse_AccountsMessage.Unmarshal(m, b)
+}
+func (m *GetAccountsResponse_AccountsMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAccountsResponse_AccountsMessage.Marshal(b, m, deterministic)
+}
+func (m *GetAccountsResponse_AccountsMessage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAccountsResponse_AccountsMessage.Merge(m, src)
+}
+func (m *GetAccountsResponse_AccountsMessage) XXX_Size() int {
+	return xxx_messageInfo_GetAccountsResponse_AccountsMessage.Size(m)
+}
+func (m *GetAccountsResponse_AccountsMessage) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAccountsResponse_AccountsMessage.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAccountsResponse_AccountsMessage proto.InternalMessageInfo
+
+func (m *GetAccountsResponse_AccountsMessage) GetBalance() float64 {
+	if m != nil {
+		return m.Balance
+	}
+	return 0
+}
+
+func (m *GetAccountsResponse_AccountsMessage) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *GetAccountsResponse_AccountsMessage) GetMode() Mode {
+	if m != nil {
+		return m.Mode
+	}
+	return Mode_INVESTMENTS
+}
+
+func (m *GetAccountsResponse_AccountsMessage) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *GetAccountsResponse_AccountsMessage) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
 type GetUserData struct {
 	Email                string   `protobuf:"bytes,1,opt,name=Email,proto3" json:"Email,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -214,7 +401,7 @@ func (m *GetUserData) Reset()         { *m = GetUserData{} }
 func (m *GetUserData) String() string { return proto.CompactTextString(m) }
 func (*GetUserData) ProtoMessage()    {}
 func (*GetUserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{3}
+	return fileDescriptor_a0b84a42fa06f626, []int{6}
 }
 
 func (m *GetUserData) XXX_Unmarshal(b []byte) error {
@@ -253,7 +440,7 @@ func (m *GetUserRequest) Reset()         { *m = GetUserRequest{} }
 func (m *GetUserRequest) String() string { return proto.CompactTextString(m) }
 func (*GetUserRequest) ProtoMessage()    {}
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{4}
+	return fileDescriptor_a0b84a42fa06f626, []int{7}
 }
 
 func (m *GetUserRequest) XXX_Unmarshal(b []byte) error {
@@ -292,7 +479,7 @@ func (m *Period) Reset()         { *m = Period{} }
 func (m *Period) String() string { return proto.CompactTextString(m) }
 func (*Period) ProtoMessage()    {}
 func (*Period) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{5}
+	return fileDescriptor_a0b84a42fa06f626, []int{8}
 }
 
 func (m *Period) XXX_Unmarshal(b []byte) error {
@@ -320,6 +507,147 @@ func (m *Period) GetAccounts() *Account {
 	return nil
 }
 
+type PostAccountData struct {
+	Balance              float64  `protobuf:"fixed64,1,opt,name=Balance,proto3" json:"Balance,omitempty"`
+	Mode                 Mode     `protobuf:"varint,2,opt,name=Mode,proto3,enum=financialplanningcalculator.Mode" json:"Mode,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=Name,proto3" json:"Name,omitempty"`
+	UserId               int64    `protobuf:"varint,4,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PostAccountData) Reset()         { *m = PostAccountData{} }
+func (m *PostAccountData) String() string { return proto.CompactTextString(m) }
+func (*PostAccountData) ProtoMessage()    {}
+func (*PostAccountData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{9}
+}
+
+func (m *PostAccountData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostAccountData.Unmarshal(m, b)
+}
+func (m *PostAccountData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostAccountData.Marshal(b, m, deterministic)
+}
+func (m *PostAccountData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostAccountData.Merge(m, src)
+}
+func (m *PostAccountData) XXX_Size() int {
+	return xxx_messageInfo_PostAccountData.Size(m)
+}
+func (m *PostAccountData) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostAccountData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostAccountData proto.InternalMessageInfo
+
+func (m *PostAccountData) GetBalance() float64 {
+	if m != nil {
+		return m.Balance
+	}
+	return 0
+}
+
+func (m *PostAccountData) GetMode() Mode {
+	if m != nil {
+		return m.Mode
+	}
+	return Mode_INVESTMENTS
+}
+
+func (m *PostAccountData) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *PostAccountData) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+type PostAccountRequest struct {
+	Data                 *PostAccountData `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *PostAccountRequest) Reset()         { *m = PostAccountRequest{} }
+func (m *PostAccountRequest) String() string { return proto.CompactTextString(m) }
+func (*PostAccountRequest) ProtoMessage()    {}
+func (*PostAccountRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{10}
+}
+
+func (m *PostAccountRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostAccountRequest.Unmarshal(m, b)
+}
+func (m *PostAccountRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostAccountRequest.Marshal(b, m, deterministic)
+}
+func (m *PostAccountRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostAccountRequest.Merge(m, src)
+}
+func (m *PostAccountRequest) XXX_Size() int {
+	return xxx_messageInfo_PostAccountRequest.Size(m)
+}
+func (m *PostAccountRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostAccountRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostAccountRequest proto.InternalMessageInfo
+
+func (m *PostAccountRequest) GetData() *PostAccountData {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type PostAccountResponse struct {
+	Id                   int64    `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PostAccountResponse) Reset()         { *m = PostAccountResponse{} }
+func (m *PostAccountResponse) String() string { return proto.CompactTextString(m) }
+func (*PostAccountResponse) ProtoMessage()    {}
+func (*PostAccountResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{11}
+}
+
+func (m *PostAccountResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostAccountResponse.Unmarshal(m, b)
+}
+func (m *PostAccountResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostAccountResponse.Marshal(b, m, deterministic)
+}
+func (m *PostAccountResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostAccountResponse.Merge(m, src)
+}
+func (m *PostAccountResponse) XXX_Size() int {
+	return xxx_messageInfo_PostAccountResponse.Size(m)
+}
+func (m *PostAccountResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostAccountResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostAccountResponse proto.InternalMessageInfo
+
+func (m *PostAccountResponse) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
 type PostUserData struct {
 	Email                string   `protobuf:"bytes,1,opt,name=Email,proto3" json:"Email,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -331,7 +659,7 @@ func (m *PostUserData) Reset()         { *m = PostUserData{} }
 func (m *PostUserData) String() string { return proto.CompactTextString(m) }
 func (*PostUserData) ProtoMessage()    {}
 func (*PostUserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{6}
+	return fileDescriptor_a0b84a42fa06f626, []int{12}
 }
 
 func (m *PostUserData) XXX_Unmarshal(b []byte) error {
@@ -370,7 +698,7 @@ func (m *PostUserRequest) Reset()         { *m = PostUserRequest{} }
 func (m *PostUserRequest) String() string { return proto.CompactTextString(m) }
 func (*PostUserRequest) ProtoMessage()    {}
 func (*PostUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{7}
+	return fileDescriptor_a0b84a42fa06f626, []int{13}
 }
 
 func (m *PostUserRequest) XXX_Unmarshal(b []byte) error {
@@ -410,7 +738,7 @@ func (m *UserResponse) Reset()         { *m = UserResponse{} }
 func (m *UserResponse) String() string { return proto.CompactTextString(m) }
 func (*UserResponse) ProtoMessage()    {}
 func (*UserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{8}
+	return fileDescriptor_a0b84a42fa06f626, []int{14}
 }
 
 func (m *UserResponse) XXX_Unmarshal(b []byte) error {
@@ -446,13 +774,20 @@ func (m *UserResponse) GetId() int64 {
 }
 
 func init() {
-	proto.RegisterEnum("financialplanningcalculator.Account_AccountMode", Account_AccountMode_name, Account_AccountMode_value)
+	proto.RegisterEnum("financialplanningcalculator.Mode", Mode_name, Mode_value)
 	proto.RegisterType((*Account)(nil), "financialplanningcalculator.Account")
 	proto.RegisterType((*CalculateResponse)(nil), "financialplanningcalculator.CalculateResponse")
 	proto.RegisterType((*Error)(nil), "financialplanningcalculator.Error")
+	proto.RegisterType((*GetAccountsData)(nil), "financialplanningcalculator.GetAccountsData")
+	proto.RegisterType((*GetAccountsRequest)(nil), "financialplanningcalculator.GetAccountsRequest")
+	proto.RegisterType((*GetAccountsResponse)(nil), "financialplanningcalculator.GetAccountsResponse")
+	proto.RegisterType((*GetAccountsResponse_AccountsMessage)(nil), "financialplanningcalculator.GetAccountsResponse.AccountsMessage")
 	proto.RegisterType((*GetUserData)(nil), "financialplanningcalculator.GetUserData")
 	proto.RegisterType((*GetUserRequest)(nil), "financialplanningcalculator.GetUserRequest")
 	proto.RegisterType((*Period)(nil), "financialplanningcalculator.Period")
+	proto.RegisterType((*PostAccountData)(nil), "financialplanningcalculator.PostAccountData")
+	proto.RegisterType((*PostAccountRequest)(nil), "financialplanningcalculator.PostAccountRequest")
+	proto.RegisterType((*PostAccountResponse)(nil), "financialplanningcalculator.PostAccountResponse")
 	proto.RegisterType((*PostUserData)(nil), "financialplanningcalculator.PostUserData")
 	proto.RegisterType((*PostUserRequest)(nil), "financialplanningcalculator.PostUserRequest")
 	proto.RegisterType((*UserResponse)(nil), "financialplanningcalculator.UserResponse")
@@ -461,40 +796,50 @@ func init() {
 func init() { proto.RegisterFile("service.proto", fileDescriptor_a0b84a42fa06f626) }
 
 var fileDescriptor_a0b84a42fa06f626 = []byte{
-	// 518 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0x5f, 0x6f, 0xda, 0x3e,
-	0x14, 0x25, 0xfc, 0x29, 0xe5, 0xc2, 0x8f, 0x1f, 0xb5, 0xf6, 0x27, 0x82, 0x17, 0xe6, 0xf6, 0x81,
-	0x69, 0x53, 0x3a, 0xb1, 0x3d, 0x4d, 0xab, 0x34, 0xfe, 0x64, 0x13, 0x93, 0x48, 0x91, 0x4b, 0xf7,
-	0x30, 0x4d, 0xaa, 0xdc, 0xe4, 0x16, 0x45, 0x0a, 0x31, 0x8b, 0x4d, 0xa5, 0x7e, 0x9b, 0x7d, 0xa2,
-	0x7d, 0xa6, 0x89, 0xc4, 0x46, 0xa0, 0x6d, 0x19, 0xda, 0x53, 0x62, 0xfb, 0x9c, 0x7b, 0xcf, 0x39,
-	0xf6, 0x85, 0xff, 0x24, 0x26, 0xf7, 0xa1, 0x8f, 0xce, 0x2a, 0x11, 0x4a, 0x90, 0xce, 0x5d, 0x18,
-	0xf3, 0xd8, 0x0f, 0x79, 0xb4, 0x8a, 0x78, 0x1c, 0x87, 0xf1, 0xc2, 0xe7, 0x91, 0xbf, 0x8e, 0xb8,
-	0x12, 0x49, 0xbb, 0xb3, 0x10, 0x62, 0x11, 0xe1, 0x79, 0x0a, 0xbd, 0x5d, 0xdf, 0x9d, 0xe3, 0x72,
-	0xa5, 0x1e, 0x32, 0x26, 0xfd, 0x5e, 0x84, 0xea, 0xc0, 0xf7, 0xc5, 0x3a, 0x56, 0xe4, 0x2d, 0xd8,
-	0x83, 0x20, 0x98, 0xc4, 0x0a, 0x13, 0x94, 0xca, 0xbd, 0xc7, 0xe4, 0xc1, 0x9b, 0x61, 0x12, 0x8a,
-	0x40, 0xda, 0x56, 0xd7, 0xea, 0x95, 0xd8, 0x1f, 0xcf, 0x89, 0x0d, 0xd5, 0x21, 0x8f, 0x78, 0xec,
-	0xa3, 0x5d, 0xec, 0x5a, 0x3d, 0x8b, 0x99, 0x25, 0xa1, 0xd0, 0x30, 0x14, 0xc6, 0x15, 0xda, 0xa5,
-	0xf4, 0x78, 0x6f, 0x8f, 0x8c, 0xa1, 0x3c, 0x15, 0x01, 0xda, 0xe5, 0xae, 0xd5, 0x6b, 0xf6, 0x5f,
-	0x39, 0x39, 0x76, 0x1c, 0xad, 0xd6, 0x7c, 0x37, 0x3c, 0x96, 0xb2, 0x09, 0x81, 0xb2, 0xc7, 0x97,
-	0x68, 0x57, 0xba, 0x56, 0xaf, 0xc6, 0xd2, 0x7f, 0x3a, 0x80, 0xfa, 0x0e, 0x90, 0x3c, 0x86, 0x93,
-	0xc1, 0x68, 0x74, 0x79, 0xed, 0xcd, 0x6f, 0xa6, 0x97, 0x63, 0xf7, 0x66, 0xec, 0x0e, 0xe7, 0xad,
-	0x02, 0xe9, 0xc0, 0xd3, 0xbd, 0xed, 0x89, 0xf7, 0xd9, 0xbd, 0x9a, 0x4f, 0x5d, 0x6f, 0xde, 0xb2,
-	0x28, 0x83, 0x93, 0x91, 0x6e, 0x8f, 0x0c, 0xe5, 0x4a, 0xc4, 0x12, 0xc9, 0x05, 0x54, 0x77, 0xa3,
-	0xa9, 0xf7, 0x4f, 0x73, 0x45, 0x67, 0x58, 0x66, 0x38, 0xf4, 0x19, 0x54, 0xdc, 0x24, 0x11, 0xc9,
-	0x26, 0xb7, 0x29, 0x4a, 0xc9, 0x17, 0x98, 0xd6, 0xa9, 0x31, 0xb3, 0xa4, 0xa7, 0x50, 0xff, 0x88,
-	0xea, 0x5a, 0x62, 0x32, 0xe6, 0x8a, 0x93, 0x47, 0x50, 0x71, 0x97, 0x3c, 0x8c, 0x34, 0x2c, 0x5b,
-	0x50, 0x0f, 0x9a, 0x1a, 0xc4, 0xf0, 0xdb, 0x1a, 0xa5, 0x22, 0xef, 0xa0, 0x1c, 0x70, 0xc5, 0xb5,
-	0xaa, 0x5e, 0xae, 0xaa, 0x9d, 0xfa, 0x2c, 0x65, 0xd1, 0x4f, 0x70, 0x94, 0x49, 0x24, 0xef, 0xe1,
-	0x58, 0x07, 0x67, 0x1c, 0x9e, 0x1d, 0x72, 0x2d, 0x6c, 0xcb, 0xa2, 0x67, 0xd0, 0x98, 0x09, 0xf9,
-	0x37, 0x07, 0x33, 0xf8, 0xdf, 0xa0, 0x8c, 0x85, 0x8b, 0x3d, 0x0b, 0xcf, 0xf3, 0x83, 0xdd, 0xe9,
-	0xa0, 0x3d, 0xbc, 0x81, 0x46, 0x56, 0x4d, 0x5f, 0xd5, 0x6f, 0xfb, 0x92, 0x26, 0x14, 0x27, 0x41,
-	0xfa, 0x56, 0x4b, 0xac, 0x38, 0x09, 0xfa, 0x3f, 0x8a, 0x40, 0x3f, 0x98, 0x46, 0x33, 0xdd, 0x68,
-	0xb4, 0x6d, 0x74, 0x95, 0xcd, 0x1b, 0xf1, 0xa1, 0xaa, 0x53, 0x23, 0x2f, 0x0e, 0xc9, 0x56, 0x7b,
-	0x6a, 0xe7, 0xbb, 0xd8, 0xd5, 0x4b, 0x0b, 0xe4, 0x2b, 0xb4, 0x34, 0x7d, 0xfb, 0xf0, 0xc8, 0x13,
-	0x27, 0x1b, 0x63, 0xc7, 0x8c, 0xb1, 0xe3, 0x6e, 0xc6, 0xb8, 0xed, 0xe4, 0x16, 0xfe, 0xe5, 0xe1,
-	0xd2, 0x02, 0x41, 0x38, 0x36, 0xa9, 0x91, 0x97, 0x07, 0x85, 0xfb, 0x2f, 0x26, 0x86, 0xf5, 0x2f,
-	0xb5, 0x2d, 0xfa, 0xf6, 0x28, 0x55, 0xfd, 0xfa, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0x30, 0xdb,
-	0xb7, 0x53, 0xb8, 0x04, 0x00, 0x00,
+	// 676 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x55, 0xdd, 0x4e, 0xdb, 0x30,
+	0x18, 0xad, 0xdb, 0x94, 0xc2, 0x57, 0x46, 0x99, 0x99, 0x50, 0x54, 0x6e, 0x8a, 0x61, 0x52, 0xd9,
+	0x50, 0x98, 0xba, 0xed, 0x66, 0x1a, 0x12, 0x7f, 0x19, 0xea, 0x24, 0xaa, 0xca, 0x30, 0x2e, 0x26,
+	0x6e, 0x4c, 0x62, 0xaa, 0x4a, 0x21, 0xe9, 0x12, 0x17, 0x89, 0x97, 0xd8, 0xd5, 0xae, 0xf7, 0x18,
+	0x7b, 0x8c, 0x3d, 0xd3, 0x14, 0xc7, 0x2e, 0x49, 0x80, 0xb4, 0xeb, 0x5d, 0x1c, 0x1f, 0x1f, 0x7f,
+	0xdf, 0x39, 0xc7, 0x36, 0xbc, 0x88, 0x78, 0x78, 0x37, 0x74, 0xb8, 0x35, 0x0a, 0x03, 0x11, 0xe0,
+	0x8d, 0x9b, 0xa1, 0xcf, 0x7c, 0x67, 0xc8, 0xbc, 0x91, 0xc7, 0x7c, 0x7f, 0xe8, 0x0f, 0x1c, 0xe6,
+	0x39, 0x63, 0x8f, 0x89, 0x20, 0x6c, 0x6e, 0x0c, 0x82, 0x60, 0xe0, 0xf1, 0x3d, 0x09, 0xbd, 0x1e,
+	0xdf, 0xec, 0xf1, 0xdb, 0x91, 0xb8, 0x4f, 0x56, 0x92, 0xbf, 0x08, 0x6a, 0x87, 0x8e, 0x13, 0x8c,
+	0x7d, 0x81, 0x3f, 0x81, 0x79, 0xe8, 0xba, 0x5d, 0x5f, 0xf0, 0x90, 0x47, 0xc2, 0xbe, 0xe3, 0xe1,
+	0x7d, 0xaf, 0xcf, 0xc3, 0x61, 0xe0, 0x46, 0x26, 0x6a, 0xa1, 0x76, 0x85, 0x3e, 0x3b, 0x8f, 0x4d,
+	0xa8, 0x1d, 0x31, 0x8f, 0xf9, 0x0e, 0x37, 0xcb, 0x2d, 0xd4, 0x46, 0x54, 0x0f, 0x31, 0x81, 0x65,
+	0xbd, 0x84, 0x32, 0xc1, 0xcd, 0x8a, 0x9c, 0xce, 0xfc, 0xc3, 0x1f, 0xc1, 0x38, 0x0b, 0x5c, 0x6e,
+	0x1a, 0x2d, 0xd4, 0x5e, 0xe9, 0x6c, 0x5a, 0x05, 0xed, 0x58, 0x31, 0x90, 0x4a, 0x38, 0xc6, 0x60,
+	0xf4, 0xd8, 0x2d, 0x37, 0xab, 0x2d, 0xd4, 0x5e, 0xa2, 0xf2, 0x9b, 0x50, 0x78, 0x79, 0xac, 0xc0,
+	0x9c, 0xf2, 0x68, 0x14, 0xf8, 0x11, 0xc7, 0xfb, 0x50, 0x4b, 0x37, 0x52, 0xef, 0x6c, 0x15, 0x6e,
+	0x91, 0x60, 0xa9, 0x5e, 0x43, 0x36, 0xa1, 0x6a, 0x87, 0x61, 0x10, 0xc6, 0x5d, 0x9e, 0xf1, 0x28,
+	0x62, 0x03, 0x2e, 0x79, 0x96, 0xa8, 0x1e, 0x92, 0x1d, 0x68, 0x9c, 0x72, 0xa1, 0x94, 0x8c, 0x4e,
+	0x98, 0x60, 0x78, 0x1d, 0x16, 0xbe, 0x45, 0x3c, 0xec, 0xba, 0x4a, 0x3c, 0x35, 0x22, 0x97, 0x80,
+	0x53, 0x50, 0xca, 0x7f, 0x8c, 0x79, 0x24, 0xf0, 0x01, 0x18, 0x2e, 0x13, 0x4c, 0xd5, 0xb7, 0x5b,
+	0x58, 0x5f, 0x6e, 0x27, 0x2a, 0x57, 0x92, 0x5f, 0x65, 0x58, 0xcb, 0x10, 0xab, 0xe6, 0xaf, 0x60,
+	0x51, 0xff, 0x33, 0x51, 0xab, 0xd2, 0xae, 0x77, 0x0e, 0x66, 0x65, 0xd7, 0x1c, 0x96, 0xfe, 0xa1,
+	0xda, 0xa5, 0x13, 0xc6, 0xe6, 0x6f, 0x04, 0x8d, 0xdc, 0x6c, 0x3a, 0x0c, 0x28, 0x1b, 0x86, 0x15,
+	0x28, 0x77, 0x5d, 0x99, 0x90, 0x0a, 0x2d, 0x77, 0xdd, 0x89, 0xf1, 0x95, 0xf9, 0x8c, 0x37, 0x1e,
+	0x8c, 0x4f, 0xc9, 0x5d, 0xcd, 0xc8, 0xbd, 0x05, 0xf5, 0x53, 0x2e, 0xe2, 0x81, 0x74, 0xe5, 0x15,
+	0x54, 0xed, 0x5b, 0x36, 0xf4, 0x94, 0x81, 0xc9, 0x80, 0xf4, 0x60, 0x45, 0x81, 0xb4, 0x1f, 0x9f,
+	0x33, 0x7e, 0xb4, 0xa7, 0x29, 0xa6, 0xf9, 0x95, 0x17, 0x5f, 0x61, 0x21, 0x09, 0x0f, 0x3e, 0xc8,
+	0xa8, 0x1f, 0x73, 0x6d, 0x17, 0x72, 0x29, 0xf0, 0x83, 0xc2, 0xe4, 0x27, 0x82, 0x46, 0x3f, 0x88,
+	0xb4, 0x29, 0xb2, 0x8b, 0xe7, 0x15, 0xd6, 0x8a, 0x96, 0xe7, 0x53, 0xb4, 0xf2, 0xa4, 0xa2, 0x46,
+	0x3e, 0xc0, 0xa9, 0x7a, 0xe6, 0x09, 0x70, 0xae, 0x1d, 0x25, 0xda, 0x6b, 0x58, 0xcb, 0xf0, 0xaa,
+	0xfc, 0x26, 0x99, 0x41, 0x3a, 0x33, 0x64, 0x1b, 0x96, 0x63, 0xd8, 0x14, 0x47, 0xfb, 0x89, 0x68,
+	0x69, 0x4b, 0xf7, 0x33, 0x15, 0xee, 0x4c, 0xad, 0x30, 0xe7, 0xe9, 0x07, 0x58, 0x4e, 0xd8, 0x54,
+	0x5d, 0x4f, 0xee, 0x9b, 0x4f, 0xf8, 0x9b, 0xcd, 0xc4, 0x0f, 0xdc, 0x80, 0x7a, 0xb7, 0x77, 0x69,
+	0x9f, 0x5f, 0x9c, 0xd9, 0xbd, 0x8b, 0xf3, 0xd5, 0x12, 0x5e, 0x04, 0xe3, 0xc4, 0x3e, 0xba, 0x58,
+	0x45, 0x9d, 0x3f, 0x06, 0x90, 0x2f, 0xba, 0x96, 0xbe, 0xaa, 0xe5, 0x78, 0x52, 0xcb, 0x79, 0x72,
+	0xd5, 0xe3, 0x50, 0x06, 0x59, 0xc7, 0x02, 0xef, 0xcd, 0x7e, 0x88, 0x65, 0xfb, 0xcd, 0x77, 0xff,
+	0x7b, 0xea, 0x49, 0x09, 0x3b, 0x50, 0x53, 0xe1, 0xc6, 0x6f, 0x67, 0x39, 0x02, 0x7a, 0xaf, 0x62,
+	0x71, 0xd3, 0x32, 0x92, 0x12, 0xbe, 0x82, 0x55, 0xb5, 0x7c, 0x72, 0x73, 0xe3, 0x75, 0x2b, 0x79,
+	0xb5, 0x2c, 0xfd, 0x6a, 0x59, 0x76, 0xfc, 0x6a, 0x35, 0xad, 0x42, 0xe2, 0x47, 0x37, 0x3f, 0x29,
+	0xc5, 0xb2, 0xa5, 0x52, 0x35, 0x45, 0xb6, 0xc7, 0xb9, 0x9e, 0x22, 0xdb, 0x13, 0x81, 0x25, 0x25,
+	0xcc, 0x61, 0x51, 0x07, 0x08, 0xef, 0xce, 0x94, 0xb3, 0x79, 0x84, 0x3b, 0xaa, 0x7f, 0x5f, 0x9a,
+	0xa0, 0xaf, 0x17, 0xa4, 0x52, 0xef, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x74, 0xd9, 0xea, 0xd0,
+	0x1b, 0x08, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -509,10 +854,14 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type FinancialPlanningCalculatorServiceClient interface {
+	// Get accounts
+	GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
 	// Get a new user.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	// Calculate for the current user.
 	GetUserCalculate(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CalculateResponse, error)
+	// Create an account.
+	PostAccount(ctx context.Context, in *PostAccountRequest, opts ...grpc.CallOption) (*PostAccountResponse, error)
 	// Create a new user.
 	PostUser(ctx context.Context, in *PostUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 }
@@ -523,6 +872,15 @@ type financialPlanningCalculatorServiceClient struct {
 
 func NewFinancialPlanningCalculatorServiceClient(cc *grpc.ClientConn) FinancialPlanningCalculatorServiceClient {
 	return &financialPlanningCalculatorServiceClient{cc}
+}
+
+func (c *financialPlanningCalculatorServiceClient) GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error) {
+	out := new(GetAccountsResponse)
+	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetAccounts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *financialPlanningCalculatorServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
@@ -543,6 +901,15 @@ func (c *financialPlanningCalculatorServiceClient) GetUserCalculate(ctx context.
 	return out, nil
 }
 
+func (c *financialPlanningCalculatorServiceClient) PostAccount(ctx context.Context, in *PostAccountRequest, opts ...grpc.CallOption) (*PostAccountResponse, error) {
+	out := new(PostAccountResponse)
+	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/PostAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *financialPlanningCalculatorServiceClient) PostUser(ctx context.Context, in *PostUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
 	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/PostUser", in, out, opts...)
@@ -554,10 +921,14 @@ func (c *financialPlanningCalculatorServiceClient) PostUser(ctx context.Context,
 
 // FinancialPlanningCalculatorServiceServer is the server API for FinancialPlanningCalculatorService service.
 type FinancialPlanningCalculatorServiceServer interface {
+	// Get accounts
+	GetAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
 	// Get a new user.
 	GetUser(context.Context, *GetUserRequest) (*UserResponse, error)
 	// Calculate for the current user.
 	GetUserCalculate(context.Context, *empty.Empty) (*CalculateResponse, error)
+	// Create an account.
+	PostAccount(context.Context, *PostAccountRequest) (*PostAccountResponse, error)
 	// Create a new user.
 	PostUser(context.Context, *PostUserRequest) (*UserResponse, error)
 }
@@ -566,11 +937,17 @@ type FinancialPlanningCalculatorServiceServer interface {
 type UnimplementedFinancialPlanningCalculatorServiceServer struct {
 }
 
+func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetAccounts(ctx context.Context, req *GetAccountsRequest) (*GetAccountsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccounts not implemented")
+}
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetUser(ctx context.Context, req *GetUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetUserCalculate(ctx context.Context, req *empty.Empty) (*CalculateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserCalculate not implemented")
+}
+func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostAccount(ctx context.Context, req *PostAccountRequest) (*PostAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostAccount not implemented")
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostUser(ctx context.Context, req *PostUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostUser not implemented")
@@ -578,6 +955,24 @@ func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostUser(ctx conte
 
 func RegisterFinancialPlanningCalculatorServiceServer(s *grpc.Server, srv FinancialPlanningCalculatorServiceServer) {
 	s.RegisterService(&_FinancialPlanningCalculatorService_serviceDesc, srv)
+}
+
+func _FinancialPlanningCalculatorService_GetAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/GetAccounts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetAccounts(ctx, req.(*GetAccountsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _FinancialPlanningCalculatorService_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -616,6 +1011,24 @@ func _FinancialPlanningCalculatorService_GetUserCalculate_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialPlanningCalculatorService_PostAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialPlanningCalculatorServiceServer).PostAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/PostAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialPlanningCalculatorServiceServer).PostAccount(ctx, req.(*PostAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FinancialPlanningCalculatorService_PostUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PostUserRequest)
 	if err := dec(in); err != nil {
@@ -639,12 +1052,20 @@ var _FinancialPlanningCalculatorService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*FinancialPlanningCalculatorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "GetAccounts",
+			Handler:    _FinancialPlanningCalculatorService_GetAccounts_Handler,
+		},
+		{
 			MethodName: "GetUser",
 			Handler:    _FinancialPlanningCalculatorService_GetUser_Handler,
 		},
 		{
 			MethodName: "GetUserCalculate",
 			Handler:    _FinancialPlanningCalculatorService_GetUserCalculate_Handler,
+		},
+		{
+			MethodName: "PostAccount",
+			Handler:    _FinancialPlanningCalculatorService_PostAccount_Handler,
 		},
 		{
 			MethodName: "PostUser",

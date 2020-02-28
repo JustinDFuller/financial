@@ -119,4 +119,79 @@ func TestService(t *testing.T) {
 	if responseErr.Message == "" || responseErr.Message != messageNotFound {
 		t.Fatal("It should return a not found message.", responseErr.Message)
 	}
+
+	var accountResponse financial.PostAccountResponse
+	postAccountRequest := &financial.PostAccountRequest{
+		Data: &financial.PostAccountData{
+			Name:    "Savings",
+			UserId:  user3.Id,
+			Balance: 27585.45,
+			Mode:    financial.Mode_INVESTMENTS,
+		},
+	}
+	res, err = makeRequest(server, endpointAccount, http.MethodPost, postAccountRequest, &accountResponse)
+	if err != nil {
+		t.Fatal("It should not return an error on POST /account.", err)
+	}
+	if res.StatusCode != http.StatusCreated {
+		t.Fatal("It should return http status created.", res.StatusCode)
+	}
+	expected := &financial.PostAccountResponse{
+		Id: 1,
+	}
+	if !proto.Equal(&accountResponse, expected) {
+		t.Fatal("It should return a correctly created account.", &accountResponse, expected)
+	}
+
+	var accountResponse2 financial.PostAccountResponse
+	postAccountRequest2 := &financial.PostAccountRequest{
+		Data: &financial.PostAccountData{
+			Name:    "Credit Card",
+			UserId:  user3.Id,
+			Balance: 3496.45,
+			Mode:    financial.Mode_DEBT,
+		},
+	}
+	res, err = makeRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
+	if err != nil {
+		t.Fatal("It should not return an error for POST /account", err)
+	}
+	expected = &financial.PostAccountResponse{
+		Id: 2,
+	}
+	if !proto.Equal(expected, &accountResponse2) {
+		t.Fatal("It should return the expected PostAccountResponse.", expected, &accountResponse2)
+	}
+
+	var getAccountsResponse financial.GetAccountsResponse
+	getAccountsRequest := &financial.GetAccountsRequest{
+		Data: &financial.GetAccountsData{
+			UserId: user3.Id,
+		},
+	}
+	expectedGetAccountsResponse := &financial.GetAccountsResponse{
+		Accounts: []*financial.GetAccountsResponse_AccountsMessage{
+			{
+				Id:      1,
+				Name:    "Savings",
+				UserId:  user3.Id,
+				Balance: 27585.45,
+				Mode:    financial.Mode_INVESTMENTS,
+			},
+			{
+				Id:      2,
+				Name:    "Credit Card",
+				UserId:  user3.Id,
+				Balance: 3496.45,
+				Mode:    financial.Mode_DEBT,
+			},
+		},
+	}
+	res, err = makeRequest(server, endpointAccounts, http.MethodGet, getAccountsRequest, &getAccountsResponse)
+	if err != nil {
+		t.Fatal("It should not return an error for GET /accounts", err)
+	}
+	if !proto.Equal(&getAccountsResponse, expectedGetAccountsResponse) {
+		t.Fatal("It should return the expected getAccountsResponse", &getAccountsResponse, expectedGetAccountsResponse)
+	}
 }

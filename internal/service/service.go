@@ -12,6 +12,8 @@ import (
 const (
 	endpointUser      = "/svc/v1/user"
 	endpointCalculate = "/svc/v1/user/calculate"
+	endpointAccount   = "/svc/v1/account"
+	endpointAccounts  = "/svc/v1/accounts"
 )
 
 func New() kit.Service {
@@ -38,6 +40,13 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 			http.MethodGet: {
 				Decoder:  decodeUserCalculate,
 				Endpoint: s.getUserCalculate,
+			},
+		},
+		endpointAccount: {
+			http.MethodPost: {
+				Decoder:  decodePostAccount,
+				Endpoint: s.postAccount,
+				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
 	}

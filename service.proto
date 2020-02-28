@@ -6,12 +6,12 @@ import "google/protobuf/empty.proto";
 
 option go_package = "financial";
 
-message Account {
-    enum AccountMode {
-        ACCOUNT_MODE_DEBT = 0;
-        ACCOUNT_MODE_INVESTMENT = 1;
-    }
+enum Mode {
+    INVESTMENTS = 0;
+    DEBT = 1;
+}
 
+message Account {
     // Not all accounts accrue interest at the same rate. Some may accrue interest once per year, once per month, etc. Since we use periods we need to know how many periods before interest is calculated. So, on a bi-weekly paycheck you might choose to view interest every 2 periods.
     int64 AddInterestEveryNPeriods = 1;
 
@@ -20,9 +20,7 @@ message Account {
 
     // The interest rate of hte account. %5.5 is 0.055.
     double InterestRate = 3;
-
-    // The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated.
-    AccountMode Mode = 4;
+    Mode Mode = 4;
     string Name = 5;
 }
 
@@ -32,6 +30,26 @@ message CalculateResponse {
 
 message Error {
     string Message = 1;
+}
+
+message GetAccountsData {
+    int64 UserId = 1;
+}
+
+message GetAccountsRequest {
+    GetAccountsData data = 1;
+}
+
+message GetAccountsResponse {
+    message AccountsMessage {
+        double Balance = 1;
+        int64 Id = 2;
+        Mode Mode = 3;
+        string Name = 4;
+        int64 UserId = 5;
+    }
+
+    repeated AccountsMessage Accounts = 1;
 }
 
 message GetUserData {
@@ -44,6 +62,21 @@ message GetUserRequest {
 
 message Period {
     Account Accounts = 1;
+}
+
+message PostAccountData {
+    double Balance = 1;
+    Mode Mode = 2;
+    string Name = 3;
+    int64 UserId = 4;
+}
+
+message PostAccountRequest {
+    PostAccountData data = 1;
+}
+
+message PostAccountResponse {
+    int64 Id = 1;
 }
 
 message PostUserData {
@@ -60,11 +93,17 @@ message UserResponse {
 }
 
 service FinancialPlanningCalculatorService {
+    // Get accounts
+    rpc GetAccounts(GetAccountsRequest) returns (GetAccountsResponse) {}
+
     // Get a new user.
     rpc GetUser(GetUserRequest) returns (UserResponse) {}
 
     // Calculate for the current user.
     rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}
+
+    // Create an account.
+    rpc PostAccount(PostAccountRequest) returns (PostAccountResponse) {}
 
     // Create a new user.
     rpc PostUser(PostUserRequest) returns (UserResponse) {}
