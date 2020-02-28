@@ -17,11 +17,13 @@ message Account {
 
     // The Balance of the account. 45.05
     double Balance = 2;
+    int64 Id = 3;
 
     // The interest rate of hte account. %5.5 is 0.055.
-    double InterestRate = 3;
-    Mode Mode = 4;
-    string Name = 5;
+    double InterestRate = 4;
+    Mode Mode = 5;
+    string Name = 6;
+    int64 UserId = 7;
 }
 
 message CalculateResponse {
@@ -41,15 +43,7 @@ message GetAccountsRequest {
 }
 
 message GetAccountsResponse {
-    message AccountsMessage {
-        double Balance = 1;
-        int64 Id = 2;
-        Mode Mode = 3;
-        string Name = 4;
-        int64 UserId = 5;
-    }
-
-    repeated AccountsMessage Accounts = 1;
+    repeated Account Accounts = 1;
 }
 
 message GetUserData {
@@ -64,15 +58,8 @@ message Period {
     Account Accounts = 1;
 }
 
-message PostAccountData {
-    double Balance = 1;
-    Mode Mode = 2;
-    string Name = 3;
-    int64 UserId = 4;
-}
-
 message PostAccountRequest {
-    PostAccountData data = 1;
+    Account data = 1;
 }
 
 message PostAccountResponse {

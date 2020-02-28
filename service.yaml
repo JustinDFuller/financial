@@ -63,7 +63,7 @@ paths:
         - in: body
           name: data
           schema:
-            $ref: '#/definitions/PostAccountData'
+            $ref: '#/definitions/Account'
       responses:
         201:
           description: OK
@@ -101,19 +101,6 @@ definitions:
         format: int64
       Email:
         type: string
-  PostAccountData:
-    type: object
-    properties:
-      Name:
-        type: string
-      UserId:
-        type: integer
-        format: int64
-      Balance:
-        type: number
-        format: double
-      Mode:
-        $ref: '#/definitions/Mode'
   PostAccountResponse:
     type: object
     properties:
@@ -132,21 +119,7 @@ definitions:
       Accounts:
         type: array
         items:
-          type: object
-          properties:
-            Id:
-              type: integer
-              format: int64
-            Name:
-              type: string
-            UserId:
-              type: integer
-              format: int64
-            Balance:
-              type: number
-              format: double
-            Mode:
-              $ref: '#/definitions/Mode'
+          $ref: '#/definitions/Account'
   Mode:
     type: string
     description: "The mode determines how contributions work for the account. A debt account contribution will remove money from the balance. An investment account contribution will add money to the balance. This value also affects how interest is calculated."
@@ -174,6 +147,9 @@ definitions:
   Account:
     type: object
     properties:
+      Id:
+        type: integer
+        format: int64
       Name:
         type: string
       Mode:
@@ -190,6 +166,9 @@ definitions:
         type: number
         format: int64
         description: "Not all accounts accrue interest at the same rate. Some may accrue interest once per year, once per month, etc. Since we use periods we need to know how many periods before interest is calculated. So, on a bi-weekly paycheck you might choose to view interest every 2 periods."
+      UserId:
+        type: integer
+        format: int64
   Error:
     type: object
     properties:

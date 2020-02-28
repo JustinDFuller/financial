@@ -122,7 +122,7 @@ func TestService(t *testing.T) {
 
 	var accountResponse financial.PostAccountResponse
 	postAccountRequest := &financial.PostAccountRequest{
-		Data: &financial.PostAccountData{
+		Data: &financial.Account{
 			Name:    "Savings",
 			UserId:  user3.Id,
 			Balance: 27585.45,
@@ -145,7 +145,7 @@ func TestService(t *testing.T) {
 
 	var accountResponse2 financial.PostAccountResponse
 	postAccountRequest2 := &financial.PostAccountRequest{
-		Data: &financial.PostAccountData{
+		Data: &financial.Account{
 			Name:    "Credit Card",
 			UserId:  user3.Id,
 			Balance: 3496.45,
@@ -170,7 +170,7 @@ func TestService(t *testing.T) {
 		},
 	}
 	expectedGetAccountsResponse := &financial.GetAccountsResponse{
-		Accounts: []*financial.GetAccountsResponse_AccountsMessage{
+		Accounts: []*financial.Account{
 			{
 				Id:      1,
 				Name:    "Savings",
