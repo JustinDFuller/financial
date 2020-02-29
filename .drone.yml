@@ -31,11 +31,9 @@ steps:
     dir: cmd/server
     app_file: app.yaml
     max_versions: 2
-  #  environment:
-  #    - GOPATH=/drone
-    secrets:
-      - source: GAE_CREDENTIALS_DEV
-        target: GAE_CREDENTIALS
+    environment:
+      GAE_CREDENTIALS:
+        from_secret: GAE_CREDENTIALS_DEV
     when:
       event: push
       branch: [master]
