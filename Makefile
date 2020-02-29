@@ -32,3 +32,9 @@ install:
 
 install-drone:
 	@go get golang.org/x/tools/cmd/goimports;
+
+test-drone:
+	@goimports -w ./**/**/*.go;
+	@gofmt -s -w ./**/**/*.go;
+	@go vet ./...;
+	@go test -race -cover -vet=off -coverprofile=coverage.txt -covermode=atomic ./...;

@@ -2,6 +2,7 @@
 
 [![Build Status](https://cloud.drone.io/api/badges/JustinDFuller/financial/status.svg)](https://cloud.drone.io/JustinDFuller/financial)
 [![Go Report Card](https://goreportcard.com/badge/github.com/JustinDFuller/financial)](https://goreportcard.com/report/github.com/JustinDFuller/financial)
+[![Coverage Status](https://coveralls.io/repos/github/JustinDFuller/financial/badge.svg?branch=master)](https://coveralls.io/github/JustinDFuller/financial?branch=master)
 
 ## The Idea
 

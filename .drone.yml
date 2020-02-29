@@ -10,7 +10,7 @@ steps:
     image: golang
     commands: 
       - make install-drone
-      - make test
+      - make test-drone
     
   - name: coverage
     image: plugins/codecov
