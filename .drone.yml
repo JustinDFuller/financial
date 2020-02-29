@@ -31,7 +31,6 @@ steps:
     max_versions: 2
     environment:
       - GOPATH=/drone
-
     when:
       event: push
       branch: [master]
