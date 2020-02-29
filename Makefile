@@ -1,4 +1,4 @@
-.PHONY: proto test datastore-start datastore-stop install run
+.PHONY: proto test datastore-start datastore-stop install install-drone run
 
 export GIZMO_SKIP_OBSERVE=true;
 
@@ -30,3 +30,5 @@ install:
 	@gcloud components install cloud-datastore-emulator;
 	@go get -u github.com/NYTimes/openapi2proto/cmd/openapi2proto;
 
+install-drone:
+	@go get golang.org/x/tools/cmd/goimports;
