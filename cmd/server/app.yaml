@@ -1,5 +1,5 @@
 runtime: go113
-service: financial-calculator
+service: default
 
 automatic_scaling:
   max_idle_instances: 1
