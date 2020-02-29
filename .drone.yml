@@ -7,11 +7,10 @@ platform:
 
 steps:
   - name: test
-    image: nytimes/golang-gcloud-sdk:latest
+    image: golang
     commands: 
       - make install-drone
       - make test-drone
-      - make build
     
   - name: coverage
     failure: ignore
@@ -20,8 +19,13 @@ steps:
       token:
         from_secret: CODECOV_TOKEN
 
+  - name: build
+    image: golang
+    commands:
+      - make build
+
   - name: deploy
-    image: nytimes/drone-gae:latest
+    image: nytimes/drone-gae
     environment:
       GAE_CREDENTIALS:
         from_secret: GAE_CREDENTIALS_DEV
