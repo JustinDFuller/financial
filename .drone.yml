@@ -21,16 +21,3 @@ steps:
     image: golang
     commands:
       - make build
-
-  - name: deploy
-    image: nytimes/drone-gae
-    action: deploy
-    project: financial-calculator-dev
-    dir: cmd/server
-    app_file: app.yaml
-    max_versions: 2
-    environment:
-      - GOPATH=/drone
-    when:
-      event: push
-      branch: [master]

@@ -1,5 +1,8 @@
 # Financial Calculator
 
+[![Build Status](https://cloud.drone.io/api/badges/JustinDFuller/financial/status.svg)](https://cloud.drone.io/JustinDFuller/financial)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JustinDFuller/financial)](https://goreportcard.com/report/github.com/JustinDFuller/financial)
+
 ## The Idea
 
 1. I want to make a financial calculator app.
