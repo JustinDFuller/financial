@@ -30,6 +30,7 @@ steps:
       GAE_CREDENTIALS:
         from_secret: GAE_CREDENTIALS_DEV
     settings:
+      action: deploy
       project: financial-calculator-dev
       dir: cmd/server
       app_file: app.yaml
