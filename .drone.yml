@@ -26,14 +26,14 @@ steps:
 
   - name: deploy
     image: nytimes/drone-gae
-    action: deploy
-    project: financial-calculator-dev
-    dir: cmd/server
-    app_file: app.yaml
-    max_versions: 2
     environment:
       GAE_CREDENTIALS:
         from_secret: GAE_CREDENTIALS_DEV
+    settings:
+      project: financial-calculator-dev
+      dir: cmd/server
+      app_file: app.yaml
+      max_versions: 2
     when:
       event: push
       branch: [master]
