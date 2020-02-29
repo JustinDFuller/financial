@@ -26,7 +26,7 @@
 8. Do I also need to specify how often to compound interest?
     No: It would be better to specify how many periods per year.
 
-### Scenario 1:
+### Example Scenario 1:
 
 * I am 27 years old. I want to retire when I am 50.
 * I get paid bi-weekly, every 2 weeks, or 26 times a year.
