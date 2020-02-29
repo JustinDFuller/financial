@@ -1,4 +1,4 @@
-.PHONY: proto test datastore-start datastore-stop install install-drone run
+.PHONY: proto test datastore-start datastore-stop install install-drone run build
 
 export GIZMO_SKIP_OBSERVE=true;
 
@@ -15,6 +15,9 @@ test:
 
 run:
 	@go run -race ./cmd/server;
+
+build:
+	@go build ./cmd/server;
 
 datastore-start: datastore-stop
 	@gcloud beta emulators datastore start --no-store-on-disk --quiet > /dev/null 2>&1 &

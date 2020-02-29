@@ -33,6 +33,9 @@ steps:
     max_versions: 2
   #  environment:
   #    - GOPATH=/drone
+    secrets:
+      - source: GAE_CREDENTIALS_DEV
+        target: GAE_CREDENTIALS
     when:
       event: push
       branch: [master]
