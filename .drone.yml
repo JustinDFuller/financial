@@ -1,0 +1,41 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: test
+    image: golang
+    commands: 
+      - make install-drone
+      - make test-drone
+    
+  - name: coverage
+    failure: ignore
+    image: plugins/codecov
+    settings:
+      token:
+        from_secret: CODECOV_TOKEN
+
+  - name: build
+    image: golang
+    commands:
+      - make build
+
+  - name: deploy
+    image: nytimes/drone-gae
+    environment:
+      GAE_CREDENTIALS:
+        from_secret: GAE_CREDENTIALS_DEV
+    settings:
+      action: deploy
+      project: financial-calculator-dev
+      dir: cmd/server
+      app_file: app.yaml
+      max_versions: 2
+      service: default
+    when:
+      event: push
+      branch: [master]

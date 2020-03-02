@@ -1,5 +1,9 @@
 # Financial Calculator
 
+[![Build Status](https://cloud.drone.io/api/badges/JustinDFuller/financial/status.svg)](https://cloud.drone.io/JustinDFuller/financial)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JustinDFuller/financial)](https://goreportcard.com/report/github.com/JustinDFuller/financial)
+[![Coverage Status](https://coveralls.io/repos/github/JustinDFuller/financial/badge.svg?branch=master)](https://coveralls.io/github/JustinDFuller/financial?branch=master)
+
 ## The Idea
 
 1. I want to make a financial calculator app.
@@ -22,7 +26,7 @@
 8. Do I also need to specify how often to compound interest?
     No: It would be better to specify how many periods per year.
 
-### Scenario 1:
+### Example Scenario 1:
 
 * I am 27 years old. I want to retire when I am 50.
 * I get paid bi-weekly, every 2 weeks, or 26 times a year.
