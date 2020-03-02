@@ -3,6 +3,7 @@ package service
 import (
 	"net/http"
 
+	"github.com/NYTimes/gizmo/server"
 	"github.com/NYTimes/gizmo/server/kit"
 	"github.com/go-kit/kit/endpoint"
 	httptransport "github.com/go-kit/kit/transport/http"
@@ -14,6 +15,7 @@ const (
 	endpointCalculate = "/svc/v1/user/calculate"
 	endpointAccount   = "/svc/v1/account"
 	endpointAccounts  = "/svc/v1/accounts"
+	endpointHealth    = "/svc/v1/health"
 )
 
 func New() kit.Service {
@@ -56,6 +58,11 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
+		endpointHealth: {
+			http.MethodGet: {
+				Endpoint: s.getHealth,
+			},
+		},
 	}
 }
 
@@ -63,7 +70,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 // In this implementation, we're using a GzipHandler middleware to
 // compress our responses.
 func (s service) HTTPMiddleware(h http.Handler) http.Handler {
-	return h
+	return server.CORSHandler(h, "financial-calculator.glitch.me")
 }
 
 func (s service) HTTPRouterOptions() []kit.RouterOption {

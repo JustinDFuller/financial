@@ -2,9 +2,11 @@ package service
 
 import (
 	"bytes"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/NYTimes/gizmo/server/kit"
@@ -12,20 +14,35 @@ import (
 	"github.com/justindfuller/financial"
 )
 
-func makeRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message) (*http.Response, error) {
-	data, err := proto.Marshal(request)
-	if err != nil {
-		return nil, err
-	}
-
+func httpRequest(server *kit.Server, endpoint, httpMethod string, data []byte, headers map[string]string) (*http.Response, []byte, error) {
 	r, err := http.NewRequest(httpMethod, endpoint, bytes.NewReader(data))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
+	}
+
+	if headers != nil {
+		for key, val := range headers {
+			r.Header.Add(key, val)
+		}
 	}
 
 	w := httptest.NewRecorder()
 	server.ServeHTTP(w, r)
 	body, err := ioutil.ReadAll(w.Result().Body)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return w.Result(), body, nil
+}
+
+func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message) (*http.Response, error) {
+	data, err := proto.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	result, body, err := httpRequest(server, endpoint, httpMethod, data, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +52,7 @@ func makeRequest(server *kit.Server, endpoint, httpMethod string, request, respo
 		return nil, err
 	}
 
-	return w.Result(), nil
+	return result, nil
 }
 
 func TestService(t *testing.T) {
@@ -47,7 +64,7 @@ func TestService(t *testing.T) {
 			Email: "service_test@example.com",
 		},
 	}
-	res, err := makeRequest(server, endpointUser, http.MethodPost, request, &user)
+	res, err := protoRequest(server, endpointUser, http.MethodPost, request, &user)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
 	}
@@ -67,7 +84,7 @@ func TestService(t *testing.T) {
 			Email: "service_test2@example.com",
 		},
 	}
-	res, err = makeRequest(server, endpointUser, http.MethodPost, request2, &user2)
+	res, err = protoRequest(server, endpointUser, http.MethodPost, request2, &user2)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
 	}
@@ -79,7 +96,7 @@ func TestService(t *testing.T) {
 	}
 
 	var responseErr financial.Error
-	res, err = makeRequest(server, endpointUser, http.MethodPost, request, &responseErr)
+	res, err = protoRequest(server, endpointUser, http.MethodPost, request, &responseErr)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
 	}
@@ -91,7 +108,7 @@ func TestService(t *testing.T) {
 	}
 
 	missingEmailRequest := &financial.PostUserRequest{}
-	res, err = makeRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
+	res, err = protoRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
 	}
@@ -105,7 +122,7 @@ func TestService(t *testing.T) {
 	missingEmailRequest = &financial.PostUserRequest{
 		Data: &financial.PostUserData{},
 	}
-	res, err = makeRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
+	res, err = protoRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /user.", err)
 	}
@@ -122,7 +139,7 @@ func TestService(t *testing.T) {
 			Email: user.Email,
 		},
 	}
-	res, err = makeRequest(server, endpointUser, http.MethodGet, getRequest, &user3)
+	res, err = protoRequest(server, endpointUser, http.MethodGet, getRequest, &user3)
 	if err != nil {
 		t.Fatal("It should not return an error on GET /user.", err)
 	}
@@ -135,7 +152,7 @@ func TestService(t *testing.T) {
 			Email: "not even a real email",
 		},
 	}
-	res, err = makeRequest(server, endpointUser, http.MethodGet, getRequestNotFound, &responseErr)
+	res, err = protoRequest(server, endpointUser, http.MethodGet, getRequestNotFound, &responseErr)
 	if err != nil {
 		t.Fatal("It should not return an error on GET /user.", err)
 	}
@@ -155,7 +172,7 @@ func TestService(t *testing.T) {
 			Mode:    financial.Mode_INVESTMENTS,
 		},
 	}
-	res, err = makeRequest(server, endpointAccount, http.MethodPost, postAccountRequest, &accountResponse)
+	res, err = protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest, &accountResponse)
 	if err != nil {
 		t.Fatal("It should not return an error on POST /account.", err)
 	}
@@ -178,7 +195,7 @@ func TestService(t *testing.T) {
 			Mode:    financial.Mode_DEBT,
 		},
 	}
-	res, err = makeRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
+	res, err = protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
 	if err != nil {
 		t.Fatal("It should not return an error for POST /account", err)
 	}
@@ -213,11 +230,33 @@ func TestService(t *testing.T) {
 			},
 		},
 	}
-	res, err = makeRequest(server, endpointAccounts, http.MethodGet, getAccountsRequest, &getAccountsResponse)
+	res, err = protoRequest(server, endpointAccounts, http.MethodGet, getAccountsRequest, &getAccountsResponse)
 	if err != nil {
 		t.Fatal("It should not return an error for GET /accounts", err)
 	}
 	if !proto.Equal(&getAccountsResponse, expectedGetAccountsResponse) {
 		t.Fatal("It should return the expected getAccountsResponse", &getAccountsResponse, expectedGetAccountsResponse)
+	}
+}
+
+func TestHealth(t *testing.T) {
+	server := kit.NewServer(New())
+
+	expected, _ := json.Marshal("ok")
+	headers := map[string]string{
+		"origin": "https://financial-calculator.glitch.me",
+	}
+	res, body, err := httpRequest(server, endpointHealth, http.MethodGet, nil, headers)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.TrimSpace(string(body)) != string(expected) {
+		t.Fatal("It should return ok", strings.TrimSpace(string(body)), string(expected))
+	}
+	if res.StatusCode != http.StatusOK {
+		t.Fatal("It should return 200", res.StatusCode)
+	}
+	if res.Header.Get("Access-Control-Allow-Origin") != headers["origin"] {
+		t.Fatal("It should return the expected CORS Access-Control-Allow-Origin", res.Header.Get("Access-Control-Allow-Origin"))
 	}
 }
