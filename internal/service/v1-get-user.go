@@ -31,13 +31,10 @@ func decodeGetUser(ctx context.Context, req *http.Request) (interface{}, error) 
 func (s *service) getUser(ctx context.Context, request interface{}) (response interface{}, err error) {
 	req := request.(*financial.GetUserRequest)
 
-	if users == nil {
-		users = map[string]*financial.UserResponse{}
+	user, err := s.store.GetUserByEmail(req.Data.Email)
+	if err != nil {
+		return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 	}
 
-	if user, ok := users[req.Data.Email]; ok {
-		return kit.NewProtoStatusResponse(&financial.UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
-	}
-
-	return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
+	return kit.NewProtoStatusResponse(&financial.UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
 }

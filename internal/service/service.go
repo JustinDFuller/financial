@@ -9,6 +9,8 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/justindfuller/financial"
+	"github.com/justindfuller/financial/internal/db"
+	"github.com/justindfuller/financial/internal/db/memory"
 	"google.golang.org/grpc"
 )
 
@@ -22,10 +24,14 @@ const (
 )
 
 func New() kit.Service {
-	return &service{}
+	return &service{
+		store: memory.New(),
+	}
 }
 
-type service struct{}
+type service struct {
+	store db.Store
+}
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 	return map[string]map[string]kit.HTTPEndpoint{

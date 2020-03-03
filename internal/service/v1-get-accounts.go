@@ -29,7 +29,7 @@ func decodeGetAccounts(ctx context.Context, req *http.Request) (interface{}, err
 func (s *service) getAccounts(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.GetAccountsRequest)
 
-	if accounts, ok := accountsByUserId[r.Data.UserId]; ok {
+	if accounts, err := s.store.GetAccountsByUserId(r.Data.UserId); err != nil {
 		return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{
 			Accounts: accounts,
 		}, http.StatusOK), nil
