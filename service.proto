@@ -66,6 +66,19 @@ message PostAccountResponse {
     int64 Id = 1;
 }
 
+message PostContributionData {
+    int64 AccountId = 1;
+    double Amount = 2;
+}
+
+message PostContributionRequest {
+    PostContributionData data = 1;
+}
+
+message PostContributionResponse {
+    int64 Id = 1;
+}
+
 message PostUserData {
     string Email = 1;
 }
@@ -91,6 +104,9 @@ service FinancialPlanningCalculatorService {
 
     // Create an account.
     rpc PostAccount(PostAccountRequest) returns (PostAccountResponse) {}
+
+    // Create an account contribution.
+    rpc PostContribution(PostContributionRequest) returns (PostContributionResponse) {}
 
     // Create a new user.
     rpc PostUser(PostUserRequest) returns (UserResponse) {}

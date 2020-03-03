@@ -1,21 +1,24 @@
 package service
 
 import (
+	context "context"
 	"net/http"
 
 	"github.com/NYTimes/gizmo/server"
 	"github.com/NYTimes/gizmo/server/kit"
 	"github.com/go-kit/kit/endpoint"
 	httptransport "github.com/go-kit/kit/transport/http"
+	"github.com/justindfuller/financial"
 	"google.golang.org/grpc"
 )
 
 const (
-	endpointUser      = "/svc/v1/user"
-	endpointCalculate = "/svc/v1/user/calculate"
-	endpointAccount   = "/svc/v1/account"
-	endpointAccounts  = "/svc/v1/accounts"
-	endpointHealth    = "/svc/v1/health"
+	endpointUser         = "/svc/v1/user"
+	endpointCalculate    = "/svc/v1/user/calculate"
+	endpointAccount      = "/svc/v1/account"
+	endpointAccounts     = "/svc/v1/accounts"
+	endpointContribution = "/svc/v1/contribution"
+	endpointHealth       = "/svc/v1/health"
 )
 
 func New() kit.Service {
@@ -58,6 +61,13 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
+		endpointContribution: {
+			http.MethodPost: {
+				Decoder:  decodeContribution,
+				Endpoint: s.postContribution,
+				Encoder:  kit.EncodeProtoResponse,
+			},
+		},
 		endpointHealth: {
 			http.MethodGet: {
 				Endpoint: s.getHealth,
@@ -74,7 +84,14 @@ func (s service) HTTPMiddleware(h http.Handler) http.Handler {
 }
 
 func (s service) HTTPRouterOptions() []kit.RouterOption {
-	return nil
+	notFound := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		kit.EncodeProtoResponse(context.Background(), w, kit.NewProtoStatusResponse(&financial.Error{Message: "not found"}, http.StatusNotFound))
+	})
+
+	return []kit.RouterOption{
+		kit.RouterSelect(""),
+		kit.RouterNotFound(notFound),
+	}
 }
 
 func (s service) HTTPOptions() []httptransport.ServerOption {

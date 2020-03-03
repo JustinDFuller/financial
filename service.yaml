@@ -82,7 +82,35 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/GetAccountsResponse'
+  /contribution:
+    post:
+      description: Create an account contribution.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/PostContributionData'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/PostContributionResponse'
 definitions:
+  PostContributionData: 
+    type: object
+    properties:
+      AccountId:
+        type: integer
+        format: int64
+      Amount:
+        type: number
+        format: double
+  PostContributionResponse:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
   PostUserData:
     type: object
     properties:

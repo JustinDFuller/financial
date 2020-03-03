@@ -237,6 +237,21 @@ func TestService(t *testing.T) {
 	if !proto.Equal(&getAccountsResponse, expectedGetAccountsResponse) {
 		t.Fatal("It should return the expected getAccountsResponse", &getAccountsResponse, expectedGetAccountsResponse)
 	}
+
+	var postContributionResponse financial.PostContributionResponse
+	postContributionRequest := &financial.PostContributionRequest{
+		Data: &financial.PostContributionData{
+			AccountId: getAccountsResponse.Accounts[0].Id,
+			Amount:    500,
+		},
+	}
+	res, err = protoRequest(server, endpointContribution, http.MethodPost, postContributionRequest, &postContributionResponse)
+	if err != nil {
+		t.Fatal("It should not return an error for POST /contribution", err)
+	}
+	if res.StatusCode != http.StatusCreated {
+		t.Fatal("It should return status created.", res.StatusCode)
+	}
 }
 
 func TestHealth(t *testing.T) {
