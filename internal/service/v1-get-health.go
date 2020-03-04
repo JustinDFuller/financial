@@ -1,7 +1,15 @@
 package service
 
-import context "context"
+import (
+	context "context"
+	"net/http"
+
+	"github.com/NYTimes/gizmo/server/kit"
+	"github.com/justindfuller/financial"
+)
 
 func (s *service) getHealth(ctx context.Context, req interface{}) (interface{}, error) {
-	return "ok", nil
+	return kit.NewProtoStatusResponse(&financial.GetHealthResponse{
+		Ok: true,
+	}, http.StatusOK), nil
 }

@@ -11,6 +11,19 @@ schemes:
 - "https"
 - "http"
 paths:
+  /health:
+    get:
+      description: Health Check
+      parameters:
+        - in: body
+          name: data
+          schema:
+            type: object
+      responses:
+        200:
+          description: status of service health.
+          schema:
+            $ref: '#/definitions/GetHealthResponse'
   /user:
     post:
       description: Create a new user.
@@ -96,6 +109,11 @@ paths:
           schema:
             $ref: '#/definitions/PostContributionResponse'
 definitions:
+  GetHealthResponse:
+    type: object
+    properties:
+      Ok:
+        type: boolean
   PostContributionData: 
     type: object
     properties:

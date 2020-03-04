@@ -46,6 +46,16 @@ message GetAccountsResponse {
     repeated Account Accounts = 1;
 }
 
+message GetHealthRequest {
+    message DataMessage {}
+
+    DataMessage data = 1;
+}
+
+message GetHealthResponse {
+    bool Ok = 1;
+}
+
 message GetUserData {
     string Email = 1;
 }
@@ -95,6 +105,9 @@ message UserResponse {
 service FinancialPlanningCalculatorService {
     // Get accounts
     rpc GetAccounts(GetAccountsRequest) returns (GetAccountsResponse) {}
+
+    // Health Check
+    rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
 
     // Get a new user.
     rpc GetUser(GetUserRequest) returns (UserResponse) {}

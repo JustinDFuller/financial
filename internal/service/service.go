@@ -77,6 +77,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 		endpointHealth: {
 			http.MethodGet: {
 				Endpoint: s.getHealth,
+				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
 	}

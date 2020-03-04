@@ -15,6 +15,7 @@ var (
 type Store interface {
 	CreateUserByEmail(email string) (int64, error)
 	GetUserByEmail(email string) (*financial.UserResponse, error)
-	CreateAccountByUserId(userid int64, account *financial.Account) (int64, error)
-	GetAccountsByUserId(userid int64) ([]*financial.Account, error)
+	CreateAccountByUserId(userId int64, account *financial.Account) (int64, error)
+	GetAccountsByUserId(userId int64) ([]*financial.Account, error)
+	CreateContributionByAccountId(accountId int64) (int64, error)
 }

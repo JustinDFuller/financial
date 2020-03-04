@@ -2,11 +2,10 @@ package service
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/NYTimes/gizmo/server/kit"
@@ -30,45 +29,64 @@ func httpRequest(server *kit.Server, endpoint, httpMethod string, data []byte, h
 	server.ServeHTTP(w, r)
 	body, err := ioutil.ReadAll(w.Result().Body)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("Unable to read body. %w", err)
 	}
 
 	return w.Result(), body, nil
 }
 
-func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message) (*http.Response, error) {
+func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message, requestHeaders map[string]string) (*http.Response, error) {
 	data, err := proto.Marshal(request)
 	if err != nil {
 		return nil, err
 	}
 
-	result, body, err := httpRequest(server, endpoint, httpMethod, data, nil)
+	result, body, err := httpRequest(server, endpoint, httpMethod, data, requestHeaders)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Error making http request. %w", err)
 	}
 
 	err = proto.Unmarshal(body, response)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Error unmarshaling proto response. %w", err)
 	}
 
 	return result, nil
 }
 
 type test struct {
-	name       string
-	endpoint   string
-	httpMethod string
-	statusCode int
-	request    proto.Message
-	response   proto.Message
-	expected   proto.Message
+	name            string
+	endpoint        string
+	httpMethod      string
+	statusCode      int
+	request         proto.Message
+	response        proto.Message
+	expected        proto.Message
+	requestHeaders  map[string]string
+	responseHeaders map[string]string
 }
 
 func TestService(t *testing.T) {
 	server := kit.NewServer(New())
 
 	tests := []*test{
+		{
+			name:       "GET /health",
+			endpoint:   endpointHealth,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request:    &financial.GetHealthRequest{},
+			response:   &financial.GetHealthResponse{},
+			expected: &financial.GetHealthResponse{
+				Ok: true,
+			},
+			requestHeaders: map[string]string{
+				"origin": "https://financial-calculator.glitch.me",
+			},
+			responseHeaders: map[string]string{
+				"Access-Control-Allow-Origin": "https://financial-calculator.glitch.me",
+			},
+		},
 		{
 			name:       "/POST user",
 			endpoint:   endpointUser,
@@ -172,7 +190,7 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "POST /account",
+			name:       "POST /account savings",
 			endpoint:   endpointAccount,
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
@@ -189,11 +207,75 @@ func TestService(t *testing.T) {
 				Id: 1,
 			},
 		},
+		{
+			name:       "POST /account credit card",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostAccountRequest{
+				Data: &financial.Account{
+					Name:    "Credit Card",
+					UserId:  2,
+					Balance: 3496.45,
+					Mode:    financial.Mode_DEBT,
+				},
+			},
+			response: &financial.PostAccountResponse{},
+			expected: &financial.PostAccountResponse{
+				Id: 2,
+			},
+		},
+		{
+			name:       "GET /accounts",
+			endpoint:   endpointAccounts,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request: &financial.GetAccountsRequest{
+				Data: &financial.GetAccountsData{
+					UserId: 2,
+				},
+			},
+			response: &financial.GetAccountsResponse{},
+			expected: &financial.GetAccountsResponse{
+				Accounts: []*financial.Account{
+					{
+						Id:      1,
+						Name:    "Savings",
+						UserId:  2,
+						Balance: 27585.45,
+						Mode:    financial.Mode_INVESTMENTS,
+					},
+					{
+						Id:      2,
+						Name:    "Credit Card",
+						UserId:  2,
+						Balance: 3496.45,
+						Mode:    financial.Mode_DEBT,
+					},
+				},
+			},
+		},
+		{
+			name:       "POST /contribution",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostContributionRequest{
+				Data: &financial.PostContributionData{
+					AccountId: 2,
+					Amount:    500,
+				},
+			},
+			response: &financial.PostContributionResponse{},
+			expected: &financial.PostContributionResponse{
+				Id: 1,
+			},
+		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			res, err := protoRequest(server, tc.endpoint, tc.httpMethod, tc.request, tc.response)
+			res, err := protoRequest(server, tc.endpoint, tc.httpMethod, tc.request, tc.response, tc.requestHeaders)
 			if err != nil {
 				t.Fatal("It should not return an error.", err)
 			}
@@ -203,99 +285,11 @@ func TestService(t *testing.T) {
 			if !proto.Equal(tc.response, tc.expected) {
 				t.Fatal("It should return the expected response. \n Got:", tc.response, "\n Expected:", tc.expected)
 			}
+			for key, val := range tc.responseHeaders {
+				if got := res.Header.Get(key); got != val {
+					t.Fatalf("It should return the expected %s header. Wanted %s. Got %s.", key, val, got)
+				}
+			}
 		})
-	}
-
-	user3 := &financial.UserResponse{
-		Id: 2,
-	}
-
-	var accountResponse2 financial.PostAccountResponse
-	postAccountRequest2 := &financial.PostAccountRequest{
-		Data: &financial.Account{
-			Name:    "Credit Card",
-			UserId:  user3.Id,
-			Balance: 3496.45,
-			Mode:    financial.Mode_DEBT,
-		},
-	}
-	res, err := protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
-	if err != nil {
-		t.Fatal("It should not return an error for POST /account", err)
-	}
-	expected := &financial.PostAccountResponse{
-		Id: 2,
-	}
-	if !proto.Equal(expected, &accountResponse2) {
-		t.Fatal("It should return the expected PostAccountResponse.", expected, &accountResponse2)
-	}
-
-	var getAccountsResponse financial.GetAccountsResponse
-	getAccountsRequest := &financial.GetAccountsRequest{
-		Data: &financial.GetAccountsData{
-			UserId: user3.Id,
-		},
-	}
-	expectedGetAccountsResponse := &financial.GetAccountsResponse{
-		Accounts: []*financial.Account{
-			{
-				Id:      1,
-				Name:    "Savings",
-				UserId:  user3.Id,
-				Balance: 27585.45,
-				Mode:    financial.Mode_INVESTMENTS,
-			},
-			{
-				Id:      2,
-				Name:    "Credit Card",
-				UserId:  user3.Id,
-				Balance: 3496.45,
-				Mode:    financial.Mode_DEBT,
-			},
-		},
-	}
-	res, err = protoRequest(server, endpointAccounts, http.MethodGet, getAccountsRequest, &getAccountsResponse)
-	if err != nil {
-		t.Fatal("It should not return an error for GET /accounts", err)
-	}
-	if !proto.Equal(&getAccountsResponse, expectedGetAccountsResponse) {
-		t.Fatal("It should return the expected getAccountsResponse", &getAccountsResponse, expectedGetAccountsResponse)
-	}
-
-	var postContributionResponse financial.PostContributionResponse
-	postContributionRequest := &financial.PostContributionRequest{
-		Data: &financial.PostContributionData{
-			AccountId: getAccountsResponse.Accounts[0].Id,
-			Amount:    500,
-		},
-	}
-	res, err = protoRequest(server, endpointContribution, http.MethodPost, postContributionRequest, &postContributionResponse)
-	if err != nil {
-		t.Fatal("It should not return an error for POST /contribution", err)
-	}
-	if res.StatusCode != http.StatusCreated {
-		t.Fatal("It should return status created.", res.StatusCode)
-	}
-}
-
-func TestHealth(t *testing.T) {
-	server := kit.NewServer(New())
-
-	expected, _ := json.Marshal("ok")
-	headers := map[string]string{
-		"origin": "https://financial-calculator.glitch.me",
-	}
-	res, body, err := httpRequest(server, endpointHealth, http.MethodGet, nil, headers)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if strings.TrimSpace(string(body)) != string(expected) {
-		t.Fatal("It should return ok", strings.TrimSpace(string(body)), string(expected))
-	}
-	if res.StatusCode != http.StatusOK {
-		t.Fatal("It should return 200", res.StatusCode)
-	}
-	if res.Header.Get("Access-Control-Allow-Origin") != headers["origin"] {
-		t.Fatal("It should return the expected CORS Access-Control-Allow-Origin", res.Header.Get("Access-Control-Allow-Origin"))
 	}
 }

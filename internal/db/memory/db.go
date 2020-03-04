@@ -18,6 +18,8 @@ type memory struct {
 
 	userId       int64
 	usersByEmail map[string]*financial.UserResponse
+
+	contributionId int64
 }
 
 func (s *memory) CreateUserByEmail(email string) (int64, error) {
@@ -64,4 +66,9 @@ func (s *memory) GetAccountsByUserId(userId int64) ([]*financial.Account, error)
 	}
 
 	return nil, db.ErrNotFound
+}
+
+func (s *memory) CreateContributionByAccountId(accountId int64) (int64, error) {
+	s.contributionId++
+	return s.contributionId, nil
 }
