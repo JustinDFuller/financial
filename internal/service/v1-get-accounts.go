@@ -29,13 +29,12 @@ func decodeGetAccounts(ctx context.Context, req *http.Request) (interface{}, err
 func (s *service) getAccounts(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.GetAccountsRequest)
 
-	if accounts, err := s.store.GetAccountsByUserId(r.Data.UserId); err != nil {
-		return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{
-			Accounts: accounts,
-		}, http.StatusOK), nil
+	accounts, err := s.store.GetAccountsByUserId(r.Data.UserId)
+	if err != nil {
+		return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 	}
 
-	// TODO.
-	// return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{}, http.StatusNotFound), nil
-	return nil, nil
+	return kit.NewProtoStatusResponse(&financial.GetAccountsResponse{
+		Accounts: accounts,
+	}, http.StatusOK), nil
 }
