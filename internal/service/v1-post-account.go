@@ -28,7 +28,7 @@ func decodePostAccount(ctx context.Context, req *http.Request) (interface{}, err
 
 func (s *service) postAccount(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.PostAccountRequest)
-	accountId, _ := s.store.CreateAccountByUserId(r.Data.UserId, r.Data)
+	accountId, _ := s.db.CreateAccountByUserId(r.Data.UserId, r.Data)
 	return kit.NewProtoStatusResponse(&financial.PostAccountResponse{
 		Id: accountId,
 	}, http.StatusCreated), nil

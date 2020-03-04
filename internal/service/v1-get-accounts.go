@@ -29,7 +29,7 @@ func decodeGetAccounts(ctx context.Context, req *http.Request) (interface{}, err
 func (s *service) getAccounts(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.GetAccountsRequest)
 
-	accounts, err := s.store.GetAccountsByUserId(r.Data.UserId)
+	accounts, err := s.db.GetAccountsByUserId(r.Data.UserId)
 	if err != nil {
 		return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 	}

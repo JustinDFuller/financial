@@ -25,12 +25,12 @@ const (
 
 func New() kit.Service {
 	return &service{
-		store: memory.New(),
+		db: memory.New(),
 	}
 }
 
 type service struct {
-	store db.Store
+	db db.Store
 }
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {

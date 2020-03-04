@@ -55,135 +55,159 @@ func protoRequest(server *kit.Server, endpoint, httpMethod string, request, resp
 	return result, nil
 }
 
+type test struct {
+	name       string
+	endpoint   string
+	httpMethod string
+	statusCode int
+	request    proto.Message
+	response   proto.Message
+	expected   proto.Message
+}
+
 func TestService(t *testing.T) {
 	server := kit.NewServer(New())
 
-	var user financial.UserResponse
-	request := &financial.PostUserRequest{
-		Data: &financial.PostUserData{
-			Email: "service_test@example.com",
+	tests := []*test{
+		{
+			name:       "/POST user",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostUserRequest{
+				Data: &financial.PostUserData{
+					Email: "service_test@example.com",
+				},
+			},
+			response: &financial.UserResponse{},
+			expected: &financial.UserResponse{
+				Id:    1,
+				Email: "service_test@example.com",
+			},
+		},
+		{
+			name:       "POST /user again",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostUserRequest{
+				Data: &financial.PostUserData{
+					Email: "service_test2@example.com",
+				},
+			},
+			response: &financial.UserResponse{},
+			expected: &financial.UserResponse{
+				Id:    2,
+				Email: "service_test2@example.com",
+			},
+		},
+		{
+			name:       "POST /user already exists",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostUserRequest{
+				Data: &financial.PostUserData{
+					Email: "service_test2@example.com",
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageAlreadyExists,
+			},
+		},
+		{
+			name:       "POST /user missing data",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.PostUserRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageMissingEmail,
+			},
+		},
+		{
+			name:       "POST /user missing email",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostUserRequest{
+				Data: &financial.PostUserData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageMissingEmail,
+			},
+		},
+		{
+			name:       "GET /user",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request: &financial.GetUserRequest{
+				Data: &financial.GetUserData{
+					Email: "service_test@example.com",
+				},
+			},
+			response: &financial.UserResponse{},
+			expected: &financial.UserResponse{
+				Id:    1,
+				Email: "service_test@example.com",
+			},
+		},
+		{
+			name:       "GET /user not found",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusNotFound,
+			request: &financial.GetUserRequest{
+				Data: &financial.GetUserData{
+					Email: "not even a real email",
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageNotFound,
+			},
+		},
+		{
+			name:       "POST /account",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostAccountRequest{
+				Data: &financial.Account{
+					Name:    "Savings",
+					UserId:  2,
+					Balance: 27585.45,
+					Mode:    financial.Mode_INVESTMENTS,
+				},
+			},
+			response: &financial.PostAccountResponse{},
+			expected: &financial.PostAccountResponse{
+				Id: 1,
+			},
 		},
 	}
-	res, err := protoRequest(server, endpointUser, http.MethodPost, request, &user)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /user.", err)
-	}
-	if res.StatusCode != http.StatusCreated {
-		t.Fatal("It should return Status 201.", res.StatusCode)
-	}
-	if user.Id == 0 {
-		t.Fatal("It should return a non-zero Id.", user.Id)
-	}
-	if user.Email != request.Data.Email {
-		t.Fatal("It should return the email that was given.", request.Data.Email, user.Email)
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			res, err := protoRequest(server, tc.endpoint, tc.httpMethod, tc.request, tc.response)
+			if err != nil {
+				t.Fatal("It should not return an error.", err)
+			}
+			if res.StatusCode != tc.statusCode {
+				t.Fatalf("It should return Status %d. Got %d.", tc.statusCode, res.StatusCode)
+			}
+			if !proto.Equal(tc.response, tc.expected) {
+				t.Fatal("It should return the expected response. \n Got:", tc.response, "\n Expected:", tc.expected)
+			}
+		})
 	}
 
-	var user2 financial.UserResponse
-	request2 := &financial.PostUserRequest{
-		Data: &financial.PostUserData{
-			Email: "service_test2@example.com",
-		},
-	}
-	res, err = protoRequest(server, endpointUser, http.MethodPost, request2, &user2)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /user.", err)
-	}
-	if res.StatusCode != http.StatusCreated {
-		t.Fatal("It should return Status 201.", res.StatusCode)
-	}
-	if user.Id == user2.Id {
-		t.Fatal("It should not create two users with the same Id.", user.Id)
-	}
-
-	var responseErr financial.Error
-	res, err = protoRequest(server, endpointUser, http.MethodPost, request, &responseErr)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /user.", err)
-	}
-	if res.StatusCode != http.StatusBadRequest {
-		t.Fatal("It should return status 400.", res.StatusCode)
-	}
-	if responseErr.Message == "" || responseErr.Message != messageAlreadyExists {
-		t.Fatal("It should return an already exists message.", responseErr.Message)
-	}
-
-	missingEmailRequest := &financial.PostUserRequest{}
-	res, err = protoRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /user.", err)
-	}
-	if res.StatusCode != http.StatusBadRequest {
-		t.Fatal("It should return status 400.", res.StatusCode)
-	}
-	if responseErr.Message == "" || responseErr.Message != messageMissingEmail {
-		t.Fatal("It should return a missing email message.", responseErr.Message)
-	}
-
-	missingEmailRequest = &financial.PostUserRequest{
-		Data: &financial.PostUserData{},
-	}
-	res, err = protoRequest(server, endpointUser, http.MethodPost, missingEmailRequest, &responseErr)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /user.", err)
-	}
-	if res.StatusCode != http.StatusBadRequest {
-		t.Fatal("It should return status 400.", res.StatusCode)
-	}
-	if responseErr.Message == "" || responseErr.Message != messageMissingEmail {
-		t.Fatal("It should return a missing email message.", responseErr.Message)
-	}
-
-	var user3 financial.UserResponse
-	getRequest := &financial.GetUserRequest{
-		Data: &financial.GetUserData{
-			Email: user.Email,
-		},
-	}
-	res, err = protoRequest(server, endpointUser, http.MethodGet, getRequest, &user3)
-	if err != nil {
-		t.Fatal("It should not return an error on GET /user.", err)
-	}
-	if !proto.Equal(&user3, &user) {
-		t.Fatal("It should return the same user that was created.", user3, user)
-	}
-
-	getRequestNotFound := &financial.GetUserRequest{
-		Data: &financial.GetUserData{
-			Email: "not even a real email",
-		},
-	}
-	res, err = protoRequest(server, endpointUser, http.MethodGet, getRequestNotFound, &responseErr)
-	if err != nil {
-		t.Fatal("It should not return an error on GET /user.", err)
-	}
-	if res.StatusCode != http.StatusNotFound {
-		t.Fatal("It should return an http status 404.", res.StatusCode)
-	}
-	if responseErr.Message == "" || responseErr.Message != messageNotFound {
-		t.Fatal("It should return a not found message.", responseErr.Message)
-	}
-
-	var accountResponse financial.PostAccountResponse
-	postAccountRequest := &financial.PostAccountRequest{
-		Data: &financial.Account{
-			Name:    "Savings",
-			UserId:  user3.Id,
-			Balance: 27585.45,
-			Mode:    financial.Mode_INVESTMENTS,
-		},
-	}
-	res, err = protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest, &accountResponse)
-	if err != nil {
-		t.Fatal("It should not return an error on POST /account.", err)
-	}
-	if res.StatusCode != http.StatusCreated {
-		t.Fatal("It should return http status created.", res.StatusCode)
-	}
-	expected := &financial.PostAccountResponse{
-		Id: 1,
-	}
-	if !proto.Equal(&accountResponse, expected) {
-		t.Fatal("It should return a correctly created account.", &accountResponse, expected)
+	user3 := &financial.UserResponse{
+		Id: 2,
 	}
 
 	var accountResponse2 financial.PostAccountResponse
@@ -195,11 +219,11 @@ func TestService(t *testing.T) {
 			Mode:    financial.Mode_DEBT,
 		},
 	}
-	res, err = protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
+	res, err := protoRequest(server, endpointAccount, http.MethodPost, postAccountRequest2, &accountResponse2)
 	if err != nil {
 		t.Fatal("It should not return an error for POST /account", err)
 	}
-	expected = &financial.PostAccountResponse{
+	expected := &financial.PostAccountResponse{
 		Id: 2,
 	}
 	if !proto.Equal(expected, &accountResponse2) {

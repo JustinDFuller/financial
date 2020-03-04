@@ -37,7 +37,7 @@ func (s *service) postUser(ctx context.Context, request interface{}) (response i
 		return kit.NewProtoStatusResponse(&financial.Error{Message: messageMissingEmail}, http.StatusBadRequest), nil
 	}
 
-	userId, err := s.store.CreateUserByEmail(req.Data.Email)
+	userId, err := s.db.CreateUserByEmail(req.Data.Email)
 	if err == db.ErrAlreadyExists {
 		return kit.NewProtoStatusResponse(&financial.Error{Message: messageAlreadyExists}, http.StatusBadRequest), nil
 	}

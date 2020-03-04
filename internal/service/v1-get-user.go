@@ -31,7 +31,7 @@ func decodeGetUser(ctx context.Context, req *http.Request) (interface{}, error) 
 func (s *service) getUser(ctx context.Context, request interface{}) (response interface{}, err error) {
 	req := request.(*financial.GetUserRequest)
 
-	user, err := s.store.GetUserByEmail(req.Data.Email)
+	user, err := s.db.GetUserByEmail(req.Data.Email)
 	if err != nil {
 		return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 	}
