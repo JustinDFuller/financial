@@ -13,6 +13,7 @@ import (
 
 const messageMissingEmail = "Missing Email"
 const messageAlreadyExists = "Already Exists"
+const messageInvalidEntity = "Invalid Entity"
 
 func decodePostUser(ctx context.Context, req *http.Request) (interface{}, error) {
 	var request financial.PostUserRequest

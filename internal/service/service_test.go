@@ -256,7 +256,22 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "POST /contribution",
+			name:       "GET /accounts not found",
+			endpoint:   endpointAccounts,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusNotFound,
+			request: &financial.GetAccountsRequest{
+				Data: &financial.GetAccountsData{
+					UserId: 222,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageNotFound,
+			},
+		},
+		{
+			name:       "POST /contribution credit card",
 			endpoint:   endpointContribution,
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
@@ -269,6 +284,62 @@ func TestService(t *testing.T) {
 			response: &financial.PostContributionResponse{},
 			expected: &financial.PostContributionResponse{
 				Id: 1,
+			},
+		},
+		{
+			name:       "POST /contribution savings",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostContributionRequest{
+				Data: &financial.PostContributionData{
+					AccountId: 1,
+					Amount:    500,
+				},
+			},
+			response: &financial.PostContributionResponse{},
+			expected: &financial.PostContributionResponse{
+				Id: 2,
+			},
+		},
+		{
+			name:       "POST /contribution already exists",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostContributionRequest{
+				Data: &financial.PostContributionData{
+					AccountId: 1,
+					Amount:    500,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageAlreadyExists,
+			},
+		},
+		{
+			name:       "POST /contribution bad request",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.PostContributionRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "POST /contribution bad request",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostContributionRequest{
+				Data: &financial.PostContributionData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
 			},
 		},
 	}

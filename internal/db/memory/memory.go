@@ -7,8 +7,9 @@ import (
 
 func New() db.Store {
 	return &memory{
-		accountsByUserId: map[int64][]*financial.Account{},
-		usersByEmail:     map[string]*financial.UserResponse{},
+		accountsByUserId:         map[int64][]*financial.Account{},
+		usersByEmail:             map[string]*financial.UserResponse{},
+		contributionsByAccountId: map[int64]interface{}{},
 	}
 }
 
@@ -19,7 +20,8 @@ type memory struct {
 	userId       int64
 	usersByEmail map[string]*financial.UserResponse
 
-	contributionId int64
+	contributionId           int64
+	contributionsByAccountId map[int64]interface{}
 }
 
 func (s *memory) CreateUserByEmail(email string) (int64, error) {
@@ -70,5 +72,11 @@ func (s *memory) GetAccountsByUserId(userId int64) ([]*financial.Account, error)
 
 func (s *memory) CreateContributionByAccountId(accountId int64) (int64, error) {
 	s.contributionId++
+
+	if _, ok := s.contributionsByAccountId[accountId]; ok {
+		return 0, db.ErrAlreadyExists
+	}
+
+	s.contributionsByAccountId[accountId] = true
 	return s.contributionId, nil
 }
