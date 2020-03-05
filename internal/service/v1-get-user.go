@@ -36,5 +36,5 @@ func (s *service) getUser(ctx context.Context, request interface{}) (response in
 		return kit.NewProtoStatusResponse(&financial.Error{Message: messageNotFound}, http.StatusNotFound), nil
 	}
 
-	return kit.NewProtoStatusResponse(&financial.UserResponse{Id: user.Id, Email: user.Email}, http.StatusOK), nil
+	return kit.NewProtoStatusResponse(user, http.StatusOK), nil
 }

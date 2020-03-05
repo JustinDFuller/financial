@@ -98,17 +98,17 @@ message PostContributionResponse {
     int64 Id = 1;
 }
 
-message PostUserData {
-    string Email = 1;
+message PostUserRequest {
+    User data = 1;
 }
 
-message PostUserRequest {
-    PostUserData data = 1;
+message User {
+    string Email = 1;
+    int64 Id = 2;
 }
 
 message UserResponse {
-    string Email = 1;
-    int64 Id = 2;
+    int64 Id = 1;
 }
 
 service FinancialPlanningCalculatorService {
@@ -122,7 +122,7 @@ service FinancialPlanningCalculatorService {
     rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
 
     // Get a new user.
-    rpc GetUser(GetUserRequest) returns (UserResponse) {}
+    rpc GetUser(GetUserRequest) returns (User) {}
 
     // Calculate for the current user.
     rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}

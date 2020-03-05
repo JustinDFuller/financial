@@ -47,7 +47,6 @@ func (s *service) postUser(ctx context.Context, request interface{}) (response i
 	}
 
 	return kit.NewProtoStatusResponse(&financial.UserResponse{
-		Id:    userId,
-		Email: req.Data.Email,
+		Id: userId,
 	}, http.StatusCreated), nil
 }

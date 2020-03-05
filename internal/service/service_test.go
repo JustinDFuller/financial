@@ -93,14 +93,13 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
 			request: &financial.PostUserRequest{
-				Data: &financial.PostUserData{
+				Data: &financial.User{
 					Email: "service_test@example.com",
 				},
 			},
 			response: &financial.UserResponse{},
 			expected: &financial.UserResponse{
-				Id:    1,
-				Email: "service_test@example.com",
+				Id: 1,
 			},
 		},
 		{
@@ -109,14 +108,13 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
 			request: &financial.PostUserRequest{
-				Data: &financial.PostUserData{
+				Data: &financial.User{
 					Email: "service_test2@example.com",
 				},
 			},
 			response: &financial.UserResponse{},
 			expected: &financial.UserResponse{
-				Id:    2,
-				Email: "service_test2@example.com",
+				Id: 2,
 			},
 		},
 		{
@@ -125,7 +123,7 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.PostUserRequest{
-				Data: &financial.PostUserData{
+				Data: &financial.User{
 					Email: "service_test2@example.com",
 				},
 			},
@@ -151,7 +149,7 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.PostUserRequest{
-				Data: &financial.PostUserData{},
+				Data: &financial.User{},
 			},
 			response: &financial.Error{},
 			expected: &financial.Error{
@@ -168,8 +166,8 @@ func TestService(t *testing.T) {
 					Email: "service_test@example.com",
 				},
 			},
-			response: &financial.UserResponse{},
-			expected: &financial.UserResponse{
+			response: &financial.User{},
+			expected: &financial.User{
 				Id:    1,
 				Email: "service_test@example.com",
 			},

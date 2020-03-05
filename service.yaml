@@ -31,7 +31,7 @@ paths:
         - in: body
           name: data
           schema:
-            $ref: '#/definitions/PostUserData'
+            $ref: '#/definitions/User'
       responses:
         201:
           description: Created
@@ -52,7 +52,7 @@ paths:
         200:
           description: Found user
           schema:
-            $ref: '#/definitions/UserResponse'
+            $ref: '#/definitions/User'
         400:
           description: Bad request
           schema:
@@ -150,9 +150,12 @@ definitions:
       Id:
         type: integer
         format: int64
-  PostUserData:
+  User:
     type: object
     properties:
+      Id:
+        type: integer
+        format: int64
       Email:
         type: string
   GetUserData:
@@ -166,8 +169,6 @@ definitions:
       Id:
         type: integer
         format: int64
-      Email:
-        type: string
   PostAccountResponse:
     type: object
     properties:
