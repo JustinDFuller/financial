@@ -28,7 +28,20 @@ func decodePostAccount(ctx context.Context, req *http.Request) (interface{}, err
 
 func (s *service) postAccount(ctx context.Context, req interface{}) (interface{}, error) {
 	r := req.(*financial.PostAccountRequest)
-	accountId, _ := s.db.CreateAccountByUserId(r.Data.UserId, r.Data)
+
+	if r.Data == nil || r.Data.UserId == 0 || r.Data.Name == "" {
+		return kit.NewProtoStatusResponse(&financial.Error{
+			Message: messageInvalidEntity,
+		}, http.StatusBadRequest), nil
+	}
+
+	accountId, err := s.db.CreateAccountByUserId(r.Data.UserId, r.Data)
+	if err != nil {
+		return kit.NewProtoStatusResponse(&financial.Error{
+			Message: messageAlreadyExists,
+		}, http.StatusBadRequest), nil
+	}
+
 	return kit.NewProtoStatusResponse(&financial.PostAccountResponse{
 		Id: accountId,
 	}, http.StatusCreated), nil

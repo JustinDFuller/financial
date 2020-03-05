@@ -9,7 +9,7 @@ func New() db.Store {
 	return &memory{
 		accountsByUserId:         map[int64][]*financial.Account{},
 		usersByEmail:             map[string]*financial.UserResponse{},
-		contributionsByAccountId: map[int64]interface{}{},
+		contributionsByAccountId: map[int64]*financial.Contribution{},
 	}
 }
 
@@ -21,7 +21,7 @@ type memory struct {
 	usersByEmail map[string]*financial.UserResponse
 
 	contributionId           int64
-	contributionsByAccountId map[int64]interface{}
+	contributionsByAccountId map[int64]*financial.Contribution
 }
 
 func (s *memory) CreateUserByEmail(email string) (int64, error) {
@@ -56,6 +56,11 @@ func (s *memory) CreateAccountByUserId(userId int64, data *financial.Account) (i
 	if accounts, ok := s.accountsByUserId[data.UserId]; !ok {
 		s.accountsByUserId[data.UserId] = []*financial.Account{data}
 	} else {
+		for _, account := range accounts {
+			if account.Name == data.Name {
+				return 0, db.ErrAlreadyExists
+			}
+		}
 		s.accountsByUserId[data.UserId] = append(accounts, data)
 	}
 
@@ -70,13 +75,22 @@ func (s *memory) GetAccountsByUserId(userId int64) ([]*financial.Account, error)
 	return nil, db.ErrNotFound
 }
 
-func (s *memory) CreateContributionByAccountId(accountId int64) (int64, error) {
+func (s *memory) CreateContributionByAccountId(accountId int64, data *financial.Contribution) (int64, error) {
 	s.contributionId++
 
 	if _, ok := s.contributionsByAccountId[accountId]; ok {
 		return 0, db.ErrAlreadyExists
 	}
 
-	s.contributionsByAccountId[accountId] = true
+	data.Id = s.contributionId
+	s.contributionsByAccountId[accountId] = data
 	return s.contributionId, nil
+}
+
+func (s *memory) GetContributionByAccountId(accountId int64) (*financial.Contribution, error) {
+	contribution, ok := s.contributionsByAccountId[accountId]
+	if !ok {
+		return nil, db.ErrNotFound
+	}
+	return contribution, nil
 }

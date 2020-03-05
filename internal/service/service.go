@@ -73,6 +73,11 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 				Endpoint: s.postContribution,
 				Encoder:  kit.EncodeProtoResponse,
 			},
+			http.MethodGet: {
+				Decoder:  decodeGetContribution,
+				Endpoint: s.getContribution,
+				Encoder:  kit.EncodeProtoResponse,
+			},
 		},
 		endpointHealth: {
 			http.MethodGet: {

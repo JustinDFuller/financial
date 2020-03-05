@@ -35,7 +35,7 @@ func (s *service) postContribution(ctx context.Context, r interface{}) (interfac
 		}, http.StatusBadRequest), nil
 	}
 
-	id, err := s.db.CreateContributionByAccountId(req.Data.AccountId)
+	id, err := s.db.CreateContributionByAccountId(req.Data.AccountId, req.Data)
 	if err != nil {
 		return kit.NewProtoStatusResponse(&financial.Error{
 			Message: messageAlreadyExists,

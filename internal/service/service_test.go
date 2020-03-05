@@ -226,6 +226,63 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
+			name:       "POST /account already exists",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostAccountRequest{
+				Data: &financial.Account{
+					Name:    "Credit Card",
+					UserId:  2,
+					Balance: 3496.45,
+					Mode:    financial.Mode_DEBT,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageAlreadyExists,
+			},
+		},
+		{
+			name:       "POST /account bad request",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostAccountRequest{
+				Data: &financial.Account{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "POST /account missing name",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostAccountRequest{
+				Data: &financial.Account{
+					UserId: 1,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "POST /account missing data",
+			endpoint:   endpointAccount,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.PostAccountRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
 			name:       "GET /accounts",
 			endpoint:   endpointAccounts,
 			httpMethod: http.MethodGet,
@@ -357,6 +414,21 @@ func TestService(t *testing.T) {
 				Id:        1,
 				AccountId: 2,
 				Amount:    500,
+			},
+		},
+		{
+			name:       "GET /contribution not found",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusNotFound,
+			request: &financial.GetContributionRequest{
+				Data: &financial.GetContributionData{
+					AccountId: 2222,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageNotFound,
 			},
 		},
 	}
