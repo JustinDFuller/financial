@@ -102,28 +102,49 @@ paths:
         - in: body
           name: data
           schema:
-            $ref: '#/definitions/PostContributionData'
+            $ref: '#/definitions/Contribution'
       responses:
         201:
           description: OK
           schema:
-            $ref: '#/definitions/PostContributionResponse'
+           $ref: '#/definitions/PostContributionResponse'
+    get:
+      description: Get an account contribution.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/GetContributionData'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/Contribution'
 definitions:
   GetHealthResponse:
     type: object
     properties:
       Ok:
         type: boolean
-  PostContributionData: 
+  Contribution:
     type: object
     properties:
+      Id:
+        type: integer
+        format: int64
       AccountId:
         type: integer
         format: int64
       Amount:
         type: number
         format: double
-  PostContributionResponse:
+  GetContributionData:
+    type: object
+    properties:
+      AccountId:
+        type: integer
+        format: int64
+  PostContributionResponse: 
     type: object
     properties:
       Id:

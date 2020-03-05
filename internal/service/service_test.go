@@ -276,7 +276,7 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
 			request: &financial.PostContributionRequest{
-				Data: &financial.PostContributionData{
+				Data: &financial.Contribution{
 					AccountId: 2,
 					Amount:    500,
 				},
@@ -292,7 +292,7 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusCreated,
 			request: &financial.PostContributionRequest{
-				Data: &financial.PostContributionData{
+				Data: &financial.Contribution{
 					AccountId: 1,
 					Amount:    500,
 				},
@@ -308,7 +308,7 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.PostContributionRequest{
-				Data: &financial.PostContributionData{
+				Data: &financial.Contribution{
 					AccountId: 1,
 					Amount:    500,
 				},
@@ -335,11 +335,28 @@ func TestService(t *testing.T) {
 			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.PostContributionRequest{
-				Data: &financial.PostContributionData{},
+				Data: &financial.Contribution{},
 			},
 			response: &financial.Error{},
 			expected: &financial.Error{
 				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /contribution",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request: &financial.GetContributionRequest{
+				Data: &financial.GetContributionData{
+					AccountId: 2,
+				},
+			},
+			response: &financial.Contribution{},
+			expected: &financial.Contribution{
+				Id:        1,
+				AccountId: 2,
+				Amount:    500,
 			},
 		},
 	}

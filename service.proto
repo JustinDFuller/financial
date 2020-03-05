@@ -30,6 +30,12 @@ message CalculateResponse {
     Period Periods = 1;
 }
 
+message Contribution {
+    int64 AccountId = 1;
+    double Amount = 2;
+    int64 Id = 3;
+}
+
 message Error {
     string Message = 1;
 }
@@ -44,6 +50,14 @@ message GetAccountsRequest {
 
 message GetAccountsResponse {
     repeated Account Accounts = 1;
+}
+
+message GetContributionData {
+    int64 AccountId = 1;
+}
+
+message GetContributionRequest {
+    GetContributionData data = 1;
 }
 
 message GetHealthRequest {
@@ -76,13 +90,8 @@ message PostAccountResponse {
     int64 Id = 1;
 }
 
-message PostContributionData {
-    int64 AccountId = 1;
-    double Amount = 2;
-}
-
 message PostContributionRequest {
-    PostContributionData data = 1;
+    Contribution data = 1;
 }
 
 message PostContributionResponse {
@@ -105,6 +114,9 @@ message UserResponse {
 service FinancialPlanningCalculatorService {
     // Get accounts
     rpc GetAccounts(GetAccountsRequest) returns (GetAccountsResponse) {}
+
+    // Get an account contribution.
+    rpc GetContribution(GetContributionRequest) returns (Contribution) {}
 
     // Health Check
     rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
