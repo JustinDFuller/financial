@@ -13,80 +13,8 @@ import (
 	"github.com/justindfuller/financial"
 )
 
-func httpRequest(server *kit.Server, endpoint, httpMethod string, data []byte, headers map[string]string) (*http.Response, []byte, error) {
-	r, err := http.NewRequest(httpMethod, endpoint, bytes.NewReader(data))
-	if err != nil {
-		return nil, nil, err
-	}
-
-	if headers != nil {
-		for key, val := range headers {
-			r.Header.Add(key, val)
-		}
-	}
-
-	w := httptest.NewRecorder()
-	server.ServeHTTP(w, r)
-	body, err := ioutil.ReadAll(w.Result().Body)
-	if err != nil {
-		return nil, nil, fmt.Errorf("Unable to read body. %w", err)
-	}
-
-	return w.Result(), body, nil
-}
-
-func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message, requestHeaders map[string]string) (*http.Response, error) {
-	data, err := proto.Marshal(request)
-	if err != nil {
-		return nil, err
-	}
-
-	result, body, err := httpRequest(server, endpoint, httpMethod, data, requestHeaders)
-	if err != nil {
-		return nil, fmt.Errorf("Error making http request. %w", err)
-	}
-
-	err = proto.Unmarshal(body, response)
-	if err != nil {
-		return nil, fmt.Errorf("Error unmarshaling proto response. %w", err)
-	}
-
-	return result, nil
-}
-
-type test struct {
-	name            string
-	endpoint        string
-	httpMethod      string
-	statusCode      int
-	request         proto.Message
-	response        proto.Message
-	expected        proto.Message
-	requestHeaders  map[string]string
-	responseHeaders map[string]string
-}
-
 func TestService(t *testing.T) {
-	server := kit.NewServer(New())
-
 	tests := []*test{
-		{
-			name:       "GET /health",
-			endpoint:   endpointHealth,
-			httpMethod: http.MethodGet,
-			statusCode: http.StatusOK,
-			request:    &financial.GetHealthRequest{},
-			response:   &financial.GetHealthResponse{},
-			expected: &financial.GetHealthResponse{
-				Ok: true,
-			},
-			requestHeaders: map[string]string{
-				"origin": "https://financial-calculator.glitch.me",
-			},
-			responseHeaders: map[string]string{
-				"Access-Control-Allow-Origin": "https://financial-calculator.glitch.me",
-			},
-		},
 		{
 			name:       "/POST user",
 			endpoint:   endpointUser,
@@ -185,6 +113,30 @@ func TestService(t *testing.T) {
 			response: &financial.Error{},
 			expected: &financial.Error{
 				Message: messageNotFound,
+			},
+		},
+		{
+			name:       "GET /user missing id",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request: &financial.GetUserRequest{
+				Data: &financial.GetUserData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /user missing data",
+			endpoint:   endpointUser,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.GetUserRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
 			},
 		},
 		{
@@ -429,7 +381,49 @@ func TestService(t *testing.T) {
 				Message: messageNotFound,
 			},
 		},
+		{
+			name:       "GET /contribution missing account id",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request: &financial.GetContributionRequest{
+				Data: &financial.GetContributionData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /contribution missing data",
+			endpoint:   endpointContribution,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.GetContributionRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
 	}
+
+	runTests(t, tests)
+}
+
+type test struct {
+	name            string
+	endpoint        string
+	httpMethod      string
+	statusCode      int
+	request         proto.Message
+	response        proto.Message
+	expected        proto.Message
+	requestHeaders  map[string]string
+	responseHeaders map[string]string
+}
+
+func runTests(t *testing.T, tests []*test) {
+	server := kit.NewServer(New())
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -450,4 +444,45 @@ func TestService(t *testing.T) {
 			}
 		})
 	}
+}
+
+func httpRequest(server *kit.Server, endpoint, httpMethod string, data []byte, headers map[string]string) (*http.Response, []byte, error) {
+	r, err := http.NewRequest(httpMethod, endpoint, bytes.NewReader(data))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if headers != nil {
+		for key, val := range headers {
+			r.Header.Add(key, val)
+		}
+	}
+
+	w := httptest.NewRecorder()
+	server.ServeHTTP(w, r)
+	body, err := ioutil.ReadAll(w.Result().Body)
+	if err != nil {
+		return nil, nil, fmt.Errorf("Unable to read body. %w", err)
+	}
+
+	return w.Result(), body, nil
+}
+
+func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message, requestHeaders map[string]string) (*http.Response, error) {
+	data, err := proto.Marshal(request)
+	if err != nil {
+		return nil, err
+	}
+
+	result, body, err := httpRequest(server, endpoint, httpMethod, data, requestHeaders)
+	if err != nil {
+		return nil, fmt.Errorf("Error making http request. %w", err)
+	}
+
+	err = proto.Unmarshal(body, response)
+	if err != nil {
+		return nil, fmt.Errorf("Error unmarshaling proto response. %w", err)
+	}
+
+	return result, nil
 }

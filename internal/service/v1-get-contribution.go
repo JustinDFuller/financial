@@ -30,6 +30,13 @@ func decodeGetContribution(ctx context.Context, req *http.Request) (interface{},
 func (s *service) getContribution(ctx context.Context, r interface{}) (interface{}, error) {
 	req := r.(*financial.GetContributionRequest)
 
+	if req.Data == nil || req.Data.AccountId == 0 {
+		return kit.NewProtoStatusResponse(&financial.Error{
+			Message: messageInvalidEntity,
+		}, http.StatusBadRequest), nil
+
+	}
+
 	contribution, err := s.db.GetContributionByAccountId(req.Data.AccountId)
 	if err != nil {
 		return kit.NewProtoStatusResponse(&financial.Error{
