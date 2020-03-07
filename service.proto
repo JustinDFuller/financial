@@ -60,6 +60,18 @@ message GetContributionRequest {
     GetContributionData data = 1;
 }
 
+message GetGoalData {
+    int64 UserId = 1;
+}
+
+message GetGoalsRequest {
+    GetGoalData data = 1;
+}
+
+message GetGoalsResponse {
+    repeated Goal Goals = 1;
+}
+
 message GetHealthRequest {
     message DataMessage {}
 
@@ -76,6 +88,14 @@ message GetUserData {
 
 message GetUserRequest {
     GetUserData data = 1;
+}
+
+message Goal {
+    repeated int64 AccountIds = 1;
+    double Balance = 2;
+    int64 Id = 3;
+    string Name = 4;
+    int64 UserId = 5;
 }
 
 message Period {
@@ -95,6 +115,14 @@ message PostContributionRequest {
 }
 
 message PostContributionResponse {
+    int64 Id = 1;
+}
+
+message PostGoalRequest {
+    Goal data = 1;
+}
+
+message PostGoalResponse {
     int64 Id = 1;
 }
 
@@ -118,6 +146,9 @@ service FinancialPlanningCalculatorService {
     // Get an account contribution.
     rpc GetContribution(GetContributionRequest) returns (Contribution) {}
 
+    // Get all goals for a user.
+    rpc GetGoals(GetGoalsRequest) returns (GetGoalsResponse) {}
+
     // Health Check
     rpc GetHealth(GetHealthRequest) returns (GetHealthResponse) {}
 
@@ -132,6 +163,9 @@ service FinancialPlanningCalculatorService {
 
     // Create an account contribution.
     rpc PostContribution(PostContributionRequest) returns (PostContributionResponse) {}
+
+    // Create a goal.
+    rpc PostGoal(PostGoalRequest) returns (PostGoalResponse) {}
 
     // Create a new user.
     rpc PostUser(PostUserRequest) returns (UserResponse) {}

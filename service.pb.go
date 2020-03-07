@@ -468,6 +468,123 @@ func (m *GetContributionRequest) GetData() *GetContributionData {
 	return nil
 }
 
+type GetGoalData struct {
+	UserId               int64    `protobuf:"varint,1,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetGoalData) Reset()         { *m = GetGoalData{} }
+func (m *GetGoalData) String() string { return proto.CompactTextString(m) }
+func (*GetGoalData) ProtoMessage()    {}
+func (*GetGoalData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{9}
+}
+
+func (m *GetGoalData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetGoalData.Unmarshal(m, b)
+}
+func (m *GetGoalData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetGoalData.Marshal(b, m, deterministic)
+}
+func (m *GetGoalData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetGoalData.Merge(m, src)
+}
+func (m *GetGoalData) XXX_Size() int {
+	return xxx_messageInfo_GetGoalData.Size(m)
+}
+func (m *GetGoalData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetGoalData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetGoalData proto.InternalMessageInfo
+
+func (m *GetGoalData) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+type GetGoalsRequest struct {
+	Data                 *GetGoalData `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *GetGoalsRequest) Reset()         { *m = GetGoalsRequest{} }
+func (m *GetGoalsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetGoalsRequest) ProtoMessage()    {}
+func (*GetGoalsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{10}
+}
+
+func (m *GetGoalsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetGoalsRequest.Unmarshal(m, b)
+}
+func (m *GetGoalsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetGoalsRequest.Marshal(b, m, deterministic)
+}
+func (m *GetGoalsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetGoalsRequest.Merge(m, src)
+}
+func (m *GetGoalsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetGoalsRequest.Size(m)
+}
+func (m *GetGoalsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetGoalsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetGoalsRequest proto.InternalMessageInfo
+
+func (m *GetGoalsRequest) GetData() *GetGoalData {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type GetGoalsResponse struct {
+	Goals                []*Goal  `protobuf:"bytes,1,rep,name=Goals,proto3" json:"Goals,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetGoalsResponse) Reset()         { *m = GetGoalsResponse{} }
+func (m *GetGoalsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetGoalsResponse) ProtoMessage()    {}
+func (*GetGoalsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{11}
+}
+
+func (m *GetGoalsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetGoalsResponse.Unmarshal(m, b)
+}
+func (m *GetGoalsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetGoalsResponse.Marshal(b, m, deterministic)
+}
+func (m *GetGoalsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetGoalsResponse.Merge(m, src)
+}
+func (m *GetGoalsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetGoalsResponse.Size(m)
+}
+func (m *GetGoalsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetGoalsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetGoalsResponse proto.InternalMessageInfo
+
+func (m *GetGoalsResponse) GetGoals() []*Goal {
+	if m != nil {
+		return m.Goals
+	}
+	return nil
+}
+
 type GetHealthRequest struct {
 	Data                 *GetHealthRequest_DataMessage `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
@@ -479,7 +596,7 @@ func (m *GetHealthRequest) Reset()         { *m = GetHealthRequest{} }
 func (m *GetHealthRequest) String() string { return proto.CompactTextString(m) }
 func (*GetHealthRequest) ProtoMessage()    {}
 func (*GetHealthRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{9}
+	return fileDescriptor_a0b84a42fa06f626, []int{12}
 }
 
 func (m *GetHealthRequest) XXX_Unmarshal(b []byte) error {
@@ -517,7 +634,7 @@ func (m *GetHealthRequest_DataMessage) Reset()         { *m = GetHealthRequest_D
 func (m *GetHealthRequest_DataMessage) String() string { return proto.CompactTextString(m) }
 func (*GetHealthRequest_DataMessage) ProtoMessage()    {}
 func (*GetHealthRequest_DataMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{9, 0}
+	return fileDescriptor_a0b84a42fa06f626, []int{12, 0}
 }
 
 func (m *GetHealthRequest_DataMessage) XXX_Unmarshal(b []byte) error {
@@ -549,7 +666,7 @@ func (m *GetHealthResponse) Reset()         { *m = GetHealthResponse{} }
 func (m *GetHealthResponse) String() string { return proto.CompactTextString(m) }
 func (*GetHealthResponse) ProtoMessage()    {}
 func (*GetHealthResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{10}
+	return fileDescriptor_a0b84a42fa06f626, []int{13}
 }
 
 func (m *GetHealthResponse) XXX_Unmarshal(b []byte) error {
@@ -588,7 +705,7 @@ func (m *GetUserData) Reset()         { *m = GetUserData{} }
 func (m *GetUserData) String() string { return proto.CompactTextString(m) }
 func (*GetUserData) ProtoMessage()    {}
 func (*GetUserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{11}
+	return fileDescriptor_a0b84a42fa06f626, []int{14}
 }
 
 func (m *GetUserData) XXX_Unmarshal(b []byte) error {
@@ -627,7 +744,7 @@ func (m *GetUserRequest) Reset()         { *m = GetUserRequest{} }
 func (m *GetUserRequest) String() string { return proto.CompactTextString(m) }
 func (*GetUserRequest) ProtoMessage()    {}
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{12}
+	return fileDescriptor_a0b84a42fa06f626, []int{15}
 }
 
 func (m *GetUserRequest) XXX_Unmarshal(b []byte) error {
@@ -655,6 +772,77 @@ func (m *GetUserRequest) GetData() *GetUserData {
 	return nil
 }
 
+type Goal struct {
+	AccountIds           []int64  `protobuf:"varint,1,rep,packed,name=AccountIds,proto3" json:"AccountIds,omitempty"`
+	Balance              float64  `protobuf:"fixed64,2,opt,name=Balance,proto3" json:"Balance,omitempty"`
+	Id                   int64    `protobuf:"varint,3,opt,name=Id,proto3" json:"Id,omitempty"`
+	Name                 string   `protobuf:"bytes,4,opt,name=Name,proto3" json:"Name,omitempty"`
+	UserId               int64    `protobuf:"varint,5,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Goal) Reset()         { *m = Goal{} }
+func (m *Goal) String() string { return proto.CompactTextString(m) }
+func (*Goal) ProtoMessage()    {}
+func (*Goal) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{16}
+}
+
+func (m *Goal) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Goal.Unmarshal(m, b)
+}
+func (m *Goal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Goal.Marshal(b, m, deterministic)
+}
+func (m *Goal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Goal.Merge(m, src)
+}
+func (m *Goal) XXX_Size() int {
+	return xxx_messageInfo_Goal.Size(m)
+}
+func (m *Goal) XXX_DiscardUnknown() {
+	xxx_messageInfo_Goal.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Goal proto.InternalMessageInfo
+
+func (m *Goal) GetAccountIds() []int64 {
+	if m != nil {
+		return m.AccountIds
+	}
+	return nil
+}
+
+func (m *Goal) GetBalance() float64 {
+	if m != nil {
+		return m.Balance
+	}
+	return 0
+}
+
+func (m *Goal) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *Goal) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Goal) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
 type Period struct {
 	Accounts             *Account `protobuf:"bytes,1,opt,name=Accounts,proto3" json:"Accounts,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -666,7 +854,7 @@ func (m *Period) Reset()         { *m = Period{} }
 func (m *Period) String() string { return proto.CompactTextString(m) }
 func (*Period) ProtoMessage()    {}
 func (*Period) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{13}
+	return fileDescriptor_a0b84a42fa06f626, []int{17}
 }
 
 func (m *Period) XXX_Unmarshal(b []byte) error {
@@ -705,7 +893,7 @@ func (m *PostAccountRequest) Reset()         { *m = PostAccountRequest{} }
 func (m *PostAccountRequest) String() string { return proto.CompactTextString(m) }
 func (*PostAccountRequest) ProtoMessage()    {}
 func (*PostAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{14}
+	return fileDescriptor_a0b84a42fa06f626, []int{18}
 }
 
 func (m *PostAccountRequest) XXX_Unmarshal(b []byte) error {
@@ -744,7 +932,7 @@ func (m *PostAccountResponse) Reset()         { *m = PostAccountResponse{} }
 func (m *PostAccountResponse) String() string { return proto.CompactTextString(m) }
 func (*PostAccountResponse) ProtoMessage()    {}
 func (*PostAccountResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{15}
+	return fileDescriptor_a0b84a42fa06f626, []int{19}
 }
 
 func (m *PostAccountResponse) XXX_Unmarshal(b []byte) error {
@@ -783,7 +971,7 @@ func (m *PostContributionRequest) Reset()         { *m = PostContributionRequest
 func (m *PostContributionRequest) String() string { return proto.CompactTextString(m) }
 func (*PostContributionRequest) ProtoMessage()    {}
 func (*PostContributionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{16}
+	return fileDescriptor_a0b84a42fa06f626, []int{20}
 }
 
 func (m *PostContributionRequest) XXX_Unmarshal(b []byte) error {
@@ -822,7 +1010,7 @@ func (m *PostContributionResponse) Reset()         { *m = PostContributionRespon
 func (m *PostContributionResponse) String() string { return proto.CompactTextString(m) }
 func (*PostContributionResponse) ProtoMessage()    {}
 func (*PostContributionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{17}
+	return fileDescriptor_a0b84a42fa06f626, []int{21}
 }
 
 func (m *PostContributionResponse) XXX_Unmarshal(b []byte) error {
@@ -850,6 +1038,84 @@ func (m *PostContributionResponse) GetId() int64 {
 	return 0
 }
 
+type PostGoalRequest struct {
+	Data                 *Goal    `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PostGoalRequest) Reset()         { *m = PostGoalRequest{} }
+func (m *PostGoalRequest) String() string { return proto.CompactTextString(m) }
+func (*PostGoalRequest) ProtoMessage()    {}
+func (*PostGoalRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{22}
+}
+
+func (m *PostGoalRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostGoalRequest.Unmarshal(m, b)
+}
+func (m *PostGoalRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostGoalRequest.Marshal(b, m, deterministic)
+}
+func (m *PostGoalRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostGoalRequest.Merge(m, src)
+}
+func (m *PostGoalRequest) XXX_Size() int {
+	return xxx_messageInfo_PostGoalRequest.Size(m)
+}
+func (m *PostGoalRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostGoalRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostGoalRequest proto.InternalMessageInfo
+
+func (m *PostGoalRequest) GetData() *Goal {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type PostGoalResponse struct {
+	Id                   int64    `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *PostGoalResponse) Reset()         { *m = PostGoalResponse{} }
+func (m *PostGoalResponse) String() string { return proto.CompactTextString(m) }
+func (*PostGoalResponse) ProtoMessage()    {}
+func (*PostGoalResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{23}
+}
+
+func (m *PostGoalResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_PostGoalResponse.Unmarshal(m, b)
+}
+func (m *PostGoalResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_PostGoalResponse.Marshal(b, m, deterministic)
+}
+func (m *PostGoalResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PostGoalResponse.Merge(m, src)
+}
+func (m *PostGoalResponse) XXX_Size() int {
+	return xxx_messageInfo_PostGoalResponse.Size(m)
+}
+func (m *PostGoalResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_PostGoalResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_PostGoalResponse proto.InternalMessageInfo
+
+func (m *PostGoalResponse) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
 type PostUserRequest struct {
 	Data                 *User    `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -861,7 +1127,7 @@ func (m *PostUserRequest) Reset()         { *m = PostUserRequest{} }
 func (m *PostUserRequest) String() string { return proto.CompactTextString(m) }
 func (*PostUserRequest) ProtoMessage()    {}
 func (*PostUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{18}
+	return fileDescriptor_a0b84a42fa06f626, []int{24}
 }
 
 func (m *PostUserRequest) XXX_Unmarshal(b []byte) error {
@@ -901,7 +1167,7 @@ func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{19}
+	return fileDescriptor_a0b84a42fa06f626, []int{25}
 }
 
 func (m *User) XXX_Unmarshal(b []byte) error {
@@ -947,7 +1213,7 @@ func (m *UserResponse) Reset()         { *m = UserResponse{} }
 func (m *UserResponse) String() string { return proto.CompactTextString(m) }
 func (*UserResponse) ProtoMessage()    {}
 func (*UserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{20}
+	return fileDescriptor_a0b84a42fa06f626, []int{26}
 }
 
 func (m *UserResponse) XXX_Unmarshal(b []byte) error {
@@ -986,16 +1252,22 @@ func init() {
 	proto.RegisterType((*GetAccountsResponse)(nil), "financialplanningcalculator.GetAccountsResponse")
 	proto.RegisterType((*GetContributionData)(nil), "financialplanningcalculator.GetContributionData")
 	proto.RegisterType((*GetContributionRequest)(nil), "financialplanningcalculator.GetContributionRequest")
+	proto.RegisterType((*GetGoalData)(nil), "financialplanningcalculator.GetGoalData")
+	proto.RegisterType((*GetGoalsRequest)(nil), "financialplanningcalculator.GetGoalsRequest")
+	proto.RegisterType((*GetGoalsResponse)(nil), "financialplanningcalculator.GetGoalsResponse")
 	proto.RegisterType((*GetHealthRequest)(nil), "financialplanningcalculator.GetHealthRequest")
 	proto.RegisterType((*GetHealthRequest_DataMessage)(nil), "financialplanningcalculator.GetHealthRequest.DataMessage")
 	proto.RegisterType((*GetHealthResponse)(nil), "financialplanningcalculator.GetHealthResponse")
 	proto.RegisterType((*GetUserData)(nil), "financialplanningcalculator.GetUserData")
 	proto.RegisterType((*GetUserRequest)(nil), "financialplanningcalculator.GetUserRequest")
+	proto.RegisterType((*Goal)(nil), "financialplanningcalculator.Goal")
 	proto.RegisterType((*Period)(nil), "financialplanningcalculator.Period")
 	proto.RegisterType((*PostAccountRequest)(nil), "financialplanningcalculator.PostAccountRequest")
 	proto.RegisterType((*PostAccountResponse)(nil), "financialplanningcalculator.PostAccountResponse")
 	proto.RegisterType((*PostContributionRequest)(nil), "financialplanningcalculator.PostContributionRequest")
 	proto.RegisterType((*PostContributionResponse)(nil), "financialplanningcalculator.PostContributionResponse")
+	proto.RegisterType((*PostGoalRequest)(nil), "financialplanningcalculator.PostGoalRequest")
+	proto.RegisterType((*PostGoalResponse)(nil), "financialplanningcalculator.PostGoalResponse")
 	proto.RegisterType((*PostUserRequest)(nil), "financialplanningcalculator.PostUserRequest")
 	proto.RegisterType((*User)(nil), "financialplanningcalculator.User")
 	proto.RegisterType((*UserResponse)(nil), "financialplanningcalculator.UserResponse")
@@ -1004,59 +1276,66 @@ func init() {
 func init() { proto.RegisterFile("service.proto", fileDescriptor_a0b84a42fa06f626) }
 
 var fileDescriptor_a0b84a42fa06f626 = []byte{
-	// 819 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0x5b, 0x4f, 0xdb, 0x48,
-	0x14, 0x8e, 0x43, 0xc8, 0xe5, 0x04, 0x42, 0x18, 0x56, 0xac, 0x15, 0x56, 0xab, 0x30, 0xec, 0x4a,
-	0x81, 0x52, 0x83, 0x42, 0x91, 0xda, 0xaa, 0x48, 0xdc, 0x52, 0x48, 0xa5, 0x04, 0x64, 0x52, 0x5a,
-	0xb5, 0x55, 0xa5, 0x21, 0x1e, 0x52, 0x0b, 0xc7, 0x4e, 0xed, 0x09, 0x12, 0x8f, 0xfd, 0x11, 0xfd,
-	0xab, 0x7d, 0xae, 0x3c, 0x9e, 0x31, 0x76, 0x08, 0x71, 0xe8, 0x5b, 0x8e, 0x73, 0xce, 0xf7, 0x7d,
-	0xe7, 0x6a, 0xc3, 0xbc, 0x47, 0xdd, 0x5b, 0xb3, 0x4b, 0xb5, 0x81, 0xeb, 0x30, 0x07, 0xad, 0x5c,
-	0x9b, 0x36, 0xb1, 0xbb, 0x26, 0xb1, 0x06, 0x16, 0xb1, 0x6d, 0xd3, 0xee, 0x75, 0x89, 0xd5, 0x1d,
-	0x5a, 0x84, 0x39, 0x6e, 0x65, 0xa5, 0xe7, 0x38, 0x3d, 0x8b, 0x6e, 0x71, 0xd7, 0xab, 0xe1, 0xf5,
-	0x16, 0xed, 0x0f, 0xd8, 0x5d, 0x10, 0x89, 0x7f, 0x29, 0x90, 0x3b, 0xe8, 0x76, 0x9d, 0xa1, 0xcd,
-	0xd0, 0x6b, 0x50, 0x0f, 0x0c, 0xa3, 0x69, 0x33, 0xea, 0x52, 0x8f, 0x35, 0x6e, 0xa9, 0x7b, 0xd7,
-	0x3e, 0xa7, 0xae, 0xe9, 0x18, 0x9e, 0xaa, 0x54, 0x95, 0xda, 0x8c, 0xfe, 0xe8, 0xff, 0x48, 0x85,
-	0xdc, 0x21, 0xb1, 0x88, 0xdd, 0xa5, 0x6a, 0xba, 0xaa, 0xd4, 0x14, 0x5d, 0x9a, 0xa8, 0x04, 0xe9,
-	0xa6, 0xa1, 0xce, 0xf0, 0xf8, 0x74, 0xd3, 0x40, 0x18, 0xe6, 0x24, 0x84, 0x4e, 0x18, 0x55, 0x33,
-	0xdc, 0x3d, 0xf6, 0x0c, 0xed, 0x42, 0xa6, 0xe5, 0x18, 0x54, 0x9d, 0xad, 0x2a, 0xb5, 0x52, 0x7d,
-	0x55, 0x9b, 0x90, 0x9e, 0xe6, 0x3b, 0xea, 0xdc, 0x1d, 0x21, 0xc8, 0xb4, 0x49, 0x9f, 0xaa, 0xd9,
-	0xaa, 0x52, 0x2b, 0xe8, 0xfc, 0x37, 0x5a, 0x86, 0xec, 0x7b, 0x8f, 0xba, 0x4d, 0x43, 0xcd, 0x71,
-	0x09, 0xc2, 0xc2, 0x3a, 0x2c, 0x1e, 0x09, 0x10, 0xaa, 0x53, 0x6f, 0xe0, 0xd8, 0x1e, 0x45, 0x7b,
-	0x90, 0x8b, 0x26, 0x5c, 0xac, 0xaf, 0x4d, 0xa4, 0x0e, 0x7c, 0x75, 0x19, 0x83, 0x3b, 0x30, 0x77,
-	0xe4, 0xd8, 0xcc, 0x35, 0xaf, 0x86, 0xcc, 0x74, 0x6c, 0xf4, 0x0f, 0x14, 0x44, 0x6d, 0x9b, 0x86,
-	0xa8, 0xe0, 0xfd, 0x03, 0x5f, 0xd9, 0x41, 0xdf, 0xff, 0x2d, 0x2a, 0x26, 0xac, 0xd1, 0x82, 0xe1,
-	0x55, 0x98, 0x6d, 0xb8, 0xae, 0xe3, 0xfa, 0x35, 0x6e, 0x51, 0xcf, 0x23, 0x3d, 0xca, 0xc1, 0x0a,
-	0xba, 0x34, 0xf1, 0x3a, 0x2c, 0x9c, 0x50, 0x26, 0xa0, 0xbd, 0x63, 0xc2, 0x48, 0x24, 0x6f, 0x25,
-	0x96, 0xf7, 0x25, 0xa0, 0x88, 0xab, 0x4e, 0xbf, 0x0f, 0xa9, 0xc7, 0xd0, 0x3e, 0x64, 0x0c, 0xc2,
-	0x88, 0xc8, 0x7a, 0x73, 0x62, 0xd6, 0x23, 0x4c, 0x3a, 0x8f, 0xc4, 0x1f, 0x60, 0x29, 0x86, 0x2b,
-	0x2a, 0xba, 0x0f, 0x79, 0xf9, 0x4c, 0x55, 0xaa, 0x33, 0xb5, 0x62, 0xfd, 0xbf, 0x89, 0xe0, 0xc2,
-	0x59, 0x0f, 0xa3, 0xf0, 0x0e, 0x07, 0x8e, 0xd6, 0x95, 0xe7, 0x37, 0xb1, 0xb6, 0xf8, 0x2b, 0x2c,
-	0x8f, 0x04, 0xc9, 0x4c, 0x8f, 0x63, 0x99, 0x6e, 0x27, 0x65, 0x3a, 0xca, 0x2b, 0xb2, 0x1d, 0x40,
-	0xf9, 0x84, 0xb2, 0x53, 0x4a, 0x2c, 0xf6, 0x4d, 0x22, 0xb7, 0x62, 0xc8, 0xaf, 0x92, 0x90, 0x63,
-	0xc1, 0x9a, 0x8f, 0x2d, 0xba, 0x19, 0x50, 0x54, 0xe6, 0xa1, 0x18, 0x79, 0x88, 0xd7, 0x60, 0x31,
-	0x12, 0x24, 0xaa, 0x5b, 0x82, 0xf4, 0xd9, 0x0d, 0x27, 0xcc, 0xeb, 0xe9, 0xb3, 0x1b, 0xbc, 0x06,
-	0xc5, 0x13, 0xca, 0xfc, 0x4e, 0xf3, 0x1a, 0xfd, 0x05, 0xb3, 0x8d, 0x3e, 0x31, 0x2d, 0x31, 0x2e,
-	0x81, 0x81, 0xdb, 0x50, 0x12, 0x4e, 0x52, 0xf9, 0x9b, 0x98, 0xf2, 0x5a, 0x92, 0x72, 0x89, 0x2f,
-	0x6a, 0xf1, 0x0e, 0xb2, 0xc1, 0x02, 0x8c, 0x34, 0x5b, 0xf9, 0x83, 0x66, 0xb7, 0x01, 0x9d, 0x3b,
-	0x9e, 0x1c, 0x23, 0xa9, 0xef, 0x65, 0x4c, 0xdf, 0x74, 0x98, 0x81, 0xb6, 0xff, 0x61, 0x29, 0x86,
-	0x77, 0x5f, 0xb7, 0x70, 0x6a, 0xfc, 0x15, 0xfb, 0x08, 0x7f, 0xfb, 0x6e, 0xe3, 0xe6, 0x65, 0x2f,
-	0xc6, 0xbd, 0x3e, 0x91, 0x3b, 0x16, 0x1f, 0x08, 0xd8, 0x00, 0xf5, 0x21, 0xf2, 0x23, 0x2a, 0x4e,
-	0x61, 0xc1, 0xf7, 0x8d, 0x76, 0x66, 0x37, 0xc6, 0x3e, 0xf9, 0x10, 0xf2, 0xb8, 0x80, 0x75, 0x13,
-	0x32, 0xbe, 0x35, 0x7e, 0x00, 0x04, 0x6f, 0x3a, 0xe4, 0xfd, 0x17, 0xe6, 0x02, 0xce, 0xf1, 0xba,
-	0x36, 0x56, 0x83, 0x6b, 0x8c, 0x16, 0xa0, 0xd8, 0x6c, 0x5f, 0x36, 0x2e, 0x3a, 0xad, 0x46, 0xbb,
-	0x73, 0x51, 0x4e, 0xa1, 0x3c, 0x64, 0x8e, 0x1b, 0x87, 0x9d, 0xb2, 0x52, 0xff, 0x99, 0x03, 0xfc,
-	0x56, 0x6a, 0x3b, 0x17, 0xda, 0x8e, 0x42, 0x6d, 0x17, 0xc1, 0xdb, 0x0a, 0xb9, 0x7c, 0x3e, 0x65,
-	0xb7, 0xd1, 0xd6, 0xb4, 0x77, 0x46, 0x94, 0xa3, 0xb2, 0x3d, 0x7d, 0x40, 0x90, 0x0b, 0x4e, 0x21,
-	0x8f, 0xdf, 0xc6, 0xd8, 0x5d, 0xde, 0x79, 0xca, 0xd6, 0x4b, 0xee, 0xe9, 0x5b, 0x8f, 0x53, 0xc8,
-	0x82, 0x42, 0xb8, 0xad, 0xe8, 0xf9, 0x93, 0x4e, 0x41, 0x45, 0x9b, 0xd6, 0x3d, 0x4c, 0xf1, 0x33,
-	0xe4, 0xc4, 0x5a, 0xa2, 0x67, 0xd3, 0x2c, 0xaf, 0x64, 0x4a, 0x9e, 0x27, 0x9c, 0x42, 0x5f, 0xf8,
-	0xa9, 0xf3, 0x8d, 0xf0, 0x7d, 0x89, 0x96, 0xb5, 0xe0, 0x9b, 0x42, 0x93, 0xdf, 0x14, 0x5a, 0xc3,
-	0xff, 0xa6, 0x48, 0x90, 0xfe, 0xe0, 0x7d, 0x8b, 0x53, 0xfe, 0x44, 0x44, 0x16, 0x34, 0x61, 0x22,
-	0x1e, 0x9e, 0x86, 0x84, 0x89, 0x18, 0xb3, 0xfb, 0x38, 0x85, 0x7e, 0x28, 0x50, 0x1e, 0x5d, 0x4a,
-	0xf4, 0x22, 0x11, 0x68, 0xdc, 0x50, 0xec, 0x3e, 0x31, 0x2a, 0xd4, 0x40, 0x21, 0x2f, 0x77, 0x1d,
-	0x6d, 0x26, 0x82, 0x44, 0x9b, 0xb6, 0x9e, 0x7c, 0x04, 0x42, 0x9a, 0xc3, 0xe2, 0xa7, 0x42, 0xe8,
-	0x7d, 0x95, 0xe5, 0xdd, 0xda, 0xf9, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x31, 0xdf, 0x19, 0x87, 0x3d,
-	0x0a, 0x00, 0x00,
+	// 934 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xef, 0x6f, 0xda, 0x46,
+	0x18, 0xc6, 0xc4, 0x04, 0x78, 0x49, 0x13, 0x7a, 0x9d, 0x32, 0x8b, 0x4e, 0x15, 0xb9, 0x6c, 0x12,
+	0xe9, 0x52, 0xa7, 0x22, 0x8b, 0xf6, 0x43, 0xab, 0xd4, 0xfc, 0x60, 0x29, 0x9b, 0x20, 0x91, 0xc3,
+	0xba, 0x69, 0x9b, 0x26, 0x5d, 0xf0, 0x95, 0x59, 0x35, 0x36, 0xb3, 0x4d, 0xa5, 0x4a, 0xfb, 0xb2,
+	0xbf, 0x77, 0xdf, 0xf7, 0xb9, 0xba, 0x5f, 0xc6, 0x26, 0xd4, 0x36, 0xf9, 0xc6, 0x1d, 0xef, 0xfb,
+	0x3e, 0xef, 0xfb, 0xf8, 0xb9, 0xe7, 0x0e, 0x1e, 0x84, 0x34, 0x78, 0xe7, 0x8c, 0xa9, 0x39, 0x0b,
+	0xfc, 0xc8, 0x47, 0x8f, 0xdf, 0x38, 0x1e, 0xf1, 0xc6, 0x0e, 0x71, 0x67, 0x2e, 0xf1, 0x3c, 0xc7,
+	0x9b, 0x8c, 0x89, 0x3b, 0x9e, 0xbb, 0x24, 0xf2, 0x83, 0xd6, 0xe3, 0x89, 0xef, 0x4f, 0x5c, 0x7a,
+	0xc4, 0x43, 0x6f, 0xe7, 0x6f, 0x8e, 0xe8, 0x74, 0x16, 0xbd, 0x17, 0x99, 0xf8, 0x7f, 0x0d, 0xaa,
+	0xa7, 0xe3, 0xb1, 0x3f, 0xf7, 0x22, 0xf4, 0x1d, 0x18, 0xa7, 0xb6, 0xdd, 0xf7, 0x22, 0x1a, 0xd0,
+	0x30, 0xea, 0xbd, 0xa3, 0xc1, 0xfb, 0xe1, 0x35, 0x0d, 0x1c, 0xdf, 0x0e, 0x0d, 0xad, 0xad, 0x75,
+	0x36, 0xac, 0x8f, 0xfe, 0x8f, 0x0c, 0xa8, 0x9e, 0x11, 0x97, 0x78, 0x63, 0x6a, 0x94, 0xdb, 0x5a,
+	0x47, 0xb3, 0xd4, 0x12, 0x6d, 0x43, 0xb9, 0x6f, 0x1b, 0x1b, 0x3c, 0xbf, 0xdc, 0xb7, 0x11, 0x86,
+	0x2d, 0x55, 0xc2, 0x22, 0x11, 0x35, 0x74, 0x1e, 0x9e, 0xda, 0x43, 0x27, 0xa0, 0x0f, 0x7c, 0x9b,
+	0x1a, 0x95, 0xb6, 0xd6, 0xd9, 0xee, 0xee, 0x99, 0x19, 0xe3, 0x99, 0x2c, 0xd0, 0xe2, 0xe1, 0x08,
+	0x81, 0x3e, 0x24, 0x53, 0x6a, 0x6c, 0xb6, 0xb5, 0x4e, 0xdd, 0xe2, 0xbf, 0xd1, 0x2e, 0x6c, 0xfe,
+	0x1c, 0xd2, 0xa0, 0x6f, 0x1b, 0x55, 0xde, 0x82, 0x5c, 0x61, 0x0b, 0x1e, 0x9e, 0xcb, 0x22, 0xd4,
+	0xa2, 0xe1, 0xcc, 0xf7, 0x42, 0x8a, 0x5e, 0x40, 0x35, 0x39, 0x70, 0xa3, 0xbb, 0x9f, 0x09, 0x2d,
+	0x62, 0x2d, 0x95, 0x83, 0x47, 0xb0, 0x75, 0xee, 0x7b, 0x51, 0xe0, 0xdc, 0xce, 0x23, 0xc7, 0xf7,
+	0xd0, 0x67, 0x50, 0x97, 0xdc, 0xf6, 0x6d, 0xc9, 0xe0, 0x62, 0x83, 0x75, 0x76, 0x3a, 0x65, 0xbf,
+	0x25, 0x63, 0x72, 0xb5, 0x4c, 0x18, 0xde, 0x83, 0x4a, 0x2f, 0x08, 0xfc, 0x80, 0x71, 0x3c, 0xa0,
+	0x61, 0x48, 0x26, 0x94, 0x17, 0xab, 0x5b, 0x6a, 0x89, 0x0f, 0x60, 0xe7, 0x92, 0x46, 0xb2, 0x74,
+	0x78, 0x41, 0x22, 0x92, 0x98, 0x5b, 0x4b, 0xcd, 0xfd, 0x1a, 0x50, 0x22, 0xd4, 0xa2, 0x7f, 0xcf,
+	0x69, 0x18, 0xa1, 0x97, 0xa0, 0xdb, 0x24, 0x22, 0x72, 0xea, 0xc3, 0xcc, 0xa9, 0x97, 0x90, 0x2c,
+	0x9e, 0x89, 0x7f, 0x81, 0x47, 0xa9, 0xba, 0x92, 0xd1, 0x97, 0x50, 0x53, 0x7b, 0x86, 0xd6, 0xde,
+	0xe8, 0x34, 0xba, 0x9f, 0x67, 0x16, 0x97, 0xc1, 0x56, 0x9c, 0x85, 0x8f, 0x79, 0xe1, 0x24, 0xaf,
+	0x7c, 0xbe, 0x4c, 0x6e, 0xf1, 0x9f, 0xb0, 0xbb, 0x94, 0xa4, 0x26, 0xbd, 0x48, 0x4d, 0xfa, 0x3c,
+	0x6f, 0xd2, 0x65, 0x5c, 0x39, 0xed, 0x17, 0xd0, 0xb8, 0xa4, 0xd1, 0xa5, 0x4f, 0xdc, 0x4c, 0xb2,
+	0xaf, 0xf8, 0x77, 0x61, 0x61, 0x31, 0xd3, 0xdf, 0xa7, 0xf0, 0x3b, 0x79, 0xf8, 0x0a, 0x42, 0xe2,
+	0xfe, 0x04, 0xcd, 0x45, 0x41, 0x49, 0xf1, 0xd7, 0x50, 0xe1, 0x1b, 0x92, 0xdf, 0xec, 0xd3, 0xc2,
+	0x22, 0x2d, 0x11, 0x8f, 0x67, 0xbc, 0xd8, 0x2b, 0x4a, 0xdc, 0xe8, 0x2f, 0xd5, 0xde, 0x20, 0xd5,
+	0xde, 0xb7, 0x79, 0xed, 0xa5, 0x92, 0x4d, 0xd6, 0xa8, 0x94, 0xa4, 0xe8, 0xb7, 0xf5, 0x00, 0x1a,
+	0x89, 0x4d, 0xbc, 0x0f, 0x0f, 0x13, 0x49, 0xb2, 0xff, 0x6d, 0x28, 0x5f, 0xbd, 0xe5, 0x80, 0x35,
+	0xab, 0x7c, 0xf5, 0x16, 0xef, 0x73, 0x6e, 0x19, 0x83, 0x9c, 0xdb, 0x4f, 0xa0, 0xd2, 0x9b, 0x12,
+	0xc7, 0x95, 0x9a, 0x17, 0x0b, 0x3c, 0x84, 0x6d, 0x19, 0x74, 0x4f, 0x62, 0x55, 0x7d, 0x49, 0xec,
+	0x3f, 0xa0, 0x33, 0x52, 0xd0, 0x13, 0x80, 0x58, 0x45, 0x82, 0xd1, 0x0d, 0x2b, 0xb1, 0xb3, 0x86,
+	0xcf, 0x29, 0x33, 0xd2, 0x57, 0x9a, 0x51, 0x25, 0xa5, 0x93, 0x1f, 0x61, 0x53, 0x78, 0xc8, 0xd2,
+	0x79, 0xd1, 0xee, 0x71, 0x5e, 0x86, 0x80, 0xae, 0xfd, 0x50, 0x9d, 0x44, 0xc5, 0xce, 0x37, 0x29,
+	0x76, 0x8a, 0xd5, 0x54, 0x52, 0x7f, 0x94, 0xaa, 0xb7, 0xf8, 0x6a, 0xb1, 0xdc, 0x99, 0x4b, 0xfd,
+	0x0a, 0x9f, 0xb2, 0xb0, 0x55, 0x47, 0xee, 0x45, 0x0a, 0xfb, 0x20, 0x13, 0x3b, 0x95, 0x2f, 0x1a,
+	0x78, 0x0a, 0xc6, 0xdd, 0xca, 0x1f, 0xe9, 0xe2, 0x15, 0xec, 0xb0, 0x58, 0xae, 0x72, 0x89, 0x7e,
+	0x92, 0x42, 0x2f, 0x70, 0x3a, 0x04, 0x2a, 0x86, 0xe6, 0xa2, 0x52, 0x36, 0x5a, 0x52, 0x85, 0xeb,
+	0xa0, 0xf1, 0x3c, 0x81, 0x76, 0x08, 0x3a, 0x5b, 0xad, 0x16, 0xbb, 0xc4, 0x2d, 0xc7, 0xb8, 0x4f,
+	0x60, 0x4b, 0x60, 0xae, 0xee, 0xeb, 0xe9, 0x9e, 0xb8, 0x3e, 0xd1, 0x0e, 0x34, 0xfa, 0xc3, 0xd7,
+	0xbd, 0x9b, 0xd1, 0xa0, 0x37, 0x1c, 0xdd, 0x34, 0x4b, 0xa8, 0x06, 0xfa, 0x45, 0xef, 0x6c, 0xd4,
+	0xd4, 0xba, 0xff, 0xd5, 0x00, 0xff, 0xa0, 0x7a, 0xbb, 0x96, 0xbd, 0x9d, 0xc7, 0xbd, 0xdd, 0x88,
+	0xe7, 0x05, 0x0a, 0xf8, 0x59, 0x54, 0xda, 0x42, 0x47, 0x45, 0x2f, 0x06, 0x49, 0x47, 0xeb, 0x79,
+	0xf1, 0x04, 0x31, 0x0b, 0x2e, 0xa1, 0x90, 0x9b, 0x66, 0xea, 0x22, 0x3d, 0x5e, 0xc7, 0xa6, 0x15,
+	0x76, 0x71, 0xa1, 0xe1, 0x12, 0x72, 0xa0, 0xa6, 0x8c, 0x15, 0x1d, 0x16, 0x31, 0xe5, 0x78, 0xc4,
+	0x67, 0x05, 0xa3, 0xe3, 0xf9, 0x5c, 0xa8, 0xc7, 0x26, 0x88, 0x9e, 0xad, 0xe5, 0xb0, 0x2d, 0xb3,
+	0x68, 0x78, 0x8c, 0xf6, 0x3b, 0x54, 0xa5, 0xdb, 0xa1, 0x2f, 0x8b, 0x78, 0xa2, 0x42, 0xca, 0x97,
+	0x2e, 0x2e, 0xa1, 0x3f, 0xf8, 0x0d, 0xc2, 0x16, 0xf1, 0x5b, 0x0a, 0xed, 0x9a, 0xe2, 0xbd, 0x69,
+	0xaa, 0xf7, 0xa6, 0xd9, 0x63, 0xef, 0xcd, 0x9c, 0xd6, 0xef, 0xbc, 0xc5, 0x70, 0x89, 0x89, 0x2f,
+	0xe1, 0x3c, 0x39, 0xe2, 0xbb, 0xeb, 0x79, 0x39, 0xe2, 0x5b, 0x61, 0x6a, 0xb8, 0x84, 0xfe, 0xd5,
+	0xc4, 0xb9, 0x4f, 0xc9, 0xef, 0xab, 0xdc, 0x42, 0xab, 0xf4, 0x77, 0xb2, 0x66, 0x56, 0xdc, 0x83,
+	0x03, 0x35, 0x65, 0x3d, 0x39, 0x5a, 0x5c, 0xf2, 0xba, 0x1c, 0x2d, 0x2e, 0xfb, 0x19, 0x2e, 0x21,
+	0x2a, 0xa0, 0xb8, 0x3c, 0xf2, 0xa1, 0x92, 0xfa, 0x38, 0xc8, 0xb7, 0xb6, 0x18, 0xe6, 0xac, 0xf1,
+	0x5b, 0x3d, 0x8e, 0xbe, 0xdd, 0xe4, 0xc2, 0x38, 0xfe, 0x10, 0x00, 0x00, 0xff, 0xff, 0x99, 0x6b,
+	0x63, 0x9c, 0xc4, 0x0c, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1075,6 +1354,8 @@ type FinancialPlanningCalculatorServiceClient interface {
 	GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
 	// Get an account contribution.
 	GetContribution(ctx context.Context, in *GetContributionRequest, opts ...grpc.CallOption) (*Contribution, error)
+	// Get all goals for a user.
+	GetGoals(ctx context.Context, in *GetGoalsRequest, opts ...grpc.CallOption) (*GetGoalsResponse, error)
 	// Health Check
 	GetHealth(ctx context.Context, in *GetHealthRequest, opts ...grpc.CallOption) (*GetHealthResponse, error)
 	// Get a new user.
@@ -1085,6 +1366,8 @@ type FinancialPlanningCalculatorServiceClient interface {
 	PostAccount(ctx context.Context, in *PostAccountRequest, opts ...grpc.CallOption) (*PostAccountResponse, error)
 	// Create an account contribution.
 	PostContribution(ctx context.Context, in *PostContributionRequest, opts ...grpc.CallOption) (*PostContributionResponse, error)
+	// Create a goal.
+	PostGoal(ctx context.Context, in *PostGoalRequest, opts ...grpc.CallOption) (*PostGoalResponse, error)
 	// Create a new user.
 	PostUser(ctx context.Context, in *PostUserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 }
@@ -1109,6 +1392,15 @@ func (c *financialPlanningCalculatorServiceClient) GetAccounts(ctx context.Conte
 func (c *financialPlanningCalculatorServiceClient) GetContribution(ctx context.Context, in *GetContributionRequest, opts ...grpc.CallOption) (*Contribution, error) {
 	out := new(Contribution)
 	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetContribution", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialPlanningCalculatorServiceClient) GetGoals(ctx context.Context, in *GetGoalsRequest, opts ...grpc.CallOption) (*GetGoalsResponse, error) {
+	out := new(GetGoalsResponse)
+	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetGoals", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1160,6 +1452,15 @@ func (c *financialPlanningCalculatorServiceClient) PostContribution(ctx context.
 	return out, nil
 }
 
+func (c *financialPlanningCalculatorServiceClient) PostGoal(ctx context.Context, in *PostGoalRequest, opts ...grpc.CallOption) (*PostGoalResponse, error) {
+	out := new(PostGoalResponse)
+	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/PostGoal", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *financialPlanningCalculatorServiceClient) PostUser(ctx context.Context, in *PostUserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
 	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/PostUser", in, out, opts...)
@@ -1175,6 +1476,8 @@ type FinancialPlanningCalculatorServiceServer interface {
 	GetAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
 	// Get an account contribution.
 	GetContribution(context.Context, *GetContributionRequest) (*Contribution, error)
+	// Get all goals for a user.
+	GetGoals(context.Context, *GetGoalsRequest) (*GetGoalsResponse, error)
 	// Health Check
 	GetHealth(context.Context, *GetHealthRequest) (*GetHealthResponse, error)
 	// Get a new user.
@@ -1185,6 +1488,8 @@ type FinancialPlanningCalculatorServiceServer interface {
 	PostAccount(context.Context, *PostAccountRequest) (*PostAccountResponse, error)
 	// Create an account contribution.
 	PostContribution(context.Context, *PostContributionRequest) (*PostContributionResponse, error)
+	// Create a goal.
+	PostGoal(context.Context, *PostGoalRequest) (*PostGoalResponse, error)
 	// Create a new user.
 	PostUser(context.Context, *PostUserRequest) (*UserResponse, error)
 }
@@ -1198,6 +1503,9 @@ func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetAccounts(ctx co
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetContribution(ctx context.Context, req *GetContributionRequest) (*Contribution, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContribution not implemented")
+}
+func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetGoals(ctx context.Context, req *GetGoalsRequest) (*GetGoalsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGoals not implemented")
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetHealth(ctx context.Context, req *GetHealthRequest) (*GetHealthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetHealth not implemented")
@@ -1213,6 +1521,9 @@ func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostAccount(ctx co
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostContribution(ctx context.Context, req *PostContributionRequest) (*PostContributionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostContribution not implemented")
+}
+func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostGoal(ctx context.Context, req *PostGoalRequest) (*PostGoalResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostGoal not implemented")
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostUser(ctx context.Context, req *PostUserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostUser not implemented")
@@ -1254,6 +1565,24 @@ func _FinancialPlanningCalculatorService_GetContribution_Handler(srv interface{}
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialPlanningCalculatorServiceServer).GetContribution(ctx, req.(*GetContributionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialPlanningCalculatorService_GetGoals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGoalsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetGoals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/GetGoals",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetGoals(ctx, req.(*GetGoalsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1348,6 +1677,24 @@ func _FinancialPlanningCalculatorService_PostContribution_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinancialPlanningCalculatorService_PostGoal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostGoalRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialPlanningCalculatorServiceServer).PostGoal(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/PostGoal",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialPlanningCalculatorServiceServer).PostGoal(ctx, req.(*PostGoalRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FinancialPlanningCalculatorService_PostUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PostUserRequest)
 	if err := dec(in); err != nil {
@@ -1379,6 +1726,10 @@ var _FinancialPlanningCalculatorService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FinancialPlanningCalculatorService_GetContribution_Handler,
 		},
 		{
+			MethodName: "GetGoals",
+			Handler:    _FinancialPlanningCalculatorService_GetGoals_Handler,
+		},
+		{
 			MethodName: "GetHealth",
 			Handler:    _FinancialPlanningCalculatorService_GetHealth_Handler,
 		},
@@ -1397,6 +1748,10 @@ var _FinancialPlanningCalculatorService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PostContribution",
 			Handler:    _FinancialPlanningCalculatorService_PostContribution_Handler,
+		},
+		{
+			MethodName: "PostGoal",
+			Handler:    _FinancialPlanningCalculatorService_PostGoal_Handler,
 		},
 		{
 			MethodName: "PostUser",

@@ -120,12 +120,76 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Contribution'
+  /goal:
+    post:
+      description: Create a goal.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/Goal'
+      responses:
+        201:
+          description: OK
+          schema:
+           $ref: '#/definitions/PostGoalResponse'
+  /goals:
+    get:
+      description: Get all goals for a user.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/GetGoalData'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/GetGoalsResponse'
 definitions:
   GetHealthResponse:
     type: object
     properties:
       Ok:
         type: boolean
+  Goal:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+      UserId:
+        type: integer
+        format: int64
+      AccountIds:
+        type: array
+        items:
+          type: integer
+          format: int64
+      Name:
+        type: string
+      Balance:
+        type: number
+        format: double
+  PostGoalResponse:
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+  GetGoalData:
+    type: object
+    properties:
+      UserId:
+        type: integer
+        format: int64
+  GetGoalsResponse:
+    type: object
+    properties:
+      Goals:
+        type: array
+        items:
+          $ref: '#/definitions/Goal'
   Contribution:
     type: object
     properties:

@@ -1,15 +1,9 @@
 package service
 
 import (
-	"bytes"
-	"fmt"
-	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"testing"
 
-	"github.com/NYTimes/gizmo/server/kit"
-	"github.com/golang/protobuf/proto"
 	"github.com/justindfuller/financial"
 )
 
@@ -405,84 +399,156 @@ func TestService(t *testing.T) {
 				Message: messageInvalidEntity,
 			},
 		},
+		{
+			name:       "POST /goal debt free",
+			endpoint:   endpointGoal,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostGoalRequest{
+				Data: &financial.Goal{
+					Name:       "Debt Free",
+					UserId:     1,
+					AccountIds: []int64{1},
+					Balance:    0,
+				},
+			},
+			response: &financial.PostGoalResponse{},
+			expected: &financial.PostGoalResponse{
+				Id: 1,
+			},
+		},
+		{
+			name:       "POST /goal down payment",
+			endpoint:   endpointGoal,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusCreated,
+			request: &financial.PostGoalRequest{
+				Data: &financial.Goal{
+					Name:       "House down payment",
+					UserId:     1,
+					AccountIds: []int64{2},
+					Balance:    75000,
+				},
+			},
+			response: &financial.PostGoalResponse{},
+			expected: &financial.PostGoalResponse{
+				Id: 2,
+			},
+		},
+		{
+			name:       "POST /goal missing UserId",
+			endpoint:   endpointGoal,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostGoalRequest{
+				Data: &financial.Goal{
+					Name:       "House down payment",
+					AccountIds: []int64{2},
+					Balance:    75000,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "POST /goal missing data",
+			endpoint:   endpointGoal,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.PostGoalRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "POST /goal duplicate name",
+			endpoint:   endpointGoal,
+			httpMethod: http.MethodPost,
+			statusCode: http.StatusBadRequest,
+			request: &financial.PostGoalRequest{
+				Data: &financial.Goal{
+					Name:       "House down payment",
+					UserId:     1,
+					AccountIds: []int64{2},
+					Balance:    75000,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageAlreadyExists,
+			},
+		},
+		{
+			name:       "GET /goals",
+			endpoint:   endpointGoals,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request: &financial.GetGoalsRequest{
+				Data: &financial.GetGoalData{
+					UserId: 1,
+				},
+			},
+			response: &financial.GetGoalsResponse{},
+			expected: &financial.GetGoalsResponse{
+				Goals: []*financial.Goal{
+					{
+						Name:       "Debt Free",
+						UserId:     1,
+						AccountIds: []int64{1},
+						Balance:    0,
+					},
+					{
+						Name:       "House down payment",
+						UserId:     1,
+						AccountIds: []int64{2},
+						Balance:    75000,
+					},
+				},
+			},
+		},
+		{
+			name:       "GET /goals not found",
+			endpoint:   endpointGoals,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusNotFound,
+			request: &financial.GetGoalsRequest{
+				Data: &financial.GetGoalData{
+					UserId: 2,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageNotFound,
+			},
+		},
+		{
+			name:       "GET /goals missing UserId",
+			endpoint:   endpointGoals,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request: &financial.GetGoalsRequest{
+				Data: &financial.GetGoalData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /goals missing data",
+			endpoint:   endpointGoals,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.GetGoalsRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
 	}
 
 	runTests(t, tests)
-}
-
-type test struct {
-	name            string
-	endpoint        string
-	httpMethod      string
-	statusCode      int
-	request         proto.Message
-	response        proto.Message
-	expected        proto.Message
-	requestHeaders  map[string]string
-	responseHeaders map[string]string
-}
-
-func runTests(t *testing.T, tests []*test) {
-	server := kit.NewServer(New())
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			res, err := protoRequest(server, tc.endpoint, tc.httpMethod, tc.request, tc.response, tc.requestHeaders)
-			if err != nil {
-				t.Fatal("It should not return an error.", err)
-			}
-			if res.StatusCode != tc.statusCode {
-				t.Fatalf("It should return Status %d. Got %d.", tc.statusCode, res.StatusCode)
-			}
-			if !proto.Equal(tc.response, tc.expected) {
-				t.Fatal("It should return the expected response. \n Got:", tc.response, "\n Expected:", tc.expected)
-			}
-			for key, val := range tc.responseHeaders {
-				if got := res.Header.Get(key); got != val {
-					t.Fatalf("It should return the expected %s header. Wanted %s. Got %s.", key, val, got)
-				}
-			}
-		})
-	}
-}
-
-func httpRequest(server *kit.Server, endpoint, httpMethod string, data []byte, headers map[string]string) (*http.Response, []byte, error) {
-	r, err := http.NewRequest(httpMethod, endpoint, bytes.NewReader(data))
-	if err != nil {
-		return nil, nil, err
-	}
-
-	if headers != nil {
-		for key, val := range headers {
-			r.Header.Add(key, val)
-		}
-	}
-
-	w := httptest.NewRecorder()
-	server.ServeHTTP(w, r)
-	body, err := ioutil.ReadAll(w.Result().Body)
-	if err != nil {
-		return nil, nil, fmt.Errorf("Unable to read body. %w", err)
-	}
-
-	return w.Result(), body, nil
-}
-
-func protoRequest(server *kit.Server, endpoint, httpMethod string, request, response proto.Message, requestHeaders map[string]string) (*http.Response, error) {
-	data, err := proto.Marshal(request)
-	if err != nil {
-		return nil, err
-	}
-
-	result, body, err := httpRequest(server, endpoint, httpMethod, data, requestHeaders)
-	if err != nil {
-		return nil, fmt.Errorf("Error making http request. %w", err)
-	}
-
-	err = proto.Unmarshal(body, response)
-	if err != nil {
-		return nil, fmt.Errorf("Error unmarshaling proto response. %w", err)
-	}
-
-	return result, nil
 }

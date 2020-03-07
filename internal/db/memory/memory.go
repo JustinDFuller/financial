@@ -10,18 +10,26 @@ func New() db.Store {
 		accountsByUserId:         map[int64][]*financial.Account{},
 		usersByEmail:             map[string]*financial.User{},
 		contributionsByAccountId: map[int64]*financial.Contribution{},
+		goalsByUserId:            map[int64][]*financial.Goal{},
 	}
 }
 
 type memory struct {
-	accountId        int64
-	accountsByUserId map[int64][]*financial.Account
-
+	// User
 	userId       int64
 	usersByEmail map[string]*financial.User
 
+	// Account
+	accountId        int64
+	accountsByUserId map[int64][]*financial.Account
+
+	// Contribution
 	contributionId           int64
 	contributionsByAccountId map[int64]*financial.Contribution
+
+	// Goal
+	goalId        int64
+	goalsByUserId map[int64][]*financial.Goal
 }
 
 func (s *memory) CreateUserByEmail(email string) (int64, error) {
@@ -93,4 +101,29 @@ func (s *memory) GetContributionByAccountId(accountId int64) (*financial.Contrib
 		return nil, db.ErrNotFound
 	}
 	return contribution, nil
+}
+
+func (s *memory) CreateGoalByUserId(userId int64, data *financial.Goal) (int64, error) {
+	s.goalId++
+
+	if goals, ok := s.goalsByUserId[userId]; !ok {
+		s.goalsByUserId[userId] = []*financial.Goal{data}
+	} else {
+		for _, goal := range goals {
+			if goal.Name == data.Name {
+				return 0, db.ErrAlreadyExists
+			}
+		}
+		s.goalsByUserId[userId] = append(goals, data)
+	}
+
+	return s.goalId, nil
+}
+
+func (s *memory) GetGoalsByUserId(userId int64) ([]*financial.Goal, error) {
+	if goals, ok := s.goalsByUserId[userId]; !ok {
+		return nil, db.ErrNotFound
+	} else {
+		return goals, nil
+	}
 }

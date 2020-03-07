@@ -15,12 +15,14 @@ import (
 )
 
 const (
+	endpointHealth       = "/svc/v1/health"
 	endpointUser         = "/svc/v1/user"
 	endpointCalculate    = "/svc/v1/user/calculate"
 	endpointAccount      = "/svc/v1/account"
 	endpointAccounts     = "/svc/v1/accounts"
 	endpointContribution = "/svc/v1/contribution"
-	endpointHealth       = "/svc/v1/health"
+	endpointGoal         = "/svc/v1/goal"
+	endpointGoals        = "/svc/v1/goals"
 )
 
 func New() kit.Service {
@@ -35,6 +37,12 @@ type service struct {
 
 func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 	return map[string]map[string]kit.HTTPEndpoint{
+		endpointHealth: {
+			http.MethodGet: {
+				Endpoint: s.getHealth,
+				Encoder:  kit.EncodeProtoResponse,
+			},
+		},
 		endpointUser: {
 			http.MethodPost: {
 				Decoder:  decodePostUser,
@@ -79,9 +87,17 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
-		endpointHealth: {
+		endpointGoal: {
+			http.MethodPost: {
+				Decoder:  decodePostGoal,
+				Endpoint: s.postGoal,
+				Encoder:  kit.EncodeProtoResponse,
+			},
+		},
+		endpointGoals: {
 			http.MethodGet: {
-				Endpoint: s.getHealth,
+				Decoder:  decodeGetGoals,
+				Endpoint: s.getGoals,
 				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
