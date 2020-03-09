@@ -9,7 +9,10 @@ host: "localhost:3000"
 basePath: "/svc/v1"
 schemes:
 - "https"
-- "http"
+consumes:
+  - application/x-protobuf
+produces:
+  - application/x-protobuf
 paths:
   /health:
     get:
