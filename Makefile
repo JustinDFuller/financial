@@ -5,7 +5,7 @@ export GIZMO_SKIP_OBSERVE=true;
 proto:
 	@rm -f ./service.proto ./service.pb ./service.pb.go;
 	@openapi2proto -spec service.yaml -out ./service.proto;
-	@protoc --go_out=plugins=grpc:. ./service.proto;
+	@protoc --js_out=import_style=commonjs,binary:. --go_out=plugins=grpc:. ./service.proto;
 
 test: 
 	@goimports -w ./**/**/*.go;
