@@ -111,9 +111,10 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 		for _, account := range period.Accounts {
 			balance, _ := account.Balance.Float64()
 
-			fAccount := accountsByName[account.Name]
+			var fAccount financial.Account
+			fAccount = *accountsByName[account.Name]
 			fAccount.Balance = balance
-			fPeriod.Accounts = append(fPeriod.Accounts, fAccount)
+			fPeriod.Accounts = append(fPeriod.Accounts, &fAccount)
 		}
 
 		res.Periods = append(res.Periods, fPeriod)

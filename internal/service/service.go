@@ -59,6 +59,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 			http.MethodGet: {
 				Decoder:  decodeUserCalculate,
 				Endpoint: s.getUserCalculate,
+				Encoder:  kit.EncodeProtoResponse,
 			},
 		},
 		endpointAccount: {

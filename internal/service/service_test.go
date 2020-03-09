@@ -556,11 +556,48 @@ func TestService(t *testing.T) {
 			request: &financial.GetCalculateRequest{
 				Data: &financial.GetCalculateData{
 					UserId:  1,
-					Periods: 4,
+					Periods: 2,
 				},
 			},
 			response: &financial.GetCalculateResponse{},
-			expected: &financial.GetCalculateResponse{},
+			expected: &financial.GetCalculateResponse{
+				Periods: []*financial.Period{
+					{
+						Accounts: []*financial.Account{
+							{
+								Balance: 28085.45,
+								Id:      1,
+								Name:    "Savings",
+								UserId:  1,
+							},
+							{
+								Balance: 2996.45,
+								Id:      2,
+								Mode:    financial.Mode_DEBT,
+								Name:    "Credit Card",
+								UserId:  1,
+							},
+						},
+					},
+					{
+						Accounts: []*financial.Account{
+							{
+								Balance: 28585.45,
+								Id:      1,
+								Name:    "Savings",
+								UserId:  1,
+							},
+							{
+								Balance: 2496.45,
+								Id:      2,
+								Mode:    financial.Mode_DEBT,
+								Name:    "Credit Card",
+								UserId:  1,
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 
