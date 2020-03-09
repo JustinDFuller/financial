@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -140,45 +139,6 @@ func (m *Account) GetUserId() int64 {
 	return 0
 }
 
-type CalculateResponse struct {
-	Periods              *Period  `protobuf:"bytes,1,opt,name=Periods,proto3" json:"Periods,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *CalculateResponse) Reset()         { *m = CalculateResponse{} }
-func (m *CalculateResponse) String() string { return proto.CompactTextString(m) }
-func (*CalculateResponse) ProtoMessage()    {}
-func (*CalculateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{1}
-}
-
-func (m *CalculateResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CalculateResponse.Unmarshal(m, b)
-}
-func (m *CalculateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CalculateResponse.Marshal(b, m, deterministic)
-}
-func (m *CalculateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CalculateResponse.Merge(m, src)
-}
-func (m *CalculateResponse) XXX_Size() int {
-	return xxx_messageInfo_CalculateResponse.Size(m)
-}
-func (m *CalculateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CalculateResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_CalculateResponse proto.InternalMessageInfo
-
-func (m *CalculateResponse) GetPeriods() *Period {
-	if m != nil {
-		return m.Periods
-	}
-	return nil
-}
-
 type Contribution struct {
 	AccountId            int64    `protobuf:"varint,1,opt,name=AccountId,proto3" json:"AccountId,omitempty"`
 	Amount               float64  `protobuf:"fixed64,2,opt,name=Amount,proto3" json:"Amount,omitempty"`
@@ -192,7 +152,7 @@ func (m *Contribution) Reset()         { *m = Contribution{} }
 func (m *Contribution) String() string { return proto.CompactTextString(m) }
 func (*Contribution) ProtoMessage()    {}
 func (*Contribution) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{2}
+	return fileDescriptor_a0b84a42fa06f626, []int{1}
 }
 
 func (m *Contribution) XXX_Unmarshal(b []byte) error {
@@ -245,7 +205,7 @@ func (m *Error) Reset()         { *m = Error{} }
 func (m *Error) String() string { return proto.CompactTextString(m) }
 func (*Error) ProtoMessage()    {}
 func (*Error) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{3}
+	return fileDescriptor_a0b84a42fa06f626, []int{2}
 }
 
 func (m *Error) XXX_Unmarshal(b []byte) error {
@@ -284,7 +244,7 @@ func (m *GetAccountsData) Reset()         { *m = GetAccountsData{} }
 func (m *GetAccountsData) String() string { return proto.CompactTextString(m) }
 func (*GetAccountsData) ProtoMessage()    {}
 func (*GetAccountsData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{4}
+	return fileDescriptor_a0b84a42fa06f626, []int{3}
 }
 
 func (m *GetAccountsData) XXX_Unmarshal(b []byte) error {
@@ -323,7 +283,7 @@ func (m *GetAccountsRequest) Reset()         { *m = GetAccountsRequest{} }
 func (m *GetAccountsRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAccountsRequest) ProtoMessage()    {}
 func (*GetAccountsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{5}
+	return fileDescriptor_a0b84a42fa06f626, []int{4}
 }
 
 func (m *GetAccountsRequest) XXX_Unmarshal(b []byte) error {
@@ -362,7 +322,7 @@ func (m *GetAccountsResponse) Reset()         { *m = GetAccountsResponse{} }
 func (m *GetAccountsResponse) String() string { return proto.CompactTextString(m) }
 func (*GetAccountsResponse) ProtoMessage()    {}
 func (*GetAccountsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{6}
+	return fileDescriptor_a0b84a42fa06f626, []int{5}
 }
 
 func (m *GetAccountsResponse) XXX_Unmarshal(b []byte) error {
@@ -390,6 +350,131 @@ func (m *GetAccountsResponse) GetAccounts() []*Account {
 	return nil
 }
 
+type GetCalculateData struct {
+	Periods              int64    `protobuf:"varint,1,opt,name=Periods,proto3" json:"Periods,omitempty"`
+	UserId               int64    `protobuf:"varint,2,opt,name=UserId,proto3" json:"UserId,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCalculateData) Reset()         { *m = GetCalculateData{} }
+func (m *GetCalculateData) String() string { return proto.CompactTextString(m) }
+func (*GetCalculateData) ProtoMessage()    {}
+func (*GetCalculateData) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{6}
+}
+
+func (m *GetCalculateData) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCalculateData.Unmarshal(m, b)
+}
+func (m *GetCalculateData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCalculateData.Marshal(b, m, deterministic)
+}
+func (m *GetCalculateData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCalculateData.Merge(m, src)
+}
+func (m *GetCalculateData) XXX_Size() int {
+	return xxx_messageInfo_GetCalculateData.Size(m)
+}
+func (m *GetCalculateData) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCalculateData.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCalculateData proto.InternalMessageInfo
+
+func (m *GetCalculateData) GetPeriods() int64 {
+	if m != nil {
+		return m.Periods
+	}
+	return 0
+}
+
+func (m *GetCalculateData) GetUserId() int64 {
+	if m != nil {
+		return m.UserId
+	}
+	return 0
+}
+
+type GetCalculateRequest struct {
+	Data                 *GetCalculateData `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
+	XXX_unrecognized     []byte            `json:"-"`
+	XXX_sizecache        int32             `json:"-"`
+}
+
+func (m *GetCalculateRequest) Reset()         { *m = GetCalculateRequest{} }
+func (m *GetCalculateRequest) String() string { return proto.CompactTextString(m) }
+func (*GetCalculateRequest) ProtoMessage()    {}
+func (*GetCalculateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{7}
+}
+
+func (m *GetCalculateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCalculateRequest.Unmarshal(m, b)
+}
+func (m *GetCalculateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCalculateRequest.Marshal(b, m, deterministic)
+}
+func (m *GetCalculateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCalculateRequest.Merge(m, src)
+}
+func (m *GetCalculateRequest) XXX_Size() int {
+	return xxx_messageInfo_GetCalculateRequest.Size(m)
+}
+func (m *GetCalculateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCalculateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCalculateRequest proto.InternalMessageInfo
+
+func (m *GetCalculateRequest) GetData() *GetCalculateData {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type GetCalculateResponse struct {
+	Periods              []*Period `protobuf:"bytes,1,rep,name=Periods,proto3" json:"Periods,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *GetCalculateResponse) Reset()         { *m = GetCalculateResponse{} }
+func (m *GetCalculateResponse) String() string { return proto.CompactTextString(m) }
+func (*GetCalculateResponse) ProtoMessage()    {}
+func (*GetCalculateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a0b84a42fa06f626, []int{8}
+}
+
+func (m *GetCalculateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCalculateResponse.Unmarshal(m, b)
+}
+func (m *GetCalculateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCalculateResponse.Marshal(b, m, deterministic)
+}
+func (m *GetCalculateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCalculateResponse.Merge(m, src)
+}
+func (m *GetCalculateResponse) XXX_Size() int {
+	return xxx_messageInfo_GetCalculateResponse.Size(m)
+}
+func (m *GetCalculateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCalculateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCalculateResponse proto.InternalMessageInfo
+
+func (m *GetCalculateResponse) GetPeriods() []*Period {
+	if m != nil {
+		return m.Periods
+	}
+	return nil
+}
+
 type GetContributionData struct {
 	AccountId            int64    `protobuf:"varint,1,opt,name=AccountId,proto3" json:"AccountId,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -401,7 +486,7 @@ func (m *GetContributionData) Reset()         { *m = GetContributionData{} }
 func (m *GetContributionData) String() string { return proto.CompactTextString(m) }
 func (*GetContributionData) ProtoMessage()    {}
 func (*GetContributionData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{7}
+	return fileDescriptor_a0b84a42fa06f626, []int{9}
 }
 
 func (m *GetContributionData) XXX_Unmarshal(b []byte) error {
@@ -440,7 +525,7 @@ func (m *GetContributionRequest) Reset()         { *m = GetContributionRequest{}
 func (m *GetContributionRequest) String() string { return proto.CompactTextString(m) }
 func (*GetContributionRequest) ProtoMessage()    {}
 func (*GetContributionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{8}
+	return fileDescriptor_a0b84a42fa06f626, []int{10}
 }
 
 func (m *GetContributionRequest) XXX_Unmarshal(b []byte) error {
@@ -479,7 +564,7 @@ func (m *GetGoalData) Reset()         { *m = GetGoalData{} }
 func (m *GetGoalData) String() string { return proto.CompactTextString(m) }
 func (*GetGoalData) ProtoMessage()    {}
 func (*GetGoalData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{9}
+	return fileDescriptor_a0b84a42fa06f626, []int{11}
 }
 
 func (m *GetGoalData) XXX_Unmarshal(b []byte) error {
@@ -518,7 +603,7 @@ func (m *GetGoalsRequest) Reset()         { *m = GetGoalsRequest{} }
 func (m *GetGoalsRequest) String() string { return proto.CompactTextString(m) }
 func (*GetGoalsRequest) ProtoMessage()    {}
 func (*GetGoalsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{10}
+	return fileDescriptor_a0b84a42fa06f626, []int{12}
 }
 
 func (m *GetGoalsRequest) XXX_Unmarshal(b []byte) error {
@@ -557,7 +642,7 @@ func (m *GetGoalsResponse) Reset()         { *m = GetGoalsResponse{} }
 func (m *GetGoalsResponse) String() string { return proto.CompactTextString(m) }
 func (*GetGoalsResponse) ProtoMessage()    {}
 func (*GetGoalsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{11}
+	return fileDescriptor_a0b84a42fa06f626, []int{13}
 }
 
 func (m *GetGoalsResponse) XXX_Unmarshal(b []byte) error {
@@ -596,7 +681,7 @@ func (m *GetHealthRequest) Reset()         { *m = GetHealthRequest{} }
 func (m *GetHealthRequest) String() string { return proto.CompactTextString(m) }
 func (*GetHealthRequest) ProtoMessage()    {}
 func (*GetHealthRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{12}
+	return fileDescriptor_a0b84a42fa06f626, []int{14}
 }
 
 func (m *GetHealthRequest) XXX_Unmarshal(b []byte) error {
@@ -634,7 +719,7 @@ func (m *GetHealthRequest_DataMessage) Reset()         { *m = GetHealthRequest_D
 func (m *GetHealthRequest_DataMessage) String() string { return proto.CompactTextString(m) }
 func (*GetHealthRequest_DataMessage) ProtoMessage()    {}
 func (*GetHealthRequest_DataMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{12, 0}
+	return fileDescriptor_a0b84a42fa06f626, []int{14, 0}
 }
 
 func (m *GetHealthRequest_DataMessage) XXX_Unmarshal(b []byte) error {
@@ -666,7 +751,7 @@ func (m *GetHealthResponse) Reset()         { *m = GetHealthResponse{} }
 func (m *GetHealthResponse) String() string { return proto.CompactTextString(m) }
 func (*GetHealthResponse) ProtoMessage()    {}
 func (*GetHealthResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{13}
+	return fileDescriptor_a0b84a42fa06f626, []int{15}
 }
 
 func (m *GetHealthResponse) XXX_Unmarshal(b []byte) error {
@@ -705,7 +790,7 @@ func (m *GetUserData) Reset()         { *m = GetUserData{} }
 func (m *GetUserData) String() string { return proto.CompactTextString(m) }
 func (*GetUserData) ProtoMessage()    {}
 func (*GetUserData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{14}
+	return fileDescriptor_a0b84a42fa06f626, []int{16}
 }
 
 func (m *GetUserData) XXX_Unmarshal(b []byte) error {
@@ -744,7 +829,7 @@ func (m *GetUserRequest) Reset()         { *m = GetUserRequest{} }
 func (m *GetUserRequest) String() string { return proto.CompactTextString(m) }
 func (*GetUserRequest) ProtoMessage()    {}
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{15}
+	return fileDescriptor_a0b84a42fa06f626, []int{17}
 }
 
 func (m *GetUserRequest) XXX_Unmarshal(b []byte) error {
@@ -787,7 +872,7 @@ func (m *Goal) Reset()         { *m = Goal{} }
 func (m *Goal) String() string { return proto.CompactTextString(m) }
 func (*Goal) ProtoMessage()    {}
 func (*Goal) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{16}
+	return fileDescriptor_a0b84a42fa06f626, []int{18}
 }
 
 func (m *Goal) XXX_Unmarshal(b []byte) error {
@@ -844,17 +929,17 @@ func (m *Goal) GetUserId() int64 {
 }
 
 type Period struct {
-	Accounts             *Account `protobuf:"bytes,1,opt,name=Accounts,proto3" json:"Accounts,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Accounts             []*Account `protobuf:"bytes,1,rep,name=Accounts,proto3" json:"Accounts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
+	XXX_unrecognized     []byte     `json:"-"`
+	XXX_sizecache        int32      `json:"-"`
 }
 
 func (m *Period) Reset()         { *m = Period{} }
 func (m *Period) String() string { return proto.CompactTextString(m) }
 func (*Period) ProtoMessage()    {}
 func (*Period) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{17}
+	return fileDescriptor_a0b84a42fa06f626, []int{19}
 }
 
 func (m *Period) XXX_Unmarshal(b []byte) error {
@@ -875,7 +960,7 @@ func (m *Period) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Period proto.InternalMessageInfo
 
-func (m *Period) GetAccounts() *Account {
+func (m *Period) GetAccounts() []*Account {
 	if m != nil {
 		return m.Accounts
 	}
@@ -893,7 +978,7 @@ func (m *PostAccountRequest) Reset()         { *m = PostAccountRequest{} }
 func (m *PostAccountRequest) String() string { return proto.CompactTextString(m) }
 func (*PostAccountRequest) ProtoMessage()    {}
 func (*PostAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{18}
+	return fileDescriptor_a0b84a42fa06f626, []int{20}
 }
 
 func (m *PostAccountRequest) XXX_Unmarshal(b []byte) error {
@@ -932,7 +1017,7 @@ func (m *PostAccountResponse) Reset()         { *m = PostAccountResponse{} }
 func (m *PostAccountResponse) String() string { return proto.CompactTextString(m) }
 func (*PostAccountResponse) ProtoMessage()    {}
 func (*PostAccountResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{19}
+	return fileDescriptor_a0b84a42fa06f626, []int{21}
 }
 
 func (m *PostAccountResponse) XXX_Unmarshal(b []byte) error {
@@ -971,7 +1056,7 @@ func (m *PostContributionRequest) Reset()         { *m = PostContributionRequest
 func (m *PostContributionRequest) String() string { return proto.CompactTextString(m) }
 func (*PostContributionRequest) ProtoMessage()    {}
 func (*PostContributionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{20}
+	return fileDescriptor_a0b84a42fa06f626, []int{22}
 }
 
 func (m *PostContributionRequest) XXX_Unmarshal(b []byte) error {
@@ -1010,7 +1095,7 @@ func (m *PostContributionResponse) Reset()         { *m = PostContributionRespon
 func (m *PostContributionResponse) String() string { return proto.CompactTextString(m) }
 func (*PostContributionResponse) ProtoMessage()    {}
 func (*PostContributionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{21}
+	return fileDescriptor_a0b84a42fa06f626, []int{23}
 }
 
 func (m *PostContributionResponse) XXX_Unmarshal(b []byte) error {
@@ -1049,7 +1134,7 @@ func (m *PostGoalRequest) Reset()         { *m = PostGoalRequest{} }
 func (m *PostGoalRequest) String() string { return proto.CompactTextString(m) }
 func (*PostGoalRequest) ProtoMessage()    {}
 func (*PostGoalRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{22}
+	return fileDescriptor_a0b84a42fa06f626, []int{24}
 }
 
 func (m *PostGoalRequest) XXX_Unmarshal(b []byte) error {
@@ -1088,7 +1173,7 @@ func (m *PostGoalResponse) Reset()         { *m = PostGoalResponse{} }
 func (m *PostGoalResponse) String() string { return proto.CompactTextString(m) }
 func (*PostGoalResponse) ProtoMessage()    {}
 func (*PostGoalResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{23}
+	return fileDescriptor_a0b84a42fa06f626, []int{25}
 }
 
 func (m *PostGoalResponse) XXX_Unmarshal(b []byte) error {
@@ -1127,7 +1212,7 @@ func (m *PostUserRequest) Reset()         { *m = PostUserRequest{} }
 func (m *PostUserRequest) String() string { return proto.CompactTextString(m) }
 func (*PostUserRequest) ProtoMessage()    {}
 func (*PostUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{24}
+	return fileDescriptor_a0b84a42fa06f626, []int{26}
 }
 
 func (m *PostUserRequest) XXX_Unmarshal(b []byte) error {
@@ -1167,7 +1252,7 @@ func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{25}
+	return fileDescriptor_a0b84a42fa06f626, []int{27}
 }
 
 func (m *User) XXX_Unmarshal(b []byte) error {
@@ -1213,7 +1298,7 @@ func (m *UserResponse) Reset()         { *m = UserResponse{} }
 func (m *UserResponse) String() string { return proto.CompactTextString(m) }
 func (*UserResponse) ProtoMessage()    {}
 func (*UserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a0b84a42fa06f626, []int{26}
+	return fileDescriptor_a0b84a42fa06f626, []int{28}
 }
 
 func (m *UserResponse) XXX_Unmarshal(b []byte) error {
@@ -1244,12 +1329,14 @@ func (m *UserResponse) GetId() int64 {
 func init() {
 	proto.RegisterEnum("financialplanningcalculator.Mode", Mode_name, Mode_value)
 	proto.RegisterType((*Account)(nil), "financialplanningcalculator.Account")
-	proto.RegisterType((*CalculateResponse)(nil), "financialplanningcalculator.CalculateResponse")
 	proto.RegisterType((*Contribution)(nil), "financialplanningcalculator.Contribution")
 	proto.RegisterType((*Error)(nil), "financialplanningcalculator.Error")
 	proto.RegisterType((*GetAccountsData)(nil), "financialplanningcalculator.GetAccountsData")
 	proto.RegisterType((*GetAccountsRequest)(nil), "financialplanningcalculator.GetAccountsRequest")
 	proto.RegisterType((*GetAccountsResponse)(nil), "financialplanningcalculator.GetAccountsResponse")
+	proto.RegisterType((*GetCalculateData)(nil), "financialplanningcalculator.GetCalculateData")
+	proto.RegisterType((*GetCalculateRequest)(nil), "financialplanningcalculator.GetCalculateRequest")
+	proto.RegisterType((*GetCalculateResponse)(nil), "financialplanningcalculator.GetCalculateResponse")
 	proto.RegisterType((*GetContributionData)(nil), "financialplanningcalculator.GetContributionData")
 	proto.RegisterType((*GetContributionRequest)(nil), "financialplanningcalculator.GetContributionRequest")
 	proto.RegisterType((*GetGoalData)(nil), "financialplanningcalculator.GetGoalData")
@@ -1276,66 +1363,66 @@ func init() {
 func init() { proto.RegisterFile("service.proto", fileDescriptor_a0b84a42fa06f626) }
 
 var fileDescriptor_a0b84a42fa06f626 = []byte{
-	// 934 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0xef, 0x6f, 0xda, 0x46,
-	0x18, 0xc6, 0xc4, 0x04, 0x78, 0x49, 0x13, 0x7a, 0x9d, 0x32, 0x8b, 0x4e, 0x15, 0xb9, 0x6c, 0x12,
-	0xe9, 0x52, 0xa7, 0x22, 0x8b, 0xf6, 0x43, 0xab, 0xd4, 0xfc, 0x60, 0x29, 0x9b, 0x20, 0x91, 0xc3,
-	0xba, 0x69, 0x9b, 0x26, 0x5d, 0xf0, 0x95, 0x59, 0x35, 0x36, 0xb3, 0x4d, 0xa5, 0x4a, 0xfb, 0xb2,
-	0xbf, 0x77, 0xdf, 0xf7, 0xb9, 0xba, 0x5f, 0xc6, 0x26, 0xd4, 0x36, 0xf9, 0xc6, 0x1d, 0xef, 0xfb,
-	0x3e, 0xef, 0xfb, 0xf8, 0xb9, 0xe7, 0x0e, 0x1e, 0x84, 0x34, 0x78, 0xe7, 0x8c, 0xa9, 0x39, 0x0b,
-	0xfc, 0xc8, 0x47, 0x8f, 0xdf, 0x38, 0x1e, 0xf1, 0xc6, 0x0e, 0x71, 0x67, 0x2e, 0xf1, 0x3c, 0xc7,
-	0x9b, 0x8c, 0x89, 0x3b, 0x9e, 0xbb, 0x24, 0xf2, 0x83, 0xd6, 0xe3, 0x89, 0xef, 0x4f, 0x5c, 0x7a,
-	0xc4, 0x43, 0x6f, 0xe7, 0x6f, 0x8e, 0xe8, 0x74, 0x16, 0xbd, 0x17, 0x99, 0xf8, 0x7f, 0x0d, 0xaa,
-	0xa7, 0xe3, 0xb1, 0x3f, 0xf7, 0x22, 0xf4, 0x1d, 0x18, 0xa7, 0xb6, 0xdd, 0xf7, 0x22, 0x1a, 0xd0,
-	0x30, 0xea, 0xbd, 0xa3, 0xc1, 0xfb, 0xe1, 0x35, 0x0d, 0x1c, 0xdf, 0x0e, 0x0d, 0xad, 0xad, 0x75,
-	0x36, 0xac, 0x8f, 0xfe, 0x8f, 0x0c, 0xa8, 0x9e, 0x11, 0x97, 0x78, 0x63, 0x6a, 0x94, 0xdb, 0x5a,
-	0x47, 0xb3, 0xd4, 0x12, 0x6d, 0x43, 0xb9, 0x6f, 0x1b, 0x1b, 0x3c, 0xbf, 0xdc, 0xb7, 0x11, 0x86,
-	0x2d, 0x55, 0xc2, 0x22, 0x11, 0x35, 0x74, 0x1e, 0x9e, 0xda, 0x43, 0x27, 0xa0, 0x0f, 0x7c, 0x9b,
-	0x1a, 0x95, 0xb6, 0xd6, 0xd9, 0xee, 0xee, 0x99, 0x19, 0xe3, 0x99, 0x2c, 0xd0, 0xe2, 0xe1, 0x08,
-	0x81, 0x3e, 0x24, 0x53, 0x6a, 0x6c, 0xb6, 0xb5, 0x4e, 0xdd, 0xe2, 0xbf, 0xd1, 0x2e, 0x6c, 0xfe,
-	0x1c, 0xd2, 0xa0, 0x6f, 0x1b, 0x55, 0xde, 0x82, 0x5c, 0x61, 0x0b, 0x1e, 0x9e, 0xcb, 0x22, 0xd4,
-	0xa2, 0xe1, 0xcc, 0xf7, 0x42, 0x8a, 0x5e, 0x40, 0x35, 0x39, 0x70, 0xa3, 0xbb, 0x9f, 0x09, 0x2d,
-	0x62, 0x2d, 0x95, 0x83, 0x47, 0xb0, 0x75, 0xee, 0x7b, 0x51, 0xe0, 0xdc, 0xce, 0x23, 0xc7, 0xf7,
-	0xd0, 0x67, 0x50, 0x97, 0xdc, 0xf6, 0x6d, 0xc9, 0xe0, 0x62, 0x83, 0x75, 0x76, 0x3a, 0x65, 0xbf,
-	0x25, 0x63, 0x72, 0xb5, 0x4c, 0x18, 0xde, 0x83, 0x4a, 0x2f, 0x08, 0xfc, 0x80, 0x71, 0x3c, 0xa0,
-	0x61, 0x48, 0x26, 0x94, 0x17, 0xab, 0x5b, 0x6a, 0x89, 0x0f, 0x60, 0xe7, 0x92, 0x46, 0xb2, 0x74,
-	0x78, 0x41, 0x22, 0x92, 0x98, 0x5b, 0x4b, 0xcd, 0xfd, 0x1a, 0x50, 0x22, 0xd4, 0xa2, 0x7f, 0xcf,
-	0x69, 0x18, 0xa1, 0x97, 0xa0, 0xdb, 0x24, 0x22, 0x72, 0xea, 0xc3, 0xcc, 0xa9, 0x97, 0x90, 0x2c,
-	0x9e, 0x89, 0x7f, 0x81, 0x47, 0xa9, 0xba, 0x92, 0xd1, 0x97, 0x50, 0x53, 0x7b, 0x86, 0xd6, 0xde,
-	0xe8, 0x34, 0xba, 0x9f, 0x67, 0x16, 0x97, 0xc1, 0x56, 0x9c, 0x85, 0x8f, 0x79, 0xe1, 0x24, 0xaf,
-	0x7c, 0xbe, 0x4c, 0x6e, 0xf1, 0x9f, 0xb0, 0xbb, 0x94, 0xa4, 0x26, 0xbd, 0x48, 0x4d, 0xfa, 0x3c,
-	0x6f, 0xd2, 0x65, 0x5c, 0x39, 0xed, 0x17, 0xd0, 0xb8, 0xa4, 0xd1, 0xa5, 0x4f, 0xdc, 0x4c, 0xb2,
-	0xaf, 0xf8, 0x77, 0x61, 0x61, 0x31, 0xd3, 0xdf, 0xa7, 0xf0, 0x3b, 0x79, 0xf8, 0x0a, 0x42, 0xe2,
-	0xfe, 0x04, 0xcd, 0x45, 0x41, 0x49, 0xf1, 0xd7, 0x50, 0xe1, 0x1b, 0x92, 0xdf, 0xec, 0xd3, 0xc2,
-	0x22, 0x2d, 0x11, 0x8f, 0x67, 0xbc, 0xd8, 0x2b, 0x4a, 0xdc, 0xe8, 0x2f, 0xd5, 0xde, 0x20, 0xd5,
-	0xde, 0xb7, 0x79, 0xed, 0xa5, 0x92, 0x4d, 0xd6, 0xa8, 0x94, 0xa4, 0xe8, 0xb7, 0xf5, 0x00, 0x1a,
-	0x89, 0x4d, 0xbc, 0x0f, 0x0f, 0x13, 0x49, 0xb2, 0xff, 0x6d, 0x28, 0x5f, 0xbd, 0xe5, 0x80, 0x35,
-	0xab, 0x7c, 0xf5, 0x16, 0xef, 0x73, 0x6e, 0x19, 0x83, 0x9c, 0xdb, 0x4f, 0xa0, 0xd2, 0x9b, 0x12,
-	0xc7, 0x95, 0x9a, 0x17, 0x0b, 0x3c, 0x84, 0x6d, 0x19, 0x74, 0x4f, 0x62, 0x55, 0x7d, 0x49, 0xec,
-	0x3f, 0xa0, 0x33, 0x52, 0xd0, 0x13, 0x80, 0x58, 0x45, 0x82, 0xd1, 0x0d, 0x2b, 0xb1, 0xb3, 0x86,
-	0xcf, 0x29, 0x33, 0xd2, 0x57, 0x9a, 0x51, 0x25, 0xa5, 0x93, 0x1f, 0x61, 0x53, 0x78, 0xc8, 0xd2,
-	0x79, 0xd1, 0xee, 0x71, 0x5e, 0x86, 0x80, 0xae, 0xfd, 0x50, 0x9d, 0x44, 0xc5, 0xce, 0x37, 0x29,
-	0x76, 0x8a, 0xd5, 0x54, 0x52, 0x7f, 0x94, 0xaa, 0xb7, 0xf8, 0x6a, 0xb1, 0xdc, 0x99, 0x4b, 0xfd,
-	0x0a, 0x9f, 0xb2, 0xb0, 0x55, 0x47, 0xee, 0x45, 0x0a, 0xfb, 0x20, 0x13, 0x3b, 0x95, 0x2f, 0x1a,
-	0x78, 0x0a, 0xc6, 0xdd, 0xca, 0x1f, 0xe9, 0xe2, 0x15, 0xec, 0xb0, 0x58, 0xae, 0x72, 0x89, 0x7e,
-	0x92, 0x42, 0x2f, 0x70, 0x3a, 0x04, 0x2a, 0x86, 0xe6, 0xa2, 0x52, 0x36, 0x5a, 0x52, 0x85, 0xeb,
-	0xa0, 0xf1, 0x3c, 0x81, 0x76, 0x08, 0x3a, 0x5b, 0xad, 0x16, 0xbb, 0xc4, 0x2d, 0xc7, 0xb8, 0x4f,
-	0x60, 0x4b, 0x60, 0xae, 0xee, 0xeb, 0xe9, 0x9e, 0xb8, 0x3e, 0xd1, 0x0e, 0x34, 0xfa, 0xc3, 0xd7,
-	0xbd, 0x9b, 0xd1, 0xa0, 0x37, 0x1c, 0xdd, 0x34, 0x4b, 0xa8, 0x06, 0xfa, 0x45, 0xef, 0x6c, 0xd4,
-	0xd4, 0xba, 0xff, 0xd5, 0x00, 0xff, 0xa0, 0x7a, 0xbb, 0x96, 0xbd, 0x9d, 0xc7, 0xbd, 0xdd, 0x88,
-	0xe7, 0x05, 0x0a, 0xf8, 0x59, 0x54, 0xda, 0x42, 0x47, 0x45, 0x2f, 0x06, 0x49, 0x47, 0xeb, 0x79,
-	0xf1, 0x04, 0x31, 0x0b, 0x2e, 0xa1, 0x90, 0x9b, 0x66, 0xea, 0x22, 0x3d, 0x5e, 0xc7, 0xa6, 0x15,
-	0x76, 0x71, 0xa1, 0xe1, 0x12, 0x72, 0xa0, 0xa6, 0x8c, 0x15, 0x1d, 0x16, 0x31, 0xe5, 0x78, 0xc4,
-	0x67, 0x05, 0xa3, 0xe3, 0xf9, 0x5c, 0xa8, 0xc7, 0x26, 0x88, 0x9e, 0xad, 0xe5, 0xb0, 0x2d, 0xb3,
-	0x68, 0x78, 0x8c, 0xf6, 0x3b, 0x54, 0xa5, 0xdb, 0xa1, 0x2f, 0x8b, 0x78, 0xa2, 0x42, 0xca, 0x97,
-	0x2e, 0x2e, 0xa1, 0x3f, 0xf8, 0x0d, 0xc2, 0x16, 0xf1, 0x5b, 0x0a, 0xed, 0x9a, 0xe2, 0xbd, 0x69,
-	0xaa, 0xf7, 0xa6, 0xd9, 0x63, 0xef, 0xcd, 0x9c, 0xd6, 0xef, 0xbc, 0xc5, 0x70, 0x89, 0x89, 0x2f,
-	0xe1, 0x3c, 0x39, 0xe2, 0xbb, 0xeb, 0x79, 0x39, 0xe2, 0x5b, 0x61, 0x6a, 0xb8, 0x84, 0xfe, 0xd5,
-	0xc4, 0xb9, 0x4f, 0xc9, 0xef, 0xab, 0xdc, 0x42, 0xab, 0xf4, 0x77, 0xb2, 0x66, 0x56, 0xdc, 0x83,
-	0x03, 0x35, 0x65, 0x3d, 0x39, 0x5a, 0x5c, 0xf2, 0xba, 0x1c, 0x2d, 0x2e, 0xfb, 0x19, 0x2e, 0x21,
-	0x2a, 0xa0, 0xb8, 0x3c, 0xf2, 0xa1, 0x92, 0xfa, 0x38, 0xc8, 0xb7, 0xb6, 0x18, 0xe6, 0xac, 0xf1,
-	0x5b, 0x3d, 0x8e, 0xbe, 0xdd, 0xe4, 0xc2, 0x38, 0xfe, 0x10, 0x00, 0x00, 0xff, 0xff, 0x99, 0x6b,
-	0x63, 0x9c, 0xc4, 0x0c, 0x00, 0x00,
+	// 936 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0xef, 0x6f, 0xdb, 0x44,
+	0x18, 0x8e, 0x5d, 0xa7, 0x49, 0xde, 0x74, 0x6d, 0xb8, 0x4d, 0xc3, 0x2a, 0x68, 0x4a, 0xaf, 0x20,
+	0xa5, 0xa3, 0x0d, 0x25, 0xa5, 0xe2, 0x87, 0x98, 0xb4, 0xb4, 0x09, 0x59, 0x40, 0x49, 0x2b, 0x37,
+	0x1b, 0x08, 0x24, 0xa4, 0x5b, 0x7c, 0x0c, 0x6b, 0xae, 0x1d, 0x6c, 0x67, 0x12, 0x12, 0x5f, 0x90,
+	0xf8, 0x9b, 0xf9, 0x8c, 0x7c, 0xbf, 0xea, 0xcb, 0x32, 0xdb, 0x41, 0x7c, 0xcb, 0x5d, 0xdf, 0x7b,
+	0x9f, 0xe7, 0x79, 0xf3, 0xdc, 0x73, 0x29, 0xdc, 0x8b, 0x69, 0xf4, 0xc6, 0x9b, 0xd3, 0xee, 0x22,
+	0x0a, 0x93, 0x10, 0x7d, 0xf0, 0xab, 0x17, 0x90, 0x60, 0xee, 0x11, 0x7f, 0xe1, 0x93, 0x20, 0xf0,
+	0x82, 0x57, 0x73, 0xe2, 0xcf, 0x97, 0x3e, 0x49, 0xc2, 0x08, 0xff, 0x63, 0x40, 0xad, 0x3f, 0x9f,
+	0x87, 0xcb, 0x20, 0x41, 0x5f, 0x83, 0xdd, 0x77, 0xdd, 0x71, 0x90, 0xd0, 0x88, 0xc6, 0xc9, 0xf0,
+	0x0d, 0x8d, 0xfe, 0x98, 0x5e, 0xd3, 0xc8, 0x0b, 0xdd, 0xd8, 0x36, 0xda, 0x46, 0x67, 0xcb, 0x79,
+	0xe7, 0xdf, 0x91, 0x0d, 0xb5, 0x0b, 0xe2, 0x93, 0x60, 0x4e, 0x6d, 0xb3, 0x6d, 0x74, 0x0c, 0x47,
+	0x2e, 0xd1, 0x2e, 0x98, 0x63, 0xd7, 0xde, 0x62, 0xe7, 0xcd, 0xb1, 0x8b, 0x30, 0xec, 0xc8, 0x16,
+	0x0e, 0x49, 0xa8, 0x6d, 0xb1, 0x72, 0x6d, 0x0f, 0x9d, 0x83, 0x35, 0x09, 0x5d, 0x6a, 0x57, 0xdb,
+	0x46, 0x67, 0xb7, 0x77, 0xd0, 0xcd, 0x51, 0xd0, 0x4d, 0x0b, 0x1d, 0x56, 0x8e, 0x10, 0x58, 0x53,
+	0x72, 0x4b, 0xed, 0xed, 0xb6, 0xd1, 0x69, 0x38, 0xec, 0x33, 0x7a, 0x08, 0xdb, 0xcf, 0x63, 0x1a,
+	0x8d, 0x5d, 0xbb, 0xc6, 0x28, 0x88, 0x15, 0x9e, 0xc1, 0xce, 0x65, 0x18, 0x24, 0x91, 0xf7, 0x72,
+	0x99, 0x78, 0x61, 0x80, 0x3e, 0x84, 0x86, 0x98, 0xc3, 0xd8, 0x15, 0x6a, 0xef, 0x36, 0xd2, 0x2e,
+	0xfd, 0xdb, 0xf4, 0xb3, 0x50, 0x27, 0x56, 0xab, 0xe2, 0xf0, 0x01, 0x54, 0x87, 0x51, 0x14, 0x46,
+	0xe9, 0x3c, 0x26, 0x34, 0x8e, 0xc9, 0x2b, 0xca, 0x9a, 0x35, 0x1c, 0xb9, 0xc4, 0x47, 0xb0, 0x37,
+	0xa2, 0x89, 0x68, 0x1d, 0x0f, 0x48, 0x42, 0x32, 0x1c, 0x0d, 0x8d, 0xe3, 0x0b, 0x40, 0x99, 0x52,
+	0x87, 0xfe, 0xbe, 0xa4, 0x71, 0x82, 0x9e, 0x82, 0xe5, 0x92, 0x84, 0xb0, 0xda, 0x66, 0xef, 0x38,
+	0x77, 0x38, 0x2b, 0x48, 0x0e, 0x3b, 0x89, 0x7f, 0x80, 0xfb, 0x5a, 0xdf, 0x78, 0x11, 0x06, 0x31,
+	0x45, 0x4f, 0xa1, 0x2e, 0xf7, 0x6c, 0xa3, 0xbd, 0xd5, 0x69, 0xf6, 0x3e, 0xca, 0x6d, 0x2e, 0x8a,
+	0x1d, 0x75, 0x0a, 0x0f, 0xa0, 0x35, 0xa2, 0xc9, 0xa5, 0x28, 0xa1, 0x4c, 0x9c, 0x0d, 0x35, 0xdd,
+	0x44, 0x72, 0x99, 0x91, 0x6d, 0x6a, 0xb2, 0x7f, 0x64, 0xf4, 0x54, 0x17, 0xa9, 0xbb, 0xaf, 0xe9,
+	0x3e, 0x29, 0xd2, 0xad, 0xb1, 0x10, 0xc2, 0x9f, 0xc3, 0x03, 0xbd, 0xb3, 0x50, 0xfe, 0x24, 0xcb,
+	0x31, 0x15, 0x7e, 0x98, 0xdb, 0x9d, 0xd7, 0x2a, 0x21, 0xf8, 0x8c, 0x13, 0xce, 0xd8, 0x89, 0x29,
+	0xcf, 0xb5, 0x14, 0xfe, 0x05, 0x1e, 0xae, 0x1c, 0x92, 0x42, 0x07, 0x9a, 0xd0, 0xd3, 0x42, 0xa1,
+	0x2b, 0xb8, 0x42, 0xeb, 0xc7, 0xd0, 0x1c, 0xd1, 0x64, 0x14, 0x12, 0x3f, 0xd7, 0x63, 0x57, 0xcc,
+	0x8e, 0x69, 0x99, 0x32, 0xd8, 0x37, 0x1a, 0x7e, 0xa7, 0x08, 0x5f, 0x42, 0x08, 0xdc, 0xef, 0x99,
+	0x07, 0x44, 0x43, 0x31, 0xdf, 0x2f, 0xa0, 0xca, 0x36, 0xc4, 0x74, 0xf3, 0x2f, 0x74, 0x5a, 0xe9,
+	0xf0, 0x7a, 0xbc, 0x60, 0xcd, 0x9e, 0x51, 0xe2, 0x27, 0xbf, 0x49, 0x7a, 0x13, 0x8d, 0xde, 0x57,
+	0x45, 0xf4, 0xb4, 0xc3, 0xdd, 0x94, 0xa8, 0xb8, 0x89, 0x9c, 0xef, 0xfe, 0x3d, 0x68, 0x66, 0x36,
+	0xf1, 0x21, 0xbc, 0x97, 0x39, 0x24, 0xf8, 0xef, 0x82, 0x79, 0xf5, 0x9a, 0x01, 0xd6, 0x1d, 0xf3,
+	0xea, 0x35, 0x3e, 0x64, 0xb3, 0x4d, 0x27, 0xc8, 0x66, 0xfb, 0x00, 0xaa, 0xc3, 0x5b, 0xe2, 0xf9,
+	0xe2, 0xaa, 0xf3, 0x05, 0x9e, 0xc2, 0xae, 0x28, 0xfa, 0x8f, 0x83, 0x95, 0xfd, 0xc5, 0x60, 0xff,
+	0x04, 0x2b, 0x1d, 0x0a, 0x7a, 0x04, 0xa0, 0x5c, 0xc4, 0x27, 0xba, 0xe5, 0x64, 0x76, 0x36, 0x88,
+	0x62, 0x99, 0x97, 0xd6, 0xda, 0xbc, 0xac, 0x6a, 0x3e, 0xf9, 0x0e, 0xb6, 0xb9, 0xdd, 0xff, 0x87,
+	0x98, 0x98, 0x02, 0xba, 0x0e, 0x63, 0x19, 0x40, 0x72, 0x3a, 0x5f, 0x6a, 0xd3, 0x29, 0xd7, 0x53,
+	0x5a, 0xfd, 0xbe, 0xd6, 0xef, 0xee, 0x5b, 0x53, 0x76, 0x37, 0x59, 0xae, 0xbc, 0x9f, 0x96, 0xad,
+	0xbb, 0x72, 0x4f, 0x34, 0xec, 0xa3, 0x5c, 0x6c, 0xed, 0x3c, 0x27, 0xf0, 0x18, 0xec, 0xb7, 0x3b,
+	0xbf, 0x83, 0xc5, 0x33, 0xd8, 0x4b, 0x6b, 0x99, 0xcb, 0x05, 0xfa, 0xb9, 0x86, 0x5e, 0xe2, 0x76,
+	0x70, 0x54, 0x0c, 0xad, 0xbb, 0x4e, 0xf9, 0x68, 0x59, 0x17, 0x6e, 0x82, 0xc6, 0xce, 0x71, 0xb4,
+	0x63, 0xb0, 0xd2, 0xd5, 0x7a, 0xb3, 0x0b, 0x5c, 0x53, 0xe1, 0x3e, 0x82, 0x1d, 0x8e, 0xb9, 0x9e,
+	0xd7, 0xe3, 0x03, 0xfe, 0xc2, 0xa3, 0x3d, 0x68, 0x8e, 0xa7, 0x2f, 0x86, 0x37, 0xb3, 0xc9, 0x70,
+	0x3a, 0xbb, 0x69, 0x55, 0x50, 0x1d, 0xac, 0xc1, 0xf0, 0x62, 0xd6, 0x32, 0x7a, 0x7f, 0x37, 0x00,
+	0x7f, 0x2b, 0xb9, 0x5d, 0x0b, 0x6e, 0x97, 0x8a, 0xdb, 0x0d, 0xff, 0x91, 0x83, 0x22, 0x76, 0x17,
+	0xa5, 0xb7, 0xd0, 0xa7, 0x65, 0xdf, 0x43, 0x31, 0x8e, 0xfd, 0xd3, 0xf2, 0x07, 0xb8, 0x16, 0x5c,
+	0x41, 0x4b, 0xd8, 0xc9, 0xbe, 0x23, 0xe8, 0xb4, 0xf4, 0x63, 0x24, 0x51, 0x3f, 0xdb, 0xe0, 0x84,
+	0x82, 0x8d, 0x59, 0x56, 0x6b, 0x3f, 0x5b, 0xce, 0x36, 0x79, 0x1d, 0x24, 0x78, 0x79, 0x7f, 0xe3,
+	0x0a, 0xf2, 0xa0, 0x2e, 0xf3, 0x1c, 0x1d, 0x97, 0x79, 0x0b, 0xd4, 0x64, 0x4f, 0x4a, 0x56, 0x2b,
+	0x7d, 0x3e, 0x34, 0x54, 0xf6, 0xa2, 0x93, 0x8d, 0x82, 0x7d, 0xbf, 0x5b, 0xb6, 0x5c, 0xa1, 0xfd,
+	0x0c, 0x35, 0x11, 0xb2, 0xe8, 0x93, 0x32, 0x51, 0x2c, 0x91, 0x8a, 0x6f, 0x0c, 0xae, 0xa4, 0xae,
+	0xcc, 0x44, 0x52, 0x81, 0x2b, 0xdf, 0x0e, 0xc3, 0x02, 0x57, 0xae, 0x49, 0x3b, 0x5c, 0x41, 0x7f,
+	0x19, 0x3c, 0x10, 0x34, 0x83, 0x7c, 0x5e, 0xd8, 0x68, 0x9d, 0x43, 0xce, 0x37, 0x3c, 0xa5, 0x38,
+	0x78, 0x50, 0x97, 0x99, 0x54, 0xe0, 0x96, 0x95, 0x10, 0x2c, 0x70, 0xcb, 0x6a, 0xd0, 0xe1, 0x0a,
+	0xa2, 0x1c, 0x8a, 0x7d, 0x81, 0xc5, 0x50, 0xd9, 0x6f, 0xf0, 0xa8, 0x38, 0xf3, 0x14, 0xcc, 0x45,
+	0xf3, 0xa7, 0x86, 0xaa, 0x7e, 0xb9, 0xcd, 0xfe, 0xa5, 0x3a, 0xfb, 0x37, 0x00, 0x00, 0xff, 0xff,
+	0xbe, 0xf5, 0xcc, 0x63, 0x63, 0x0d, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1352,6 +1439,8 @@ const _ = grpc.SupportPackageIsVersion4
 type FinancialPlanningCalculatorServiceClient interface {
 	// Get accounts
 	GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error)
+	// Get a calculation for the user.
+	GetCalculate(ctx context.Context, in *GetCalculateRequest, opts ...grpc.CallOption) (*GetCalculateResponse, error)
 	// Get an account contribution.
 	GetContribution(ctx context.Context, in *GetContributionRequest, opts ...grpc.CallOption) (*Contribution, error)
 	// Get all goals for a user.
@@ -1360,8 +1449,6 @@ type FinancialPlanningCalculatorServiceClient interface {
 	GetHealth(ctx context.Context, in *GetHealthRequest, opts ...grpc.CallOption) (*GetHealthResponse, error)
 	// Get a new user.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
-	// Calculate for the current user.
-	GetUserCalculate(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CalculateResponse, error)
 	// Create an account.
 	PostAccount(ctx context.Context, in *PostAccountRequest, opts ...grpc.CallOption) (*PostAccountResponse, error)
 	// Create an account contribution.
@@ -1383,6 +1470,15 @@ func NewFinancialPlanningCalculatorServiceClient(cc *grpc.ClientConn) FinancialP
 func (c *financialPlanningCalculatorServiceClient) GetAccounts(ctx context.Context, in *GetAccountsRequest, opts ...grpc.CallOption) (*GetAccountsResponse, error) {
 	out := new(GetAccountsResponse)
 	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetAccounts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *financialPlanningCalculatorServiceClient) GetCalculate(ctx context.Context, in *GetCalculateRequest, opts ...grpc.CallOption) (*GetCalculateResponse, error) {
+	out := new(GetCalculateResponse)
+	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetCalculate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1419,15 +1515,6 @@ func (c *financialPlanningCalculatorServiceClient) GetHealth(ctx context.Context
 func (c *financialPlanningCalculatorServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
 	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *financialPlanningCalculatorServiceClient) GetUserCalculate(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CalculateResponse, error) {
-	out := new(CalculateResponse)
-	err := c.cc.Invoke(ctx, "/financialplanningcalculator.FinancialPlanningCalculatorService/GetUserCalculate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1474,6 +1561,8 @@ func (c *financialPlanningCalculatorServiceClient) PostUser(ctx context.Context,
 type FinancialPlanningCalculatorServiceServer interface {
 	// Get accounts
 	GetAccounts(context.Context, *GetAccountsRequest) (*GetAccountsResponse, error)
+	// Get a calculation for the user.
+	GetCalculate(context.Context, *GetCalculateRequest) (*GetCalculateResponse, error)
 	// Get an account contribution.
 	GetContribution(context.Context, *GetContributionRequest) (*Contribution, error)
 	// Get all goals for a user.
@@ -1482,8 +1571,6 @@ type FinancialPlanningCalculatorServiceServer interface {
 	GetHealth(context.Context, *GetHealthRequest) (*GetHealthResponse, error)
 	// Get a new user.
 	GetUser(context.Context, *GetUserRequest) (*User, error)
-	// Calculate for the current user.
-	GetUserCalculate(context.Context, *empty.Empty) (*CalculateResponse, error)
 	// Create an account.
 	PostAccount(context.Context, *PostAccountRequest) (*PostAccountResponse, error)
 	// Create an account contribution.
@@ -1501,6 +1588,9 @@ type UnimplementedFinancialPlanningCalculatorServiceServer struct {
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetAccounts(ctx context.Context, req *GetAccountsRequest) (*GetAccountsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAccounts not implemented")
 }
+func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetCalculate(ctx context.Context, req *GetCalculateRequest) (*GetCalculateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCalculate not implemented")
+}
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetContribution(ctx context.Context, req *GetContributionRequest) (*Contribution, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContribution not implemented")
 }
@@ -1512,9 +1602,6 @@ func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetHealth(ctx cont
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetUser(ctx context.Context, req *GetUserRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
-}
-func (*UnimplementedFinancialPlanningCalculatorServiceServer) GetUserCalculate(ctx context.Context, req *empty.Empty) (*CalculateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserCalculate not implemented")
 }
 func (*UnimplementedFinancialPlanningCalculatorServiceServer) PostAccount(ctx context.Context, req *PostAccountRequest) (*PostAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostAccount not implemented")
@@ -1547,6 +1634,24 @@ func _FinancialPlanningCalculatorService_GetAccounts_Handler(srv interface{}, ct
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialPlanningCalculatorServiceServer).GetAccounts(ctx, req.(*GetAccountsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinancialPlanningCalculatorService_GetCalculate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCalculateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetCalculate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/GetCalculate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinancialPlanningCalculatorServiceServer).GetCalculate(ctx, req.(*GetCalculateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1619,24 +1724,6 @@ func _FinancialPlanningCalculatorService_GetUser_Handler(srv interface{}, ctx co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FinancialPlanningCalculatorServiceServer).GetUser(ctx, req.(*GetUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _FinancialPlanningCalculatorService_GetUserCalculate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(empty.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FinancialPlanningCalculatorServiceServer).GetUserCalculate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/financialplanningcalculator.FinancialPlanningCalculatorService/GetUserCalculate",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FinancialPlanningCalculatorServiceServer).GetUserCalculate(ctx, req.(*empty.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1722,6 +1809,10 @@ var _FinancialPlanningCalculatorService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _FinancialPlanningCalculatorService_GetAccounts_Handler,
 		},
 		{
+			MethodName: "GetCalculate",
+			Handler:    _FinancialPlanningCalculatorService_GetCalculate_Handler,
+		},
+		{
 			MethodName: "GetContribution",
 			Handler:    _FinancialPlanningCalculatorService_GetContribution_Handler,
 		},
@@ -1736,10 +1827,6 @@ var _FinancialPlanningCalculatorService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _FinancialPlanningCalculatorService_GetUser_Handler,
-		},
-		{
-			MethodName: "GetUserCalculate",
-			Handler:    _FinancialPlanningCalculatorService_GetUserCalculate_Handler,
 		},
 		{
 			MethodName: "PostAccount",

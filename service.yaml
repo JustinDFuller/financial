@@ -61,14 +61,6 @@ paths:
           description: Not found
           schema:
             $ref: '#/definitions/Error'
-  /user/calculate:
-    get:
-      description: Calculate for the current user.
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: "#/definitions/CalculateResponse"
   /account:
     post:
       description: Create an account.
@@ -146,6 +138,19 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/GetGoalsResponse'
+  /calculate:
+    get:
+      description: Get a calculation for the user.
+      parameters:
+        - in: body
+          name: data
+          schema:
+            $ref: '#/definitions/GetCalculateData'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/GetCalculateResponse'
 definitions:
   GetHealthResponse:
     type: object
@@ -258,24 +263,29 @@ definitions:
     enum:
       - INVESTMENTS
       - DEBT
-  CalculateResponse:
+  GetCalculateData:
+    type: object
+    properties:
+      UserId:
+        type: integer
+        format: int64
+      Periods:
+        type: integer
+        format: int64
+  GetCalculateResponse:
     type: object
     properties:
       Periods:
-        $ref: '#/definitions/Periods'
-  Periods:
-    type: array
-    items:
-      $ref: '#/definitions/Period' 
+        type: array
+        items:
+          $ref: '#/definitions/Period'
   Period:
     type: object
     properties:
       Accounts:
-        $ref: '#/definitions/Accounts'
-  Accounts:
-    type: array
-    items:
-        $ref: '#/definitions/Account'
+        type: array
+        items:
+          $ref: '#/definitions/Account'
   Account:
     type: object
     properties:

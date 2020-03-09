@@ -141,7 +141,7 @@ func TestService(t *testing.T) {
 			request: &financial.PostAccountRequest{
 				Data: &financial.Account{
 					Name:    "Savings",
-					UserId:  2,
+					UserId:  1,
 					Balance: 27585.45,
 					Mode:    financial.Mode_INVESTMENTS,
 				},
@@ -159,7 +159,7 @@ func TestService(t *testing.T) {
 			request: &financial.PostAccountRequest{
 				Data: &financial.Account{
 					Name:    "Credit Card",
-					UserId:  2,
+					UserId:  1,
 					Balance: 3496.45,
 					Mode:    financial.Mode_DEBT,
 				},
@@ -177,7 +177,7 @@ func TestService(t *testing.T) {
 			request: &financial.PostAccountRequest{
 				Data: &financial.Account{
 					Name:    "Credit Card",
-					UserId:  2,
+					UserId:  1,
 					Balance: 3496.45,
 					Mode:    financial.Mode_DEBT,
 				},
@@ -233,7 +233,7 @@ func TestService(t *testing.T) {
 			statusCode: http.StatusOK,
 			request: &financial.GetAccountsRequest{
 				Data: &financial.GetAccountsData{
-					UserId: 2,
+					UserId: 1,
 				},
 			},
 			response: &financial.GetAccountsResponse{},
@@ -242,14 +242,14 @@ func TestService(t *testing.T) {
 					{
 						Id:      1,
 						Name:    "Savings",
-						UserId:  2,
+						UserId:  1,
 						Balance: 27585.45,
 						Mode:    financial.Mode_INVESTMENTS,
 					},
 					{
 						Id:      2,
 						Name:    "Credit Card",
-						UserId:  2,
+						UserId:  1,
 						Balance: 3496.45,
 						Mode:    financial.Mode_DEBT,
 					},
@@ -547,6 +547,20 @@ func TestService(t *testing.T) {
 			expected: &financial.Error{
 				Message: messageInvalidEntity,
 			},
+		},
+		{
+			name:       "GET /calculate",
+			endpoint:   endpointCalculate,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusOK,
+			request: &financial.GetCalculateRequest{
+				Data: &financial.GetCalculateData{
+					UserId:  1,
+					Periods: 4,
+				},
+			},
+			response: &financial.GetCalculateResponse{},
+			expected: &financial.GetCalculateResponse{},
 		},
 	}
 

@@ -17,7 +17,7 @@ import (
 const (
 	endpointHealth       = "/svc/v1/health"
 	endpointUser         = "/svc/v1/user"
-	endpointCalculate    = "/svc/v1/user/calculate"
+	endpointCalculate    = "/svc/v1/calculate"
 	endpointAccount      = "/svc/v1/account"
 	endpointAccounts     = "/svc/v1/accounts"
 	endpointContribution = "/svc/v1/contribution"

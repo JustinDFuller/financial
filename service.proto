@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package financialplanningcalculator;
 
-import "google/protobuf/empty.proto";
-
 option go_package = "financial";
 
 enum Mode {
@@ -26,10 +24,6 @@ message Account {
     int64 UserId = 7;
 }
 
-message CalculateResponse {
-    Period Periods = 1;
-}
-
 message Contribution {
     int64 AccountId = 1;
     double Amount = 2;
@@ -50,6 +44,19 @@ message GetAccountsRequest {
 
 message GetAccountsResponse {
     repeated Account Accounts = 1;
+}
+
+message GetCalculateData {
+    int64 Periods = 1;
+    int64 UserId = 2;
+}
+
+message GetCalculateRequest {
+    GetCalculateData data = 1;
+}
+
+message GetCalculateResponse {
+    repeated Period Periods = 1;
 }
 
 message GetContributionData {
@@ -99,7 +106,7 @@ message Goal {
 }
 
 message Period {
-    Account Accounts = 1;
+    repeated Account Accounts = 1;
 }
 
 message PostAccountRequest {
@@ -143,6 +150,9 @@ service FinancialPlanningCalculatorService {
     // Get accounts
     rpc GetAccounts(GetAccountsRequest) returns (GetAccountsResponse) {}
 
+    // Get a calculation for the user.
+    rpc GetCalculate(GetCalculateRequest) returns (GetCalculateResponse) {}
+
     // Get an account contribution.
     rpc GetContribution(GetContributionRequest) returns (Contribution) {}
 
@@ -154,9 +164,6 @@ service FinancialPlanningCalculatorService {
 
     // Get a new user.
     rpc GetUser(GetUserRequest) returns (User) {}
-
-    // Calculate for the current user.
-    rpc GetUserCalculate(google.protobuf.Empty) returns (CalculateResponse) {}
 
     // Create an account.
     rpc PostAccount(PostAccountRequest) returns (PostAccountResponse) {}

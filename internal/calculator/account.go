@@ -40,6 +40,10 @@ func (a *Account) Contribute(contribution decimal.Decimal) {
 }
 
 func (a *Account) IsInterestPeriod(currentPeriod int64) bool {
+	if a.AddInterestEveryNPeriods == 0 {
+		return false
+	}
+
 	return currentPeriod%a.AddInterestEveryNPeriods == 0
 }
 
