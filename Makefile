@@ -1,4 +1,4 @@
-.PHONY: proto test datastore-start datastore-stop install install-drone run build
+.PHONY: proto test datastore-start datastore-stop install install-drone run build ui
 
 export GIZMO_SKIP_OBSERVE=true;
 
@@ -6,6 +6,7 @@ proto:
 	@rm -f ./service.proto ./service.pb ./service.pb.go;
 	@openapi2proto -spec service.yaml -out ./service.proto;
 	@protoc --js_out=import_style=commonjs,binary:. --go_out=plugins=grpc:. ./service.proto;
+	@mv ./service_pb.js ./ui;
 
 test: 
 	@goimports -w ./**/**/*.go;
@@ -41,3 +42,7 @@ test-drone:
 	@gofmt -s -w ./**/**/*.go;
 	@go vet ./...;
 	@go test -race -cover -vet=off -coverprofile=coverage.txt -covermode=atomic ./...;
+
+ui:
+	@cd ./ui; \
+	npm start;

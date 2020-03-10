@@ -109,7 +109,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 // In this implementation, we're using a GzipHandler middleware to
 // compress our responses.
 func (s service) HTTPMiddleware(h http.Handler) http.Handler {
-	return server.CORSHandler(h, "financial-calculator.glitch.me")
+	return server.CORSHandler(h, "localhost:3000")
 }
 
 func (s service) HTTPRouterOptions() []kit.RouterOption {

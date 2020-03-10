@@ -1,0 +1,25 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "create-react-app": "^3.2.0",
+    "google-protobuf": "^3.11.4",
+    "react": "^16.9.0",
+    "react-dom": "^16.10.2",
+    "recharts": "^1.8.5"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "license": "MIT"
+}

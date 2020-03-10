@@ -20,10 +20,10 @@ func TestHealth(t *testing.T) {
 				Ok: true,
 			},
 			requestHeaders: map[string]string{
-				"origin": "https://financial-calculator.glitch.me",
+				"origin": "http://localhost:3000",
 			},
 			responseHeaders: map[string]string{
-				"Access-Control-Allow-Origin": "https://financial-calculator.glitch.me",
+				"Access-Control-Allow-Origin": "http://localhost:3000",
 			},
 		},
 	}

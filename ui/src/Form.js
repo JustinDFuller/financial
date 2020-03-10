@@ -1,5 +1,3 @@
-// https://glitch.com/edit/#!/wirehaired-myrtle-98surv6q5f
-
 import React from "react";
 
 export default class Form extends React.Component {
@@ -83,4 +81,3 @@ export default class Form extends React.Component {
     );
   }
 }
-
