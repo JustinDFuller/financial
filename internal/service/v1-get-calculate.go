@@ -36,6 +36,12 @@ func decodeUserCalculate(ctx context.Context, req *http.Request) (interface{}, e
 func (s *service) getUserCalculate(ctx context.Context, request interface{}) (response interface{}, err error) {
 	r := request.(*financial.GetCalculateRequest)
 
+	if r.Data == nil || r.Data.UserId == 0 || r.Data.Periods == 0 {
+		return kit.NewProtoStatusResponse(&financial.Error{
+			Message: messageInvalidEntity,
+		}, http.StatusBadRequest), nil
+	}
+
 	var fContributions []*financial.Contribution
 	fAccounts, _ := s.db.GetAccountsByUserId(1)
 	fGoals, _ := s.db.GetGoalsByUserId(1)

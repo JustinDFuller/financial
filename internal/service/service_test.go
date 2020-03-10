@@ -599,6 +599,45 @@ func TestService(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:       "GET /calculate missing data",
+			endpoint:   endpointCalculate,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request:    &financial.GetCalculateRequest{},
+			response:   &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /calculate missing UserId",
+			endpoint:   endpointCalculate,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request: &financial.GetCalculateRequest{
+				Data: &financial.GetCalculateData{},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
+		{
+			name:       "GET /calculate missing Periods",
+			endpoint:   endpointCalculate,
+			httpMethod: http.MethodGet,
+			statusCode: http.StatusBadRequest,
+			request: &financial.GetCalculateRequest{
+				Data: &financial.GetCalculateData{
+					UserId: 1,
+				},
+			},
+			response: &financial.Error{},
+			expected: &financial.Error{
+				Message: messageInvalidEntity,
+			},
+		},
 	}
 
 	runTests(t, tests)
