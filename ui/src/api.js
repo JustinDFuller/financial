@@ -10,12 +10,12 @@ async function tryDecode(response, message) {
   const result = {}
   
   if (!response.ok || response.status >= 400) {
-    result.error = Error.deserializeBinary(bytes)
+    result.error = Error.deserializeBinary(bytes).toObject();
   } else {
     try {
-    result.message = message.deserializeBinary(bytes);
+    result.message = message.deserializeBinary(bytes).toObject();
     } catch (e) {
-      result.error = Error.deserializeBinary(bytes)
+      result.error = Error.deserializeBinary(bytes).toObject();
     }
   }
   

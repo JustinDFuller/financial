@@ -49,35 +49,40 @@ export default class Form extends React.Component {
 
   render() {
     return (
-      <form>
-        <input
-          type="text"
-          placeholder="What's your name?"
-          value={this.state.user.name}
-          onChange={e => this.setName(e)}
-        />
-        {this.state.accounts.map((account, index) => (
-          <div key={index}>
-            <br />
-            <input
-              type="text"
-              placeholder="What account is this?"
-              value={account.name}
-              onChange={e => this.setAccountName(index, e)}
-            />
-            <input
-              type="number"
-              placeholder="What's the current balance?"
-              value={account.balance}
-              onChange={e => this.setAccountBalance(index, e)}
-            />
-          </div>
-        ))}
-        <br />
-        <button type="button" onClick={() => this.addAccount()}>
-          Add Account
-        </button>
-      </form>
+      <div className="card" >
+        <form className="card-body">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="What's your name?"
+            value={this.state.user.name}
+            onChange={e => this.setName(e)}
+          />
+          {this.state.accounts.map((account, index) => (
+            <div key={index}>
+              <br />
+              <input
+                type="text"
+                className="form-control"
+                placeholder="What account is this?"
+                value={account.name}
+                onChange={e => this.setAccountName(index, e)}
+              />
+              <input
+                type="number"
+                className="form-control"
+                placeholder="What's the current balance?"
+                value={account.balance}
+                onChange={e => this.setAccountBalance(index, e)}
+              />
+            </div>
+          ))}
+          <br />
+          <button type="button" className="btn btn-primary" onClick={() => this.addAccount()}>
+            Add Account
+          </button>
+        </form>
+      </div>
     );
   }
 }

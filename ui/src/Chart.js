@@ -7,7 +7,7 @@ const {
   Tooltip,
   Dot
 } = require("recharts");
-import { Error, GetCalculateResponse } from "../service_pb";
+import { calculate } from './api'
 
 function formatMoney(t, name, props) {
   if (props && props.payload.Goals) {
@@ -47,23 +47,7 @@ function withNetWorth(period) {
   };
 }
 
-async function tryDecode(response, message) {
-  const text = await response.arrayBuffer()
-  const bytes = new Uint8Array(text);
-  const result = {}
-  
-  if (!response.ok || response.status >= 400) {
-    result.error = Error.deserializeBinary(bytes)
-  } else {
-    try {
-    result.message = message.deserializeBinary(bytes);
-    } catch (e) {
-      result.error = Error.deserializeBinary(bytes)
-    }
-  }
-  
-  return result
-}
+
 
 /* the main page for the index route of this app */
 class Chart extends React.Component {
@@ -73,14 +57,7 @@ class Chart extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:8080/svc/v1/calculate")
-      .then(async function(response) {
-        const result = await tryDecode(response, GetCalculateResponse)
-        console.log(result.error.toObject())
-        /* return getCalculateResponse.Periods.map(withNetWorth).filter(
-          limitToFifty
-        ); */
-      })
+    calculate() 
       .then(data => this.setState({ data }));
   }
 
@@ -88,39 +65,43 @@ class Chart extends React.Component {
     const { data } = this.state;
 
     return (
-      <AreaChart
-        width={600}
-        height={300}
-        data={data}
-        margin={{ top: 25, right: 30, left: -35, bottom: 5 }}
-      >
-        <defs>
-          <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3} />
-          </linearGradient>
-        </defs>
-        <YAxis
-          axisLine={false}
-          tickLine={false}
-          tickFormatter={formatMoney}
-          style={{ left: 10, top: 50, position: "relative" }}
-        />
-        <Tooltip
-          formatter={formatMoney}
-          separator=" — "
-          labelFormatter={() => undefined}
-        />
-        <CartesianGrid vertical={false} />
-        <Area
-          type="basis"
-          dataKey="Net Worth"
-          stroke="#82ca9d"
-          fillOpacity={1}
-          fill="url(#netWorthGradient)"
-          dot={shouldShowDot}
-        />
-      </AreaChart>
+      <div className="card" style={{ width: 600 }}>
+        <div className="card-body">
+          <AreaChart
+            width={600}
+            height={300}
+            data={data}
+            margin={{ top: 25, right: 30, left: -35, bottom: 5 }}
+          >
+            <defs>
+              <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3} />
+              </linearGradient>
+            </defs>
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={formatMoney}
+              style={{ left: 10, top: 50, position: "relative" }}
+            />
+            <Tooltip
+              formatter={formatMoney}
+              separator=" — "
+              labelFormatter={() => undefined}
+            />
+            <CartesianGrid vertical={false} />
+            <Area
+              type="basis"
+              dataKey="Net Worth"
+              stroke="#82ca9d"
+              fillOpacity={1}
+              fill="url(#netWorthGradient)"
+              dot={shouldShowDot}
+            />
+          </AreaChart>
+        </div>
+      </div>
     );
   }
 }
