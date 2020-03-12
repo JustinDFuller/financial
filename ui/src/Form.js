@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { postUser } from './api'
 
 export function CreateUser({ onDone }) {
   const [email, setEmail] = useState("")
+
+  async function handleClick(e) {
+    const user = await postUser(email)
+    console.log(user)
+  }
 
   return (
     <form>
@@ -12,7 +18,7 @@ export function CreateUser({ onDone }) {
         value={email}
         onChange={e => setEmail(e.target.value)}
       />
-      <button className="btn btn-primary mt-2" onClick={onDone}>Sign Up</button>
+      <button type="button" className="btn btn-primary mt-2" onClick={handleClick}>Sign Up</button>
     </form>
   )
 }
