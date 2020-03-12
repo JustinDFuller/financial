@@ -35,10 +35,10 @@ export async function calculate() {
   console.log(result)
 }
 
-export async function postUser(email) {
+export async function postUser(user) {
   const response = await fetch(endpointUser, {
     method: "POST",
-    body: new PostUserRequest().setData(new User().setEmail(email)).serializeBinary(),
+    body: new PostUserRequest().setData(user).serializeBinary(),
   })
   return tryDecode(response, UserResponse)
 }
