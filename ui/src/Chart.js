@@ -7,7 +7,7 @@ const {
   Tooltip,
   Dot
 } = require("recharts");
-import { calculate } from './api'
+import { calculate } from "./api";
 
 function formatMoney(t, name, props) {
   if (props && props.payload.Goals) {
@@ -47,8 +47,6 @@ function withNetWorth(period) {
   };
 }
 
-
-
 /* the main page for the index route of this app */
 class Chart extends React.Component {
   constructor(props) {
@@ -57,8 +55,7 @@ class Chart extends React.Component {
   }
 
   componentDidMount() {
-    calculate() 
-      .then(data => this.setState({ data }));
+    calculate().then(data => this.setState({ data }));
   }
 
   render() {
