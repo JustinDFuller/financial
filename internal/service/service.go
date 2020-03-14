@@ -56,7 +56,7 @@ func (s service) HTTPEndpoints() map[string]map[string]kit.HTTPEndpoint {
 			},
 		},
 		endpointCalculate: {
-			http.MethodGet: {
+			http.MethodPost: {
 				Decoder:  decodeUserCalculate,
 				Endpoint: s.getUserCalculate,
 				Encoder:  kit.EncodeProtoResponse,

@@ -6,6 +6,7 @@ const endpointCalculate = baseURL + "/svc/v1/calculate";
 const endpointUser = baseURL + "/svc/v1/user";
 const endpointAccount = baseURL + "/svc/v1/account";
 const endpointContribution = baseURL + "/svc/v1/contribution";
+const endpointGoal = baseURL + "/svc/v1/goal";
 
 async function tryDecode(response, message) {
   const text = await response.arrayBuffer();
@@ -25,10 +26,13 @@ async function tryDecode(response, message) {
   return result;
 }
 
-export async function calculate() {
-  const response = await fetch(endpointCalculate);
+export async function getCalculate(calculate) {
+  const response = await fetch(endpointCalculate, {
+    method: "POST",
+    body: new service.GetCalculateRequest().setData(calculate).serializeBinary()
+  });
   const result = await tryDecode(response, service.GetCalculateResponse);
-  console.log(result);
+  return result;
 }
 
 export async function postUser(user) {
@@ -55,4 +59,12 @@ export async function postContribution(contribution) {
       .serializeBinary()
   });
   return tryDecode(response, service.PostContributionResponse);
+}
+
+export async function postGoal(goal) {
+  const response = await fetch(endpointGoal, {
+    method: "POST",
+    body: new service.PostGoalRequest().setData(goal).serializeBinary()
+  });
+  return tryDecode(response, service.PostGoalResponse);
 }

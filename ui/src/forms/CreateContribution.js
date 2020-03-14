@@ -42,7 +42,7 @@ export function CreateContribution({ accounts, onSave, onDone }) {
       {error !== undefined && (
         <div className="alert alert-danger">{error.getMessage()}</div>
       )}
-      <h5 className="card-title">Contributions</h5>
+      <h5 className="card-title">Add Contributions</h5>
       <div className="form-group">
         <label>Which account is this contribution for?</label>
         <select
