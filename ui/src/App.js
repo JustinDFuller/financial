@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Chart from "./Chart";
 import { Form } from "./Form";
 import { Nav } from "./Nav";
 import "./App.css";

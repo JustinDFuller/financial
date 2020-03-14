@@ -1,135 +1,22 @@
 import React, { useState } from "react";
 import * as service from "../service_pb";
-import * as api from "./api";
+import { CreateUser, CreateAccount, CreateContribution } from './forms'
 
-export function CreateUser({ onDone }) {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState();
-
-  async function handleSubmit(e) {
-    e.stopPropagation();
-    const user = new service.User().setEmail(email);
-    const response = await api.postUser(user);
-    if (response.error !== undefined) {
-      setError(response.error);
-    } else {
-      user.setId(response.message.getId());
-      onDone(user);
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h5 className="card-title">Sign Up</h5>
-      {error !== undefined && (
-        <div className="alert alert-danger">{error.getMessage()}</div>
-      )}
-      <input
-        type="email"
-        className="form-control"
-        placeholder="What's your email?"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
-      <button type="submit" className="btn btn-primary mt-3">
-        Sign Up
-      </button>
-    </form>
-  );
-}
-
-function CreateAccounts({ user }) {
-  const [name, setName] = useState();
-  const [balance, setBalance] = useState();
-  const [mode, setMode] = useState(service.Mode.INVESTMENTS);
-  const [error, setError] = useState();
-
-  function setAccountName(e) {
-    setName(e.target.value);
-  }
-
-  function setAccountBalance(e) {
-    setBalance(e.target.value);
-  }
-
-  function setAccountMode(e) {
-    setMode(e.target.value);
-  }
-
-  async function handleSubmit() {
-    const account = new service.Account()
-      .setName(name)
-      .setBalance(balance)
-      .setMode(mode)
-      .setUserid(user.getId());
-    const response = await api.postAccount(account);
-    if (response.error !== undefined) {
-      setError(response.error);
-    } else {
-      account.setId(response.message.getId());
-      console.log(account.toObject());
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h5 className="card-title">Add Accounts</h5>
-      {error !== undefined && (
-        <div className="alert alert-danger">{error.getMessage()}</div>
-      )}
-      <div className="form-group">
-        <label>What should we call this account?</label>
-        <input
-          type="text"
-          className="form-control mb-1"
-          placeholder="Emergency Savings"
-          value={name}
-          onChange={e => setAccountName(e)}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>What's the account's current balance?</label>
-        <div className="input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">$</span>
-          </div>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="5349.34"
-            value={balance}
-            onChange={e => setAccountBalance(e)}
-            required
-          />
-        </div>
-      </div>
-      <div className="form-group">
-        <label>What type of account is it?</label>
-        <select
-          onChange={setAccountMode}
-          value={mode}
-          required
-          className="form-control"
-        >
-          <option value={service.Mode.INVESTMENTS}>Investment</option>
-          <option value={service.Mode.DEBT}>Debt</option>
-        </select>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Add Another Account
-      </button>
-    </form>
-  );
-}
-
-const STATE_USER = 1;
-const STATE_ACCOUNTS = 25;
+const STATE_USER = 3;
+const STATE_ACCOUNTS = 30;
+const STATE_CONTRIBUTIONS = 60;
+const STATE_GOALS = 80
 
 export function Form() {
-  const [step, setStep] = useState(STATE_USER);
-  const [user, setUser] = useState();
-  const [accounts, setAccounts] = useState([]);
+  const [step, setStep] = useState(STATE_CONTRIBUTIONS);
+  const [user, setUser] = useState(new service.User().setId(1));
+  const [accounts, setAccounts] = useState([
+    new service.Account().setName("Credit Card").setId(1),
+    new service.Account().setName("Mortgage").setId(2),
+    new service.Account().setName("Investments").setId(3),
+    new service.Account().setName("Emergency Savings").setId(4),
+  ]);
+  const [contributions, setContributions] = useState([])
 
   function renderStep() {
     switch (step) {
@@ -137,8 +24,12 @@ export function Form() {
         return <CreateUser onDone={handleCreateUserDone} />;
       case STATE_ACCOUNTS:
         return (
-          <CreateAccounts user={user} onDone={handleCreateAccountOnDone} />
+          <CreateAccount user={user} onSave={handleCreateAccountOnSave} onDone={handleCreateAccountOnDone} />
         );
+      case STATE_CONTRIBUTIONS:
+        return <CreateContribution accounts={accounts} onSave={handleCreateContributionOnSave} onDone={handleCreateContributionOnDone} />;
+      default:
+        break;
     }
   }
 
@@ -147,8 +38,20 @@ export function Form() {
     setStep(STATE_ACCOUNTS);
   }
 
-  function handleCreateAccountOnDone(account) {
+  function handleCreateAccountOnSave(account, nextStep) {
     setAccounts([...accounts, account]);
+  }
+
+  function handleCreateAccountOnDone() {
+    setStep(STATE_CONTRIBUTIONS)
+  }
+
+  function handleCreateContributionOnSave(contribution) {
+    setContributions([...contributions, contribution])
+  }
+
+  function handleCreateContributionOnDone() {
+    setStep(STATE_GOALS)
   }
 
   return (

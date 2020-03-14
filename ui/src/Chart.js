@@ -24,16 +24,16 @@ function shouldShowDot(dot) {
   return null;
 }
 
-function limitToFifty(period, index, arr) {
+/* function limitToFifty(period, index, arr) {
   return (
     period.Goals ||
     index === 0 ||
     index % Math.round(arr.length / 50) === 0 ||
     index === arr.length - 1
   );
-}
+}*/
 
-function withNetWorth(period) {
+/* function withNetWorth(period) {
   return {
     ...period,
     "Net Worth": period.Accounts.reduce(function(balance, account) {
@@ -45,7 +45,7 @@ function withNetWorth(period) {
       return balance;
     }, 0)
   };
-}
+} */
 
 /* the main page for the index route of this app */
 class Chart extends React.Component {
