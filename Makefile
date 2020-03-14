@@ -49,4 +49,5 @@ ui:
 
 build-ui:
 	@cd ./ui; \
+	npm ci; \
 	npm run build;	
