@@ -1,6 +1,7 @@
 # Financial Calculator
 
 [![Build Status](https://cloud.drone.io/api/badges/JustinDFuller/financial/status.svg)](https://cloud.drone.io/JustinDFuller/financial)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a0185250-911e-420e-9d10-425b29d0590b/deploy-status)](https://app.netlify.com/sites/friendly-heyrovsky-9af227/deploys)
 [![Go Report Card](https://goreportcard.com/badge/github.com/JustinDFuller/financial)](https://goreportcard.com/report/github.com/JustinDFuller/financial)
 [![Coverage Status](https://coveralls.io/repos/github/JustinDFuller/financial/badge.svg?branch=master)](https://coveralls.io/github/JustinDFuller/financial?branch=master)
 
