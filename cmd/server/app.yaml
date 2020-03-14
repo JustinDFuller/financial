@@ -1,6 +1,9 @@
 runtime: go113
 service: default
 
+env_variables:
+  CORS_ALLOWED_ORIGIN: {{ .CORS_ALLOWED_ORIGIN }}
+
 automatic_scaling:
   max_idle_instances: 1
 

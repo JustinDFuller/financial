@@ -2,12 +2,14 @@ package service
 
 import (
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/justindfuller/financial"
 )
 
 func TestHealth(t *testing.T) {
+	os.Setenv("CORS_ALLOWED_ORIGIN", "localhost:3000")
 	tests := []*test{
 		{
 			name:       "GET /health",

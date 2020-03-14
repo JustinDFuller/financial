@@ -1,6 +1,7 @@
 .PHONY: proto test datastore-start datastore-stop install install-drone run build ui
 
 export GIZMO_SKIP_OBSERVE=true;
+export CORS_ALLOWED_ORIGIN=http://localhost:3000;
 
 proto:
 	@rm -f ./service.proto ./service.pb ./service.pb.go;
