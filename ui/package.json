@@ -17,7 +17,7 @@
     "node": "8.x"
   },
   "scripts": {
-    "prestart": "prettier --write ./src/*.js",
+    "prestart": "prettier --write './src/**/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

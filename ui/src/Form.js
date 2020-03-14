@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import * as service from "../service_pb";
-import { CreateUser, CreateAccount, CreateContribution } from './forms'
+import { CreateUser, CreateAccount, CreateContribution } from "./forms";
 
 const STATE_USER = 3;
 const STATE_ACCOUNTS = 30;
 const STATE_CONTRIBUTIONS = 60;
-const STATE_GOALS = 80
+const STATE_GOALS = 80;
 
 export function Form() {
   const [step, setStep] = useState(STATE_CONTRIBUTIONS);
@@ -14,9 +14,9 @@ export function Form() {
     new service.Account().setName("Credit Card").setId(1),
     new service.Account().setName("Mortgage").setId(2),
     new service.Account().setName("Investments").setId(3),
-    new service.Account().setName("Emergency Savings").setId(4),
+    new service.Account().setName("Emergency Savings").setId(4)
   ]);
-  const [contributions, setContributions] = useState([])
+  const [contributions, setContributions] = useState([]);
 
   function renderStep() {
     switch (step) {
@@ -24,10 +24,20 @@ export function Form() {
         return <CreateUser onDone={handleCreateUserDone} />;
       case STATE_ACCOUNTS:
         return (
-          <CreateAccount user={user} onSave={handleCreateAccountOnSave} onDone={handleCreateAccountOnDone} />
+          <CreateAccount
+            user={user}
+            onSave={handleCreateAccountOnSave}
+            onDone={handleCreateAccountOnDone}
+          />
         );
       case STATE_CONTRIBUTIONS:
-        return <CreateContribution accounts={accounts} onSave={handleCreateContributionOnSave} onDone={handleCreateContributionOnDone} />;
+        return (
+          <CreateContribution
+            accounts={accounts}
+            onSave={handleCreateContributionOnSave}
+            onDone={handleCreateContributionOnDone}
+          />
+        );
       default:
         break;
     }
@@ -43,15 +53,15 @@ export function Form() {
   }
 
   function handleCreateAccountOnDone() {
-    setStep(STATE_CONTRIBUTIONS)
+    setStep(STATE_CONTRIBUTIONS);
   }
 
   function handleCreateContributionOnSave(contribution) {
-    setContributions([...contributions, contribution])
+    setContributions([...contributions, contribution]);
   }
 
   function handleCreateContributionOnDone() {
-    setStep(STATE_GOALS)
+    setStep(STATE_GOALS);
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import * as service from "../../service_pb";
 import * as api from ".././api";
 
@@ -7,9 +7,9 @@ export function CreateAccount({ user, onSave, onDone }) {
   const [balance, setBalance] = useState("");
   const [interestRate, setInterestRate] = useState("");
   const [mode, setMode] = useState("");
-  const [addInterestEveryNPeriods, setAddInterestEveryNPeriods] = useState("")
+  const [addInterestEveryNPeriods, setAddInterestEveryNPeriods] = useState("");
   const [error, setError] = useState();
-  const [created, setCreated] = useState()
+  const [created, setCreated] = useState();
 
   async function handleSubmit() {
     const account = new service.Account()
@@ -17,30 +17,32 @@ export function CreateAccount({ user, onSave, onDone }) {
       .setBalance(balance)
       .setMode(mode)
       .setAddinteresteverynperiods(addInterestEveryNPeriods)
-      .setUserid(user.getId())
+      .setUserid(user.getId());
     const response = await api.postAccount(account);
     setError(response.error);
     if (response.error === undefined) {
       account.setId(response.message.getId());
-      
+
       // Save Progress
-      onSave(account)
-      setCreated(name)
+      onSave(account);
+      setCreated(name);
 
       // Reset
-      setName("")
-      setMode("")
-      setBalance("")
-      setInterestRate("")
-      setAddInterestEveryNPeriods("")
+      setName("");
+      setMode("");
+      setBalance("");
+      setInterestRate("");
+      setAddInterestEveryNPeriods("");
     }
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      {
-        created !== undefined && <div className="alert alert-success">Successfully Created {created}</div>
-      }
+      {created !== undefined && (
+        <div className="alert alert-success">
+          Successfully Created {created}
+        </div>
+      )}
       {error !== undefined && (
         <div className="alert alert-danger">{error.getMessage()}</div>
       )}
@@ -64,7 +66,9 @@ export function CreateAccount({ user, onSave, onDone }) {
           required
           className="form-control"
         >
-          <option value="" disabled>Select an account type</option>
+          <option value="" disabled>
+            Select an account type
+          </option>
           <option value={service.Mode.INVESTMENTS}>Investment</option>
           <option value={service.Mode.DEBT}>Debt</option>
         </select>
@@ -88,21 +92,21 @@ export function CreateAccount({ user, onSave, onDone }) {
       <div className="form-group">
         <label>What's this account's interest rate?</label>
         <div className="input-group">
-            <input 
-              type="number"
-              value={interestRate}
-              onChange={e => setInterestRate(e.target.value)}
-              placeholder="4.5"
-              className="form-control"
-              required
-            />
+          <input
+            type="number"
+            value={interestRate}
+            onChange={e => setInterestRate(e.target.value)}
+            placeholder="4.5"
+            className="form-control"
+            required
+          />
           <div className="input-group-append">
             <span className="input-group-text">%</span>
           </div>
         </div>
       </div>
       <div className="form-group">
-      <label>How often is interest calculated?</label>
+        <label>How often is interest calculated?</label>
         <div className="input-group">
           <div className="input-group-prepend">
             <span className="input-group-text">Every</span>
@@ -119,24 +123,25 @@ export function CreateAccount({ user, onSave, onDone }) {
             <span className="input-group-text">Months</span>
           </div>
         </div>
-        {
-          mode === service.Mode.INVESTMENTS &&
-            <small id="emailHelp" className="form-text text-muted">Interest is usually calculated one time each month or year.</small>
-        }
-        {
-          mode === service.Mode.DEBT &&
-            <small id="emailHelp" className="form-text text-muted">Interest is usually calculated one time each month.</small>
-        }
+        {mode === service.Mode.INVESTMENTS && (
+          <small id="emailHelp" className="form-text text-muted">
+            Interest is usually calculated one time each month or year.
+          </small>
+        )}
+        {mode === service.Mode.DEBT && (
+          <small id="emailHelp" className="form-text text-muted">
+            Interest is usually calculated one time each month.
+          </small>
+        )}
       </div>
       <button type="submit" className="btn btn-primary">
         Save Account
       </button>
-      {
-        created &&
-          <button type="button" className="btn btn-link" onClick={onDone}>
-            All done
-          </button>
-      }
+      {created && (
+        <button type="button" className="btn btn-link" onClick={onDone}>
+          All done
+        </button>
+      )}
     </form>
   );
 }

@@ -5,7 +5,7 @@ const baseURL = "http://localhost:8080";
 const endpointCalculate = baseURL + "/svc/v1/calculate";
 const endpointUser = baseURL + "/svc/v1/user";
 const endpointAccount = baseURL + "/svc/v1/account";
-const endpointContribution = baseURL + "/svc/v1/contribution"
+const endpointContribution = baseURL + "/svc/v1/contribution";
 
 async function tryDecode(response, message) {
   const text = await response.arrayBuffer();
@@ -50,7 +50,9 @@ export async function postAccount(account) {
 export async function postContribution(contribution) {
   const response = await fetch(endpointContribution, {
     method: "POST",
-    body: new service.PostContributionRequest().setData(contribution).serializeBinary()
-  })
+    body: new service.PostContributionRequest()
+      .setData(contribution)
+      .serializeBinary()
+  });
   return tryDecode(response, service.PostContributionResponse);
 }
