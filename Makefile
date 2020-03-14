@@ -46,3 +46,7 @@ test-drone:
 ui:
 	@cd ./ui; \
 	npm start;
+
+build-ui:
+	@cd ./ui; \
+	npm run build;	
