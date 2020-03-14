@@ -12,10 +12,10 @@ const STATE_USER = 3;
 const STATE_ACCOUNTS = 30;
 const STATE_CONTRIBUTIONS = 60;
 const STATE_GOALS = 80;
-const STATE_DONE = 100;
+const STATE_CHART = 100;
 
 export function Form() {
-  const [step, setStep] = useState(STATE_DONE);
+  const [step, setStep] = useState(STATE_USER);
   const [user, setUser] = useState();
   const [accounts, setAccounts] = useState([]);
   const [contributions, setContributions] = useState([]);
@@ -50,7 +50,7 @@ export function Form() {
             onDone={handleCreateGoalOnDone}
           />
         );
-      case STATE_DONE:
+      case STATE_CHART:
         return <Chart user={user} />;
       default:
         break;
@@ -83,12 +83,12 @@ export function Form() {
   }
 
   function handleCreateGoalOnDone() {
-    setStep(STATE_DONE);
+    setStep(STATE_CHART);
   }
 
   return (
     <div className="card">
-      {step !== STATE_DONE && (
+      {step !== STATE_CHART && (
         <div className="progress mt-2 mx-2">
           <div
             className="progress-bar"

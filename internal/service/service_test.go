@@ -408,7 +408,7 @@ func TestService(t *testing.T) {
 				Data: &financial.Goal{
 					Name:       "Debt Free",
 					UserId:     1,
-					AccountIds: []int64{1},
+					AccountIds: []int64{2},
 					Balance:    0,
 				},
 			},
@@ -426,8 +426,8 @@ func TestService(t *testing.T) {
 				Data: &financial.Goal{
 					Name:       "House down payment",
 					UserId:     1,
-					AccountIds: []int64{2},
-					Balance:    75000,
+					AccountIds: []int64{1},
+					Balance:    28500,
 				},
 			},
 			response: &financial.PostGoalResponse{},
@@ -444,7 +444,7 @@ func TestService(t *testing.T) {
 				Data: &financial.Goal{
 					Name:       "House down payment",
 					AccountIds: []int64{2},
-					Balance:    75000,
+					Balance:    28500,
 				},
 			},
 			response: &financial.Error{},
@@ -473,7 +473,7 @@ func TestService(t *testing.T) {
 					Name:       "House down payment",
 					UserId:     1,
 					AccountIds: []int64{2},
-					Balance:    75000,
+					Balance:    28500,
 				},
 			},
 			response: &financial.Error{},
@@ -497,14 +497,14 @@ func TestService(t *testing.T) {
 					{
 						Name:       "Debt Free",
 						UserId:     1,
-						AccountIds: []int64{1},
+						AccountIds: []int64{2},
 						Balance:    0,
 					},
 					{
 						Name:       "House down payment",
 						UserId:     1,
-						AccountIds: []int64{2},
-						Balance:    75000,
+						AccountIds: []int64{1},
+						Balance:    28500,
 					},
 				},
 			},
@@ -549,9 +549,9 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "GET /calculate",
+			name:       "POST /calculate",
 			endpoint:   endpointCalculate,
-			httpMethod: http.MethodGet,
+			httpMethod: http.MethodPost,
 			statusCode: http.StatusOK,
 			request: &financial.GetCalculateRequest{
 				Data: &financial.GetCalculateData{
@@ -580,6 +580,14 @@ func TestService(t *testing.T) {
 						},
 					},
 					{
+						Goals: []*financial.Goal{
+							{
+								Name:       "House down payment",
+								UserId:     1,
+								AccountIds: []int64{1},
+								Balance:    28500,
+							},
+						},
 						Accounts: []*financial.Account{
 							{
 								Balance: 28585.45,
@@ -600,9 +608,9 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "GET /calculate missing data",
+			name:       "POST /calculate missing data",
 			endpoint:   endpointCalculate,
-			httpMethod: http.MethodGet,
+			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request:    &financial.GetCalculateRequest{},
 			response:   &financial.Error{},
@@ -611,9 +619,9 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "GET /calculate missing UserId",
+			name:       "POST /calculate missing UserId",
 			endpoint:   endpointCalculate,
-			httpMethod: http.MethodGet,
+			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.GetCalculateRequest{
 				Data: &financial.GetCalculateData{},
@@ -624,9 +632,9 @@ func TestService(t *testing.T) {
 			},
 		},
 		{
-			name:       "GET /calculate missing Periods",
+			name:       "POST /calculate missing Periods",
 			endpoint:   endpointCalculate,
-			httpMethod: http.MethodGet,
+			httpMethod: http.MethodPost,
 			statusCode: http.StatusBadRequest,
 			request: &financial.GetCalculateRequest{
 				Data: &financial.GetCalculateData{

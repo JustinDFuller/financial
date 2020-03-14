@@ -11,12 +11,14 @@ export function CreateAccount({ user, onSave, onDone }) {
   const [error, setError] = useState();
   const [created, setCreated] = useState();
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const account = new service.Account()
       .setName(name)
-      .setBalance(balance)
       .setMode(mode)
-      .setAddinteresteverynperiods(addInterestEveryNPeriods)
+      .setBalance(Number(balance))
+      .setInterestrate(Number(interestRate) / 100)
+      .setAddinteresteverynperiods(Number(addInterestEveryNPeriods))
       .setUserid(user.getId());
     const response = await api.postAccount(account);
     setError(response.error);
@@ -125,12 +127,12 @@ export function CreateAccount({ user, onSave, onDone }) {
         </div>
         {mode === service.Mode.INVESTMENTS && (
           <small id="emailHelp" className="form-text text-muted">
-            Interest is usually calculated one time each month or year.
+            Interest is usually calculated every one or twelve months.
           </small>
         )}
         {mode === service.Mode.DEBT && (
           <small id="emailHelp" className="form-text text-muted">
-            Interest is usually calculated one time each month.
+            Interest is usually calculated every one month.
           </small>
         )}
       </div>

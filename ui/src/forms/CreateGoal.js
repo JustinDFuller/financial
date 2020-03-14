@@ -9,11 +9,12 @@ export function CreateGoal({ user, accounts, onSave, onDone }) {
   const [error, setError] = useState();
   const [created, setCreated] = useState();
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const goal = new service.Goal()
       .setUserid(user.getId())
       .setName(name)
-      .setBalance(balance)
+      .setBalance(Number(balance))
       .setAccountidsList(selectedAccounts);
 
     const response = await api.postGoal(goal);
@@ -55,7 +56,6 @@ export function CreateGoal({ user, accounts, onSave, onDone }) {
           required
         />
       </div>
-
       <div className="form-group">
         <label>Which accounts does this goal apply to?</label>
         {accounts.map(function(account) {
@@ -64,17 +64,14 @@ export function CreateGoal({ user, accounts, onSave, onDone }) {
               <input
                 className="form-check-input"
                 type="checkbox"
-                value={selectedAccounts.includes(account.getId())}
+                checked={selectedAccounts.includes(account.getId())}
                 id={account.getId()}
                 onClick={e =>
-                  selectedAccounts.includes(account.getId())
-                    ? setSelectedAccounts(
-                        selectedAccounts.filter(id => id !== account.getId())
-                      )
-                    : setSelectedAccounts([
-                        ...selectedAccounts,
-                        account.getId()
-                      ])
+                  setSelectedAccounts(accs =>
+                    accs.includes(account.getId())
+                      ? accs.filter(id => id !== account.getId())
+                      : [...accs, account.getId()]
+                  )
                 }
               />
               <label className="form-check-label" htmlFor={account.getId()}>

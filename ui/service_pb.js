@@ -3882,7 +3882,7 @@ proto.financialplanningcalculator.Goal.prototype.setUserid = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.financialplanningcalculator.Period.repeatedFields_ = [1];
+proto.financialplanningcalculator.Period.repeatedFields_ = [1,2];
 
 
 
@@ -3916,7 +3916,9 @@ proto.financialplanningcalculator.Period.prototype.toObject = function(opt_inclu
 proto.financialplanningcalculator.Period.toObject = function(includeInstance, msg) {
   var f, obj = {
     accountsList: jspb.Message.toObjectList(msg.getAccountsList(),
-    proto.financialplanningcalculator.Account.toObject, includeInstance)
+    proto.financialplanningcalculator.Account.toObject, includeInstance),
+    goalsList: jspb.Message.toObjectList(msg.getGoalsList(),
+    proto.financialplanningcalculator.Goal.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -3958,6 +3960,11 @@ proto.financialplanningcalculator.Period.deserializeBinaryFromReader = function(
       reader.readMessage(value,proto.financialplanningcalculator.Account.deserializeBinaryFromReader);
       msg.addAccounts(value);
       break;
+    case 2:
+      var value = new proto.financialplanningcalculator.Goal;
+      reader.readMessage(value,proto.financialplanningcalculator.Goal.deserializeBinaryFromReader);
+      msg.addGoals(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3993,6 +4000,14 @@ proto.financialplanningcalculator.Period.serializeBinaryToWriter = function(mess
       1,
       f,
       proto.financialplanningcalculator.Account.serializeBinaryToWriter
+    );
+  }
+  f = message.getGoalsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      2,
+      f,
+      proto.financialplanningcalculator.Goal.serializeBinaryToWriter
     );
   }
 };
@@ -4033,6 +4048,44 @@ proto.financialplanningcalculator.Period.prototype.addAccounts = function(opt_va
  */
 proto.financialplanningcalculator.Period.prototype.clearAccountsList = function() {
   return this.setAccountsList([]);
+};
+
+
+/**
+ * repeated Goal Goals = 2;
+ * @return {!Array<!proto.financialplanningcalculator.Goal>}
+ */
+proto.financialplanningcalculator.Period.prototype.getGoalsList = function() {
+  return /** @type{!Array<!proto.financialplanningcalculator.Goal>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.financialplanningcalculator.Goal, 2));
+};
+
+
+/**
+ * @param {!Array<!proto.financialplanningcalculator.Goal>} value
+ * @return {!proto.financialplanningcalculator.Period} returns this
+*/
+proto.financialplanningcalculator.Period.prototype.setGoalsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 2, value);
+};
+
+
+/**
+ * @param {!proto.financialplanningcalculator.Goal=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.financialplanningcalculator.Goal}
+ */
+proto.financialplanningcalculator.Period.prototype.addGoals = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.financialplanningcalculator.Goal, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.financialplanningcalculator.Period} returns this
+ */
+proto.financialplanningcalculator.Period.prototype.clearGoalsList = function() {
+  return this.setGoalsList([]);
 };
 
 

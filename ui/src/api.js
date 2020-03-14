@@ -1,12 +1,16 @@
 import * as service from "../service_pb";
 
-const baseURL = "http://localhost:8080";
+const API_URL = process.env.REACT_APP_API_URL;
 
-const endpointCalculate = baseURL + "/svc/v1/calculate";
-const endpointUser = baseURL + "/svc/v1/user";
-const endpointAccount = baseURL + "/svc/v1/account";
-const endpointContribution = baseURL + "/svc/v1/contribution";
-const endpointGoal = baseURL + "/svc/v1/goal";
+if (API_URL === undefined) {
+  throw new Error("API_URL is required.");
+}
+
+const endpointCalculate = API_URL + "/svc/v1/calculate";
+const endpointUser = API_URL + "/svc/v1/user";
+const endpointAccount = API_URL + "/svc/v1/account";
+const endpointContribution = API_URL + "/svc/v1/contribution";
+const endpointGoal = API_URL + "/svc/v1/goal";
 
 async function tryDecode(response, message) {
   const text = await response.arrayBuffer();

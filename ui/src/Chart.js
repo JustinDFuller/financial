@@ -1,24 +1,17 @@
-const React = require("react");
-const {
-  AreaChart,
-  Area,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Dot
-} = require("recharts");
+import React, { useEffect, useState } from "react";
+import { AreaChart, Area, YAxis, CartesianGrid, Tooltip, Dot } from "recharts";
 import * as api from "./api";
 import * as service from "../service_pb";
 
 function formatMoney(t, name, props) {
-  if (props && props.payload.Goals) {
-    return [props.payload.Goals[0].Name, "You met a goal"];
+  if (props && props.payload.goalsList.length !== 0) {
+    return [props.payload.goalsList[0].name, "You met a goal"];
   }
   return `$${Math.round(t / 1000)}k`;
 }
 
 function shouldShowDot(dot) {
-  if (dot.payload.Goals !== null) {
+  if (dot.payload.goalsList.length !== 0) {
     return <Dot {...dot} r={dot.r * 2} />;
   }
 
@@ -27,7 +20,7 @@ function shouldShowDot(dot) {
 
 function limitToFifty(period, index, arr) {
   return (
-    period.Goals ||
+    period.goalsList.length !== 0 ||
     index === 0 ||
     index % Math.round(arr.length / 50) === 0 ||
     index === arr.length - 1
@@ -49,70 +42,75 @@ function withNetWorth(period) {
 }
 
 /* the main page for the index route of this app */
-export class Chart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export function Chart({ user }) {
+  const [data, setData] = useState();
+  const [error, setError] = useState();
 
-  async componentDidMount() {
+  async function fetchData() {
     const calculate = new service.GetCalculateData()
-      .setUserid(1)
+      .setUserid(user.getId())
       .setPeriods(500);
     const response = await api.getCalculate(calculate);
-    const data = response.message.toObject();
-    data.periodsList = data.periodsList.filter(limitToFifty).map(withNetWorth);
-    this.setState({ data: data.periodsList });
-  }
+    setError(response.error);
 
-  render() {
-    const { data } = this.state;
-
-    console.log(data);
-
-    if (data === undefined) {
-      return null;
+    if (response.error === undefined) {
+      const data = response.message.toObject();
+      const periods = data.periodsList.filter(limitToFifty).map(withNetWorth);
+      console.log(periods);
+      setData(periods);
     }
-
-    return (
-      <div>
-        <h5>Your forecast</h5>
-        <AreaChart
-          width={600}
-          height={300}
-          data={data}
-          margin={{ top: 25, right: 30, left: -35, bottom: 5 }}
-        >
-          <defs>
-            <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3} />
-            </linearGradient>
-          </defs>
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tickFormatter={formatMoney}
-            style={{ left: 10, top: 50, position: "relative" }}
-          />
-          <Tooltip
-            formatter={formatMoney}
-            separator=" — "
-            labelFormatter={() => undefined}
-          />
-          <CartesianGrid vertical={false} />
-          <Area
-            type="basis"
-            dataKey="Net Worth"
-            stroke="#82ca9d"
-            fillOpacity={1}
-            fill="url(#netWorthGradient)"
-            dot={shouldShowDot}
-          />
-        </AreaChart>
-      </div>
-    );
   }
-}
 
-export default Chart;
+  useEffect(function() {
+    if (data === undefined && error === undefined) {
+      fetchData();
+    }
+  });
+
+  if (error !== undefined) {
+    return <div className="alert alert-danger">{error.getMessage()}</div>;
+  }
+
+  if (data === undefined) {
+    return null;
+  }
+
+  return (
+    <div>
+      <h5>Your forecast</h5>
+      <AreaChart
+        width={600}
+        height={300}
+        data={data}
+        margin={{ top: 25, right: 30, left: -35, bottom: 5 }}
+      >
+        <defs>
+          <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.3} />
+          </linearGradient>
+        </defs>
+        <YAxis
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={formatMoney}
+          style={{ left: 10, top: 50, position: "relative" }}
+        />
+        <Tooltip
+          formatter={formatMoney}
+          separator=" — "
+          labelFormatter={() => undefined}
+        />
+        <CartesianGrid vertical={false} />
+        <Area
+          type="basis"
+          dataKey="Net Worth"
+          stroke="#82ca9d"
+          fillOpacity={1}
+          fill="url(#netWorthGradient)"
+          dot={shouldShowDot}
+        />
+      </AreaChart>
+    </div>
+  );
+}

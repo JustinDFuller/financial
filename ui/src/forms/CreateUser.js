@@ -7,7 +7,7 @@ export function CreateUser({ onDone }) {
   const [error, setError] = useState();
 
   async function handleSubmit(e) {
-    e.stopPropagation();
+    e.preventDefault();
     const user = new service.User().setEmail(email);
     const response = await api.postUser(user);
     if (response.error !== undefined) {

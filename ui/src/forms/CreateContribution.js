@@ -9,10 +9,11 @@ export function CreateContribution({ accounts, onSave, onDone }) {
   const [error, setError] = useState();
   const [created, setCreated] = useState();
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const contribution = new service.Contribution()
       .setAccountid(selectedAccount)
-      .setAmount(amount);
+      .setAmount(Number(amount));
 
     const response = await api.postContribution(contribution);
     setError(response.error);

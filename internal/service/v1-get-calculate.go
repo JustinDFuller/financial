@@ -43,8 +43,14 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 	}
 
 	var fContributions []*financial.Contribution
-	fAccounts, _ := s.db.GetAccountsByUserId(1)
-	fGoals, _ := s.db.GetGoalsByUserId(1)
+	fAccounts, _ := s.db.GetAccountsByUserId(r.Data.UserId)
+	fGoals, _ := s.db.GetGoalsByUserId(r.Data.UserId)
+
+	if len(fAccounts) == 0 {
+		return kit.NewProtoStatusResponse(&financial.Error{
+			Message: messageInvalidEntity,
+		}, http.StatusBadRequest), nil
+	}
 
 	for _, account := range fAccounts {
 		contribution, _ := s.db.GetContributionByAccountId(account.Id)
@@ -55,6 +61,7 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 	var cContributions calculator.Contributions
 	cAccountsById := map[int64]*calculator.Account{}
 	accountsByName := map[string]*financial.Account{}
+	goalsByName := map[string]*financial.Goal{}
 
 	for _, account := range fAccounts {
 		cAccount := &calculator.Account{
@@ -95,6 +102,7 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 		}
 
 		cGoals = append(cGoals, cGoal)
+		goalsByName[goal.Name] = goal
 	}
 
 	cReq := &calculator.CalculateRequest{
@@ -121,6 +129,15 @@ func (s *service) getUserCalculate(ctx context.Context, request interface{}) (re
 			fAccount = *accountsByName[account.Name]
 			fAccount.Balance = balance
 			fPeriod.Accounts = append(fPeriod.Accounts, &fAccount)
+		}
+
+		for _, goal := range period.Goals {
+			balance, _ := goal.Balance.Float64()
+
+			var fGoal financial.Goal
+			fGoal = *goalsByName[goal.Name]
+			fGoal.Balance = balance
+			fPeriod.Goals = append(fPeriod.Goals, &fGoal)
 		}
 
 		res.Periods = append(res.Periods, fPeriod)

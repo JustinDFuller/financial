@@ -107,6 +107,7 @@ message Goal {
 
 message Period {
     repeated Account Accounts = 1;
+    repeated Goal Goals = 2;
 }
 
 message PostAccountRequest {
