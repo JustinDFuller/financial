@@ -31,6 +31,7 @@ steps:
         from_secret: GAE_CREDENTIALS_DEV
       CORS_ALLOWED_ORIGIN:
         from_secret: CORS_ALLOWED_ORIGIN
+    secrets: [CORS_ALLOWED_ORIGIN]
     settings:
       action: deploy
       project: financial-calculator-dev
