@@ -4,8 +4,10 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/JustinDFuller/financial)](https://goreportcard.com/report/github.com/JustinDFuller/financial)
 [![Coverage Status](https://coveralls.io/repos/github/JustinDFuller/financial/badge.svg?branch=master)](https://coveralls.io/github/JustinDFuller/financial?branch=master)
 
-## The Idea
+## Live Preview
+![Screenshot](https://image.thum.io/get/maxAge/12/width/700/crop/400/https://friendly-heyrovsky-9af227.netlify.com/)
 
+## The Idea
 1. I want to make a financial calculator app.
 2. I should be able to give it all my accounts + their current balance.
 3. I should be able to says how much I save to those accounts each period
